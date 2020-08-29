@@ -1,0 +1,83 @@
+{
+    "name": "laravel/csv-uploader",
+    "type": "project",
+    "description": "Upload a CSV",
+    "keywords": [
+        "framework",
+        "laravel"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": "^7.2.5",
+        "fideloper/proxy": "^4.2",
+        "fruitcake/laravel-cors": "^2.0",
+        "guzzlehttp/guzzle": "^6.3",
+        "laravel/framework": "^7.24",
+        "laravel/telescope": "^3.5",
+        "laravel/tinker": "^2.0"
+    },
+    "require-dev": {
+        "facade/ignition": "^2.0",
+        "fzaninotto/faker": "^1.9.1",
+        "laravel/ui": "^2.2",
+        "mockery/mockery": "^1.3.1",
+        "nunomaduro/collision": "^4.1",
+        "phpunit/phpunit": "^8.5"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": [
+                "laravel/telescope"
+            ]
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        },
+        "classmap": [
+            "database/seeds",
+            "database/factories",
+            "Services"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi"
+        ],
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "@php artisan key:generate --ansi"
+        ],
+        "lint": "php-parallel-lint app tests",
+        "phpcs": "phpcs app tests --standard=psr2 -sp --colors",
+        "phpcbf": "phpcbf app tests --standard=psr2 -sp --colors",
+        "phpstan": [
+            "phpstan analyse -c phpstan.neon app --level max --no-progress",
+            "phpstan analyse -c phpstan-tests.neon tests --level 4 --no-progress"
+        ],
+        "phpunit": "phpunit --verbose --colors=always",
+        "test": [
+            "@lint",
+            "@phpstan",
+            "@phpunit",
+            "@phpcs"
+        ],
+        "reseed": "php artisan config:clear && php composer.phar dump-autoload && php artisan migrate:refresh --seed"
+    }
+}
