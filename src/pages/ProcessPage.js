@@ -75,7 +75,10 @@ class ProcessPage extends React.Component {
 
         return (
             <>
-                <h1>Processed.</h1>
+                <h1>Processed</h1>
+                <p>CSV records have been added to database.</p>
+
+                <hr />
 
                 <p>Data inserts: {data.data_inserts}</p>
                 <p>Unmapped data inserts: {data.unmapped_data_inserts}</p>

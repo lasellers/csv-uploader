@@ -10,7 +10,7 @@ class CsvUploadPage extends React.Component {
         this.state = {
             error: "",
             selectedFile: null,
-            header:null,
+            header: null,
             data: null,
             goForward: false
         };
@@ -62,46 +62,47 @@ class CsvUploadPage extends React.Component {
 
     // On file upload (click the upload button)
     onFileUpload = async (event) => {
-      //  event.preventDefault();
+        //  event.preventDefault();
 
         // Create an object of formData
-     /*   const formData = new FormData();
+        /*   const formData = new FormData();
 
-        // Update the formData object
-        formData.append(
-            "file.csv",
-            this.state.selectedFile,
-            this.state.selectedFile.name
-        );
+           // Update the formData object
+           formData.append(
+               "file.csv",
+               this.state.selectedFile,
+               this.state.selectedFile.name
+           );
 
-        const requestOptions = {
-            method: 'POST',
-            redirect: 'none',
-            body: formData
-        };*/
+           const requestOptions = {
+               method: 'POST',
+               redirect: 'none',
+               body: formData
+           };*/
 
         this.setState({goForward: true});
     };
 
     // File content to be displayed after
     // file upload is complete
-    fileData = () => {
+    uploadedFileData = () => {
         if (this.state.selectedFile) {
             return (
-                <div>
-                    <h2>CSV File Details:</h2>
+                <>
+                    <p><b>CSV File Details</b></p>
+                    <hr/>
                     <p>File Name: {this.state.selectedFile.name}</p>
                     <p>File Type: {this.state.selectedFile.type}</p>
                     <p>Rows: {this.state.data.length}</p>
                     <p>Last Modified: {this.state.selectedFile.lastModifiedDate.toDateString()}</p>
-                </div>
+                </>
             );
         } else {
             return (
-                <div>
+                <>
                     <br/>
                     <h4>Choose File from local system before pressing the Upload button.</h4>
-                </div>
+                </>
             );
         }
     };
@@ -115,18 +116,16 @@ class CsvUploadPage extends React.Component {
 
         return (
             <>
-                <h1>
-                </h1>
-                <h3>
-                    CSV File Upload.
-                </h3>
+                <h1>CSV File Upload</h1>
+
                 <div>
                     <input className="btn btn-secondary mr-2" type="file" onChange={this.onFileChange}/>
                     <button className="btn btn-primary ml-2" onClick={this.onFileUpload}>
                         Upload
                     </button>
                 </div>
-                {this.fileData()}
+
+                {this.uploadedFileData()}
 
                 {error.toLocaleString()}
             </>
