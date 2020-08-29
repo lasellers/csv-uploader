@@ -73,8 +73,8 @@ class CsvColumnMappingPage extends React.Component {
         const nav = (
             <>
                 <div>
-                    <button className="btn btn-secondary" onClick={() => this.setState({goBack: true})}>Back</button>
-                    <button className="btn btn-primary" onClick={this.onMappingAccept}>Next</button>
+                    <button className="btn btn-secondary mr-2" onClick={() => this.setState({goBack: true})}>Back</button>
+                    <button className="btn btn-primary ml-2" onClick={this.onMappingAccept}>Next</button>
                 </div>
                 {error.toLocaleString()}
             </>

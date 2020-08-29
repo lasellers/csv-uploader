@@ -29,6 +29,7 @@ class ContactsPage extends React.Component {
                     });
                 },
                 (error) => {
+                    console.error(error);
                     this.setState({
                         isLoaded: true,
                         error
@@ -64,8 +65,8 @@ class ContactsPage extends React.Component {
         const nav = (
             <>
                 <div>
-                    <button className="btn btn-secondary" onClick={() => this.setState({goBack: true})}>Back</button>
-                    <button className="btn btn-primary" onClick={() => this.setState({goHome: true})}>Home</button>
+                    <button className="btn btn-secondary mr-2" onClick={() => this.setState({goBack: true})}>Back</button>
+                    <button className="btn btn-primary ml-2" onClick={() => this.setState({goHome: true})}>Home</button>
                 </div>
 
                 {error.toLocaleString()}

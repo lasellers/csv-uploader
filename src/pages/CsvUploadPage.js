@@ -62,10 +62,10 @@ class CsvUploadPage extends React.Component {
 
     // On file upload (click the upload button)
     onFileUpload = async (event) => {
-        event.preventDefault();
+      //  event.preventDefault();
 
         // Create an object of formData
-        const formData = new FormData();
+     /*   const formData = new FormData();
 
         // Update the formData object
         formData.append(
@@ -78,7 +78,7 @@ class CsvUploadPage extends React.Component {
             method: 'POST',
             redirect: 'none',
             body: formData
-        };
+        };*/
 
         this.setState({goForward: true});
     };
@@ -121,8 +121,8 @@ class CsvUploadPage extends React.Component {
                     CSV File Upload.
                 </h3>
                 <div>
-                    <input className="btn btn-secondary" type="file" onChange={this.onFileChange}/>
-                    <button className="btn btn-primary" onClick={this.onFileUpload}>
+                    <input className="btn btn-secondary mr-2" type="file" onChange={this.onFileChange}/>
+                    <button className="btn btn-primary ml-2" onClick={this.onFileUpload}>
                         Upload
                     </button>
                 </div>

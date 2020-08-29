@@ -33,16 +33,13 @@ class ProcessPage extends React.Component {
         })
             .then(res => res.json())
             .then((data) => {
-                    console.log(data);
-                    console.log(data.inserts);
-                    console.log(data.mappedRows);
-                    console.log(data.unmappedRows);
                     this.setState({
                         isLoaded: true,
                         data: data
                     });
                 },
                 (error) => {
+                    console.error(error);
                 }
             )
     }
@@ -61,8 +58,8 @@ class ProcessPage extends React.Component {
         const nav = (
             <>
                 <div>
-                    <button className="btn btn-secondary" onClick={() => this.setState({goBack: true})}>Back</button>
-                    <button className="btn btn-primary" onClick={() => this.setState({goForward: true})}>Next</button>
+                    <button className="btn btn-secondary mr-2" onClick={() => this.setState({goBack: true})}>Back</button>
+                    <button className="btn btn-primary ml-2" onClick={() => this.setState({goForward: true})}>Next</button>
                 </div>
 
                 {error.toLocaleString()}

@@ -28,8 +28,8 @@ class RemappingPreviewPage extends React.Component {
         const nav = (
             <>
                 <div>
-                    <button className="btn btn-secondary" onClick={() => this.setState({goBack: true})}>Back</button>
-                    <button className="btn btn-primary" onClick={() => this.setState({goForward: true})}>Next</button>
+                    <button className="btn btn-secondary mr-2" onClick={() => this.setState({goBack: true})}>Back</button>
+                    <button className="btn btn-primary ml-2" onClick={() => this.setState({goForward: true})}>Next</button>
                 </div>
 
                 {error.toLocaleString()}
