@@ -4,6 +4,10 @@ const initialState = {
     remapped_csv_header: [],
     remapped_csv_data: [],
     remapped_order: [],
+    // read only SSOA
+    columns: ['id', 'team_id', 'name', 'phone', 'email', 'sticky_phone_number_id', 'created_at', 'updated_at'],
+    namedColumns: ['#', 'Team Id', 'Name', 'Phone', 'Email', 'Sticky Phone Number Id', 'Created', 'Updated'],
+    order: [0, 1, 2, 3, 4, 5, 6, 7]
 };
 
 export default function (state = initialState, action) {

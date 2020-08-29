@@ -2,6 +2,7 @@ import React from 'react';
 import {API_URL} from "../App";
 import store from "../redux/store";
 import {Redirect} from "react-router";
+import {addRemappedCsvData} from "../redux/actions";
 
 class RemappingPreviewPage extends React.Component {
     constructor(props) {
@@ -10,9 +11,7 @@ class RemappingPreviewPage extends React.Component {
             error: "",
             goForward: false,
             goBack: false
-            //files: []
         };
-
     }
 
     /*componentDidMount() {
@@ -34,14 +33,38 @@ class RemappingPreviewPage extends React.Component {
             )
     }*/
 
+    onPreviewAccept = async event => {
+        console.log('onPreviewAccept', event);
+        const header = store.getState().csv.header;
+        const data = store.getState().csv.data;
+
+        console.log('data**', data);
+        const remappedData = this.remappedCsv(
+            data,
+            this.state.remapped
+        );
+        console.log('remapped**', remappedData);
+
+        store.dispatch(addRemappedCsvData(remappedData));
+
+        // Update the state
+        this.setState({
+            remapped: remappedData,
+            goForward: true
+        });
+    };
+
     render() {
         const {error, goForward, goBack} = this.state;
+
+        const columns = store.getState().csv.namedColumns;
+        const data = store.getState().csv.remapped_csv_data;
 
         if (goForward) {
             return <Redirect to='/process'/>;
         }
         if (goBack) {
-            return <Redirect to='/column-mapping'/>;
+            return <Redirect to='/mapping'/>;
         }
 
         return (
@@ -54,17 +77,17 @@ class RemappingPreviewPage extends React.Component {
                         <table className="table table-striped">
                             <thead>
                             <tr>
-                                <th>id</th>
-                                <th>File</th>
-                                <th>x</th>
+                                {columns.map(column => (
+                                    <th>{column}</th>
+                                ))}
                             </tr>
                             </thead>
                             <tbody>
-                            {files.map(file => (
-                                <tr key={file.id}>
-                                    <td>{file.id}</td>
-                                    <td>{file}</td>
-                                    <td>x</td>
+                            {data.map(row => (
+                                <tr key={row.id}>
+                                    {row.map(col => (
+                                        <td>{col}</td>
+                                    ))}
                                 </tr>
                             ))}
                             </tbody>
@@ -78,8 +101,8 @@ class RemappingPreviewPage extends React.Component {
                 </div>
 
                 <div>
-                    <button onClick={() => this.setState({goForward: true} )}>Next</button>
-                    <button onClick={() => this.setState({goBack: true} )} >Back</button>
+                    <button onClick={() => this.setState({goBack: true})}>Back</button>
+                    <button onClick={this.onPreviewAccept}>Next</button>
                 </div>
 
                 {error.toLocaleString()}

@@ -17,14 +17,14 @@ import NotFoundPage from "./pages/NotFoundPage";
 export const API_URL = "http://localhost:8000/api";
 
 function App(props) {
-    const [user, setUser] = useState(store.getState().user);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+//    const [user, setUser] = useState(store.getState().user);
+    //const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    store.subscribe(function () {
+/*    store.subscribe(function () {
         const user = store.getState().user;
         setUser(user.user);
         setIsLoggedIn(user.isLoggedIn);
-    });
+    });*/
 
     let nav = <>
         <div className="wrapper">
@@ -35,7 +35,7 @@ function App(props) {
 
                 <ul className="list-unstyled components">
                     <Nav.Link as={Link} to="/uploads">CSV Upload</Nav.Link>
-                    <Nav.Link as={Link} to="/column-mapping">Column Mapping</Nav.Link>
+                    <Nav.Link as={Link} to="/mapping">Column Mapping</Nav.Link>
                     <Nav.Link as={Link} to="/preview">Preview</Nav.Link>
                     <Nav.Link as={Link} to="/process">Process</Nav.Link>
                     <Nav.Link as={Link} to="/contacts">Contacts</Nav.Link>
@@ -53,7 +53,6 @@ function App(props) {
                         <h1>CSV Uploader</h1>
                     </Nav>
                     <Nav className="ml-auto">
-                        <small>{user.name}</small>
                     </Nav>
                 </Navbar>
             </header>
@@ -70,8 +69,8 @@ function App(props) {
                     <Switch>
                         <Route path="/" component={CsvUploadPage} exact/>
                         <Route path="/uploads" component={CsvUploadPage}/>
-                        <Route path="/column-mapping" component={CsvColumnMappingPage} exact/>
-                        <Route path="/remapping-preview" component={ProcessPage} exact/>
+                        <Route path="/mapping" component={CsvColumnMappingPage} exact/>
+                        <Route path="/preview" component={ProcessPage} exact/>
                         <Route path="/process" component={ProcessPage} exact/>
                         <Route path="/contacts" component={ContactsPage} exact/>
                         <Route path="/not-found" component={NotFoundPage} exact/>

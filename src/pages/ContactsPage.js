@@ -8,7 +8,6 @@ class ContactsPage extends React.Component {
         super(props);
         this.state = {
             error: "",
-            goForward: false,
             goBack: false,
             contacts: []
         };
@@ -34,7 +33,13 @@ class ContactsPage extends React.Component {
     }
 
     render() {
-        const {error, isLoaded, contacts} = this.state;
+        const {error, isLoaded, contacts, goBack} = this.state;
+
+        if (goBack) {
+            return <Redirect to='/preview'/>;
+        }
+
+        const columns = store.getState().csv.namedColumns;
 
         if (!isLoaded)
             return (

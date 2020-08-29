@@ -1,9 +1,6 @@
 import React from 'react';
-import {API_URL} from "../App";
-//import AddMessage from "./AddMessage";
 import store from "../redux/store";
 import {Redirect} from "react-router";
-import {addCsvData, addCsvHeader, addRemappedCsvHeader} from "../redux/actions";
 import {addRemappedCsvData} from "../redux/actions";
 
 class CsvColumnMappingPage extends React.Component {
@@ -11,78 +8,56 @@ class CsvColumnMappingPage extends React.Component {
         super(props);
         this.state = {
             error: "",
-            remapped: [0,1,2,3,4,5,6],
+            remapped: store.getState().csv.order,
             goForward: false,
             goBack: false
-            // files: []
         };
 
-
-        store.subscribe(function () {
-            const csv = store.getState().csv;
-            //   setEmail(user.email);
-            //  setIsLoggedIn(user.isLoggedIn);
-        });
-
-
+        this.onMappingChange = this.onMappingChange.bind(this);
+        this.onMappingAccept = this.onMappingAccept.bind(this);
     }
 
     onMappingChange = async event => {
-        event.preventDefault();
+        const id = event.target.id;
+        const value = event.target.value;
 
-        const files = event.target.files;
-        console.log('onFileChange', event);
-        console.log('files', files);
-        if (files.length > 0) {
-            //console.log('length', event.target.length);
-            //console.log('item(0)', event.target.item(0));
-            /* for(let index=0;index++;index<=event.target.files.length) {
-                 console.log('file**'+index, event.target.item(index));
-                 console.log('text**'+index, event.target.item(index).text());
-             }*/
-//            const csv = (await files[0].text());
-            const [header, data] = this.csvToArray(csv);
-
-            console.log('remapped**', data);
-            const remappedData = this.remappedCsv(
-                data,
-                this.state.remapped
-            );
-            console.log('remapped**', remapped);
-
-         //   store.dispatch(addCsvHeader(header));
-            store.dispatch(addRemappedCsvData(remappedData));
-
-            // Update the state
-            this.setState({
-                remapped: remapped
-            });
-        }
+        const remapped = store.getState().csv.remapped;
+        remapped[id] = value;
+        this.setState({remapped: remapped})
     };
 
+    onMappingAccept = async event => {
+        console.log('onMappingAccept', event);
+        const header = store.getState().csv.header;
+        const data = store.getState().csv.data;
+
+        console.log('data**', data);
+        const remappedData = this.remappedCsv(
+            data,
+            this.state.remapped
+        );
+        console.log('remappedData**', remappedData);
+
+        store.dispatch(addRemappedCsvData(remappedData));
+
+        // Update the state
+        this.setState({
+            remapped: remappedData,
+            goForward: true
+        });
+    };
 
     remappedCsv = (rows, remappedColumns) => {
-
+        let newRows = [];
+        rows.forEach(function (row) {
+            let newRow = [];
+            row.forEach(function (value, index) {
+                newRow[remappedColumns[index]] = value;
+            });
+            newRows.push(newRow);
+        });
+        return newRows;
     };
-
-    /* componentDidMount() {
-         fetch(API_URL + "/csv/files")
-             .then(res => res.json())
-             .then(
-                 (result) => {
-                     this.setState({
-                         isLoaded: true,
-                         files: result
-                     });
-                 },
-                 (error) => {
-                     this.setState({
-                         isLoaded: true,
-                         error
-                     });
-                 }
-             )
-     }*/
 
     render() {
         const {error, goForward, goBack} = this.state;
@@ -94,9 +69,9 @@ class CsvColumnMappingPage extends React.Component {
             return <Redirect to='/upload'/>;
         }
 
-
-        let columns = ['id', 'team_id', 'name', 'phone', 'email', 'sticky_phone_number_id', 'created_at', 'updated_at'];
-
+        const columns = store.getState().csv.namedColumns;
+        const order = store.getState().csv.order;
+        const remapped = this.state.remapped;
 
         return (
             <>
@@ -115,7 +90,16 @@ class CsvColumnMappingPage extends React.Component {
                             <tbody>
                             {columns.map((column, index) => (
                                 <tr key={index}>
-                                    <td>{column}</td>
+                                    <td>
+                                        column:{column} index:{index} a:{columns[index]} b:{remapped[index]}
+                                    </td>
+                                    <td>
+                                        <select value={remapped[index]} onChange={this.handleChange}>
+                                            {order.map((orderValue) => (
+                                            <option value={orderValue}>{columns[orderValue]}</option>
+                                                ))}
+                                        </select>
+                                    </td>
                                 </tr>
                             ))}
                             </tbody>
@@ -129,8 +113,8 @@ class CsvColumnMappingPage extends React.Component {
                 </div>
 
                 <div>
-                    <button onClick={() => this.setState({goForward: true})}>Next</button>
                     <button onClick={() => this.setState({goBack: true})}>Back</button>
+                    <button onClick={this.onMappingAccept}>Next</button>
                 </div>
 
                 {error.toLocaleString()}

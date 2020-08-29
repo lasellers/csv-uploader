@@ -14,7 +14,7 @@ export default [
         Component: CsvUploadPage
     },
     {
-        path: '/column-mapping',
+        path: '/mapping',
         Component: CsvColumnMappingPage
     },
     {
