@@ -8,7 +8,7 @@ class CsvColumnMappingPage extends React.Component {
         super(props);
         this.state = {
             error: "",
-            remapped: store.getState().csv.order,
+            remapped_order: store.getState().csv.order,
             goForward: false,
             goBack: false
         };
@@ -22,22 +22,21 @@ class CsvColumnMappingPage extends React.Component {
         const value = event.target.value;
         console.log(id,'=',value);
 
-        const remapped = this.state.remapped;
-        remapped[id] = value;
-        console.log(remapped);
-        this.setState({remapped: remapped})
+        const remapped_order = this.state.remapped_order;
+        remapped_order[id] = value;
+        console.log(remapped_order);
+        this.setState({remapped_order: remapped_order})
     };
 
     onMappingAccept = async event => {
         console.log('onMappingAccept', event);
         const header = store.getState().csv.header;
-        const data = store.getState().csv.data;
+        const csv_data = store.getState().csv.csv_data;
+        const remapped_order = this.state.remapped_order;
 
-        console.log('data**', data);
-        const remappedData = this.remappedCsv(
-            data,
-            this.state.remapped
-        );
+        console.log('remapped_order', remapped_order);
+        console.log('csv_data', csv_data);
+        const remappedData = this.remappedCsv(csv_data, remapped_order);
         console.log('remappedData**', remappedData);
 
         store.dispatch(addRemappedCsvData(remappedData));
@@ -49,12 +48,12 @@ class CsvColumnMappingPage extends React.Component {
         });
     };
 
-    remappedCsv = (rows, remappedColumns) => {
+    remappedCsv = (rows, remapped_order) => {
         let newRows = [];
         rows.forEach(function (row) {
             let newRow = [];
             row.forEach(function (value, index) {
-                newRow[remappedColumns[index]] = value;
+                newRow[remapped_order[index]] = value;
             });
             newRows.push(newRow);
         });
@@ -73,7 +72,7 @@ class CsvColumnMappingPage extends React.Component {
 
         const columns = store.getState().csv.namedColumns;
         const order = store.getState().csv.order;
-        const remapped = this.state.remapped;
+        const remapped_order = this.state.remapped_order;
 
         return (
             <>
@@ -93,11 +92,11 @@ class CsvColumnMappingPage extends React.Component {
                             {columns.map((column, index) => (
                                 <tr key={index}>
                                     <td>
-                                        column:{column} index:{index} a:{columns[index]} b:{remapped[index]}
+                                        column:{column} index:{index} a:{columns[index]} b:{remapped_order[index]}
                                     </td>
                                     <td>
-                                        <select id={"select-"+index} value={remapped[index]} onChange={this.onMappingChange}>
-                                            <option key={-1} value=""></option>
+                                        <select id={"select-"+index} value={remapped_order[index]} onChange={this.onMappingChange}>
+                                            <option key={-1} value=""> </option>
                                             {order.map((orderValue, index2) => (
                                             <option id={index + '.' + index2} key={index2} value={index2}>{columns[index2]}</option>
                                                 ))}

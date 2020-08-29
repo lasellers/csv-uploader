@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProcessCSVRequest extends FormRequest
+class SaveCSVRequest extends FormRequest
 {
     protected $expectsJson = true;
     protected $redirect = false;

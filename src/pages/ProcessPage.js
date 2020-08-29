@@ -1,22 +1,22 @@
 import React from 'react';
 import {API_URL} from "../App";
-//import AddMessage from "./AddMessage";
 import store from "../redux/store";
 import {Redirect} from "react-router";
 
-class Messages extends React.Component {
+class ProcessPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             error: "",
-            isLoaded: false,
-            messages: []
+            goBack: false,
+            goForward: false,
+            isLoaded: false
         };
 
     }
 
     componentDidMount() {
-        fetch(API_URL + "/messages")
+        fetch(API_URL + "/csv/process")
             .then(res => res.json())
             .then(
                 (result) => {
@@ -35,17 +35,19 @@ class Messages extends React.Component {
     }
 
     render() {
-        const {error, isLoaded, messages} = this.state;
+        const {error, goForward, goBack, isLoaded} = this.state;
 
-        if (store.getState().user.isLoggedIn === false) {
-            return (<Redirect to='/'/>);
+        if (goForward) {
+            return <Redirect to='/contacts'/>;
+        }
+        if (goBack) {
+            return <Redirect to='/mapping'/>;
         }
 
         if (!isLoaded)
             return (
                 <div>
-                    <h1>Messages</h1>
-                    <p>None.</p>
+                    <h1>Processing...</h1>
                 </div>
             );
 
@@ -56,34 +58,20 @@ class Messages extends React.Component {
 
                         <h1>Messages</h1>
 
-                        <table className="table table-striped">
-                            <thead>
-                            <tr>
-                                <th>id</th>
-                                <th>Title</th>
-                                <th>Message</th>
-                                <th>UserId</th>
-                                <th>RepliedTo</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {messages.map(message => (
-                                <tr key={message.id}>
-                                    <td>{message.id}</td>
-                                    <td>{message.title}</td>
-                                    <td>{message.message}</td>
-                                    <td>{message.userId}</td>
-                                    <td>{message.repliedTo}</td>
-                                </tr>
-                            ))}
-                            </tbody>
-                        </table>
+                        <div>
+                            <h1>Processed.</h1>
+                        </div>
 
                     </div>
                     <div className="col-6">
 
                     </div>
 
+                </div>
+
+                <div>
+                    <button onClick={() => this.setState({goBack: true})}>Back</button>
+                    <button onClick={() => this.setState({goForward: true})}>Next</button>
                 </div>
 
                 {error.toLocaleString()}
@@ -93,4 +81,4 @@ class Messages extends React.Component {
     }
 }
 
-export default Messages;
+export default ProcessPage;

@@ -15,18 +15,14 @@ use Symfony\Component\HttpFoundation\Response;
 |
 */
 
-/*
-Route::get('csv/file-remap/{id}', function () {
-    return new JsonResponse(['error' => 'Unimplemented Endpoint'], Response::HTTP_METHOD_NOT_ALLOWED);
-});*/
+//Route::get('csv/remap-file', 'CsvController@remapFile');
+//Route::get('csv/file/{id}', 'CsvController@getFile');
+//Route::get('csv/files', 'CsvController@index');
+//Route::post('csv/upload', 'CsvController@upload');
+//Route::post('csv/process', 'CsvController@process');
+//Route::delete('csv/{id}', 'CsvController@destroy');
 
-Route::get('csv/remap-file', 'CsvController@remapFile');
-
-Route::get('csv/file/{id}', 'CsvController@getFile');
-Route::get('csv/files', 'CsvController@index');
-Route::post('csv/upload', 'CsvController@upload');
-Route::post('csv/process', 'CsvController@process');
-Route::delete('csv/{id}', 'CsvController@destroy');
+Route::post('csv/save', 'CsvController@save');
 
 Route::delete('contacts/{id}', 'ContactsController@destroy');
 Route::get('contacts', 'ContactsController@index');

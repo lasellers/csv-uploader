@@ -13,6 +13,7 @@ class RemappingPreviewPage extends React.Component {
         };
     }
 
+    /*
     onPreviewAccept = async event => {
         console.log('onPreviewAccept', event);
         const header = store.getState().csv.header;
@@ -32,7 +33,7 @@ class RemappingPreviewPage extends React.Component {
             remapped: remappedData,
             goForward: true
         });
-    };
+    }; */
 
     render() {
         const {error, goForward, goBack} = this.state;
@@ -65,6 +66,7 @@ class RemappingPreviewPage extends React.Component {
                             <tbody>
                             {data.map(row => (
                                 <tr key={row.id}>
+                                    <td> </td>
                                     {row.map(col => (
                                         <td>{col}</td>
                                     ))}
@@ -82,7 +84,7 @@ class RemappingPreviewPage extends React.Component {
 
                 <div>
                     <button onClick={() => this.setState({goBack: true})}>Back</button>
-                    <button onClick={this.onPreviewAccept}>Next</button>
+                    <button onClick={() => this.setState({goForward: true})}>Next</button>
                 </div>
 
                 {error.toLocaleString()}

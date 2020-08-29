@@ -8,6 +8,16 @@ use App\Contact;
 
 class CustomAttributes extends Model
 {
+    public $timestamps = null;
+
+    protected $fillable = [
+        'contact_id', 'key', 'value'
+    ];
+
+    protected $casts = [
+        'contact_id' => 'integer',
+    ];
+
     //
     public function Contact(): BelongsTo
     {

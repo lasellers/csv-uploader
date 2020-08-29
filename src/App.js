@@ -70,7 +70,7 @@ function App(props) {
                         <Route path="/" component={CsvUploadPage} exact/>
                         <Route path="/uploads" component={CsvUploadPage}/>
                         <Route path="/mapping" component={CsvColumnMappingPage} exact/>
-                        <Route path="/preview" component={ProcessPage} exact/>
+                        <Route path="/preview" component={RemappingPreviewPage} exact/>
                         <Route path="/process" component={ProcessPage} exact/>
                         <Route path="/contacts" component={ContactsPage} exact/>
                         <Route path="/not-found" component={NotFoundPage} exact/>
