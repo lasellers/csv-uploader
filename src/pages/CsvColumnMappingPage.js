@@ -17,12 +17,14 @@ class CsvColumnMappingPage extends React.Component {
         this.onMappingAccept = this.onMappingAccept.bind(this);
     }
 
-    onMappingChange = async event => {
-        const id = event.target.id;
+    onMappingChange = async (event) => {
+        const id = (event.target.id.split('-'))[1]; //event.target.selectedIndex;
         const value = event.target.value;
+        console.log(id,'=',value);
 
-        const remapped = store.getState().csv.remapped;
+        const remapped = this.state.remapped;
         remapped[id] = value;
+        console.log(remapped);
         this.setState({remapped: remapped})
     };
 
@@ -94,9 +96,10 @@ class CsvColumnMappingPage extends React.Component {
                                         column:{column} index:{index} a:{columns[index]} b:{remapped[index]}
                                     </td>
                                     <td>
-                                        <select value={remapped[index]} onChange={this.handleChange}>
-                                            {order.map((orderValue) => (
-                                            <option value={orderValue}>{columns[orderValue]}</option>
+                                        <select id={"select-"+index} value={remapped[index]} onChange={this.onMappingChange}>
+                                            <option key={-1} value=""></option>
+                                            {order.map((orderValue, index2) => (
+                                            <option id={index + '.' + index2} key={index2} value={index2}>{columns[index2]}</option>
                                                 ))}
                                         </select>
                                     </td>
@@ -107,7 +110,6 @@ class CsvColumnMappingPage extends React.Component {
 
                     </div>
                     <div className="col-6">
-
                     </div>
 
                 </div>

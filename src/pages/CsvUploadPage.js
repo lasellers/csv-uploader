@@ -11,8 +11,7 @@ class CsvUploadPage extends React.Component {
             selectedFile: null,
             header:null,
             data: null,
-            goForward: false,
-            goBack: false
+            goForward: false
         };
 
         this.onFileChange = this.onFileChange.bind(this);
@@ -125,7 +124,7 @@ class CsvUploadPage extends React.Component {
     };
 
     render() {
-        const {error, goForward, goBack} = this.state;
+        const {error, goForward} = this.state;
 
         if (goForward) {
             return <Redirect to='/mapping'/>;

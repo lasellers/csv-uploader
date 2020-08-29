@@ -1,5 +1,4 @@
 import React from 'react';
-import {API_URL} from "../App";
 import store from "../redux/store";
 import {Redirect} from "react-router";
 import {addRemappedCsvData} from "../redux/actions";
@@ -13,25 +12,6 @@ class RemappingPreviewPage extends React.Component {
             goBack: false
         };
     }
-
-    /*componentDidMount() {
-        fetch(API_URL + "/csv/files")
-            .then(res => res.json())
-            .then(
-                (result) => {
-                    this.setState({
-                        isLoaded: true,
-                        files: result
-                    });
-                },
-                (error) => {
-                    this.setState({
-                        isLoaded: true,
-                        error
-                    });
-                }
-            )
-    }*/
 
     onPreviewAccept = async event => {
         console.log('onPreviewAccept', event);
