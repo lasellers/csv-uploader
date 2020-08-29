@@ -52,7 +52,7 @@ class CsvColumnMappingPage extends React.Component {
             });
             newRows.push(newRow);
         });
-        return [newRows,[]];
+        return [newRows, []];
     };
 
     render() {
@@ -68,50 +68,61 @@ class CsvColumnMappingPage extends React.Component {
         const columns = store.getState().csv.namedColumns;
         const order = store.getState().csv.order;
         const remapped_order = this.state.remapped_order;
+        const data = store.getState().csv.csv_data;
+
+        const nav = (
+            <>
+                <div>
+                    <button className="btn btn-secondary" onClick={() => this.setState({goBack: true})}>Back</button>
+                    <button className="btn btn-primary" onClick={this.onMappingAccept}>Next</button>
+                </div>
+                {error.toLocaleString()}
+            </>
+        );
+
+        if (data.length === 0) {
+            return (
+                <>
+                    <h1>Remapping</h1>
+                    <p>No data.</p>
+                    {nav}
+                </>
+            )
+        }
 
         return (
             <>
-                <div className="row">
-                    <div className="col-12">
+                <h1>Remapping</h1>
 
-                        <h1>Remapping</h1>
+                <table className="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Column</th>
+                        <th>Remap from</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {columns.map((column, index) => (
+                        <tr key={index}>
+                            <td>
+                                {column}
+                            </td>
+                            <td>
+                                <select id={"select-" + index} value={remapped_order[index]}
+                                        onChange={this.onMappingChange}>
+                                    <option key={-1} value=""></option>
+                                    {order.map((orderValue, index2) => (
+                                        <option id={index + '.' + index2} key={index2}
+                                                value={index2}>{columns[index2]} (Ex: {data[0][index2]})</option>
+                                    ))}
+                                </select>
+                            </td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
 
-                        <table className="table table-striped">
-                            <thead>
-                            <tr>
-                                <th>column</th>
-                                <th>remap</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {columns.map((column, index) => (
-                                <tr key={index}>
-                                    <td>
-                                        column:{column} index:{index} a:{columns[index]} b:{remapped_order[index]}
-                                    </td>
-                                    <td>
-                                        <select id={"select-"+index} value={remapped_order[index]} onChange={this.onMappingChange}>
-                                            <option key={-1} value=""> </option>
-                                            {order.map((orderValue, index2) => (
-                                            <option id={index + '.' + index2} key={index2} value={index2}>{columns[index2]}</option>
-                                                ))}
-                                        </select>
-                                    </td>
-                                </tr>
-                            ))}
-                            </tbody>
-                        </table>
-
-                    </div>
-
-                </div>
-
-                <div>
-                    <button onClick={() => this.setState({goBack: true})}>Back</button>
-                    <button onClick={this.onMappingAccept}>Next</button>
-                </div>
-
-                {error.toLocaleString()}
+                {nav}
 
             </>
         );

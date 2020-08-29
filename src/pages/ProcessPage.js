@@ -58,6 +58,17 @@ class ProcessPage extends React.Component {
             return <Redirect to='/mapping'/>;
         }
 
+        const nav = (
+            <>
+                <div>
+                    <button className="btn btn-secondary" onClick={() => this.setState({goBack: true})}>Back</button>
+                    <button className="btn btn-primary" onClick={() => this.setState({goForward: true})}>Next</button>
+                </div>
+
+                {error.toLocaleString()}
+            </>
+        );
+
         if (!isLoaded)
             return (
                 <div>
@@ -67,25 +78,14 @@ class ProcessPage extends React.Component {
 
         return (
             <>
-                <div className="row">
-                    <div className="col-12">
-                        <h1>Processed.</h1>
+                <h1>Processed.</h1>
 
-                        <p>data inserts: {data.data_inserts}</p>
-                        <p>unmapped data inserts: {data.unmapped_data_inserts}</p>
-                        <p>data: {data.data.length}</p>
-                        <p>unmapped data: {data.unmapped_data.length}</p>
+                <p>Data inserts: {data.data_inserts}</p>
+                <p>Unmapped data inserts: {data.unmapped_data_inserts}</p>
+                <p>Data rows: {data.data.length}</p>
+                <p>Unmapped data rows: {data.unmapped_data.length}</p>
 
-                    </div>
-                </div>
-
-                <div>
-                    <button onClick={() => this.setState({goBack: true})}>Back</button>
-                    <button onClick={() => this.setState({goForward: true})}>Next</button>
-                </div>
-
-                {error.toLocaleString()}
-
+                {nav}
             </>
         );
     }

@@ -20,11 +20,11 @@ function App(props) {
 //    const [user, setUser] = useState(store.getState().user);
     //const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-/*    store.subscribe(function () {
-        const user = store.getState().user;
-        setUser(user.user);
-        setIsLoggedIn(user.isLoggedIn);
-    });*/
+    /*    store.subscribe(function () {
+            const user = store.getState().user;
+            setUser(user.user);
+            setIsLoggedIn(user.isLoggedIn);
+        });*/
 
     return (
         <BrowserRouter>
@@ -36,28 +36,32 @@ function App(props) {
                     <Nav className="ml-auto">
                         Steps
                         <ul className="steps-inline">
-                        <Nav.Link as={Link} to="/upload">CSV Upload</Nav.Link>
-                        <Nav.Link as={Link} to="/mapping">Column Mapping</Nav.Link>
-                        <Nav.Link as={Link} to="/preview">Preview</Nav.Link>
-                        <Nav.Link as={Link} to="/process">Process</Nav.Link>
-                        <Nav.Link as={Link} to="/contacts">Contacts</Nav.Link>
-                    </ul>
+                            <Nav.Link as={Link} to="/upload">CSV Upload</Nav.Link>
+                            <Nav.Link as={Link} to="/mapping">Column Mapping</Nav.Link>
+                            <Nav.Link as={Link} to="/preview">Preview</Nav.Link>
+                            <Nav.Link as={Link} to="/process">Process</Nav.Link>
+                            <Nav.Link as={Link} to="/contacts">Contacts</Nav.Link>
+                        </ul>
                     </Nav>
                 </Navbar>
             </header>
 
             <main className="App">
                 <div id="App-body">
-                    <Switch>
-                        <Route path="/" component={CsvUploadPage} exact/>
-                        <Route path="/upload" component={CsvUploadPage}/>
-                        <Route path="/mapping" component={CsvColumnMappingPage} exact/>
-                        <Route path="/preview" component={RemappingPreviewPage} exact/>
-                        <Route path="/process" component={ProcessPage} exact/>
-                        <Route path="/contacts" component={ContactsPage} exact/>
-                        <Route path="/not-found" component={NotFoundPage} exact/>
-                        <Route component={NotFoundPage}/>
-                    </Switch>
+                    <div className="row">
+                        <div className="col-12">
+                            <Switch>
+                                <Route path="/" component={CsvUploadPage} exact/>
+                                <Route path="/upload" component={CsvUploadPage}/>
+                                <Route path="/mapping" component={CsvColumnMappingPage} exact/>
+                                <Route path="/preview" component={RemappingPreviewPage} exact/>
+                                <Route path="/process" component={ProcessPage} exact/>
+                                <Route path="/contacts" component={ContactsPage} exact/>
+                                <Route path="/not-found" component={NotFoundPage} exact/>
+                                <Route component={NotFoundPage}/>
+                            </Switch>
+                        </div>
+                    </div>
                 </div>
             </main>
 

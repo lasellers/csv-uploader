@@ -61,63 +61,63 @@ class ContactsPage extends React.Component {
 
         const columns = store.getState().csv.namedColumns;
 
+        const nav = (
+            <>
+                <div>
+                    <button className="btn btn-secondary" onClick={() => this.setState({goBack: true})}>Back</button>
+                    <button className="btn btn-primary" onClick={() => this.setState({goHome: true})}>Home</button>
+                </div>
+
+                {error.toLocaleString()}
+            </>
+        );
+
         if (!isLoaded)
             return (
-                <div>
+                <>
                     <h1>Contacts</h1>
                     <p>None.</p>
-                </div>
+                </>
             );
 
         return (
             <>
-                <div className="row">
-                    <div className="col-12">
+                <h1>Contacts</h1>
 
-                        <h1>Contacts</h1>
+                <table className="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>Team</th>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Sticky Phone</th>
+                        <th>Created</th>
+                        <th>Updated</th>
+                        <th>x</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {contacts.map(contact => (
+                        <tr key={contact.id}>
+                            <td>{contact.id}</td>
+                            <td>{contact.team_id}</td>
+                            <td>{contact.name}</td>
+                            <td>{contact.phone}</td>
+                            <td>{contact.email}</td>
+                            <td>{contact.sticky_phone_number_id}</td>
+                            <td>{contact.created_at}</td>
+                            <td>{contact.updated_at}</td>
+                            <td>
+                                <button onClick={() => this.onContactDelete(contact.id)}>X</button>
+                            </td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
 
-                        <table className="table table-striped">
-                            <thead>
-                            <tr>
-                                <th>id</th>
-                                <th>Team</th>
-                                <th>Name</th>
-                                <th>Phone</th>
-                                <th>Email</th>
-                                <th>Sticky Phone</th>
-                                <th>Created</th>
-                                <th>Updated</th>
-                                <th>x</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {contacts.map(contact => (
-                                <tr key={contact.id}>
-                                    <td>{contact.id}</td>
-                                    <td>{contact.team_id}</td>
-                                    <td>{contact.name}</td>
-                                    <td>{contact.phone}</td>
-                                    <td>{contact.email}</td>
-                                    <td>{contact.sticky_phone_number_id}</td>
-                                    <td>{contact.created_at}</td>
-                                    <td>{contact.updated_at}</td>
-                                    <td><button onClick={ () => this.onContactDelete(contact.id)}>X</button></td>
-                                </tr>
-                            ))}
-                            </tbody>
-                        </table>
-
-                    </div>
-
-                </div>
-
-                <div>
-                    <button onClick={() => this.setState({goBack: true})}>Back</button>
-                    <button onClick={() => this.setState({goHome: true})}>Home</button>
-                </div>
-
-                {error.toLocaleString()}
-
+                {nav}
             </>
         );
     }

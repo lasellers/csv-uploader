@@ -25,44 +25,41 @@ class RemappingPreviewPage extends React.Component {
             return <Redirect to='/mapping'/>;
         }
 
-        return (
+        const nav = (
             <>
-                <div className="row">
-                    <div className="col-12">
-
-                        <h1>Preview</h1>
-
-                        <table className="table table-striped">
-                            <thead>
-                            <tr>
-                                {columns.map(column => (
-                                    <th>{column}</th>
-                                ))}
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {data.map(row => (
-                                <tr key={row.id}>
-                                    <td> </td>
-                                    {row.map(col => (
-                                        <td>{col}</td>
-                                    ))}
-                                </tr>
-                            ))}
-                            </tbody>
-                        </table>
-
-                    </div>
-
-                </div>
-
                 <div>
-                    <button onClick={() => this.setState({goBack: true})}>Back</button>
-                    <button onClick={() => this.setState({goForward: true})}>Next</button>
+                    <button className="btn btn-secondary" onClick={() => this.setState({goBack: true})}>Back</button>
+                    <button className="btn btn-primary" onClick={() => this.setState({goForward: true})}>Next</button>
                 </div>
 
                 {error.toLocaleString()}
+            </>
+        );
 
+        return (
+            <>
+                <h1>Preview</h1>
+
+                <table className="table table-striped">
+                    <thead>
+                    <tr>
+                        {columns.map(column => (
+                            <th>{column}</th>
+                        ))}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {data.map(row => (
+                        <tr key={row.id}>
+                            {row.map(col => (
+                                <td>{col}</td>
+                            ))}
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
+
+                {nav}
             </>
         );
     }

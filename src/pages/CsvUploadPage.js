@@ -8,6 +8,7 @@ class CsvUploadPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            error: "",
             selectedFile: null,
             header:null,
             data: null,
@@ -88,22 +89,18 @@ class CsvUploadPage extends React.Component {
         if (this.state.selectedFile) {
             return (
                 <div>
-                    <h2>File Details:</h2>
+                    <h2>CSV File Details:</h2>
                     <p>File Name: {this.state.selectedFile.name}</p>
                     <p>File Type: {this.state.selectedFile.type}</p>
-                    <p>error: {this.state.selectedFile.error}</p>
-                    <p>Data: {this.state.selectedFile.data}</p>
-                    <p>
-                        Last Modified:{" "}
-                        {this.state.selectedFile.lastModifiedDate.toDateString()}
-                    </p>
+                    <p>Rows: {this.state.data.length}</p>
+                    <p>Last Modified: {this.state.selectedFile.lastModifiedDate.toDateString()}</p>
                 </div>
             );
         } else {
             return (
                 <div>
                     <br/>
-                    <h4>Choose before Pressing the Upload button</h4>
+                    <h4>Choose File from local system before pressing the Upload button.</h4>
                 </div>
             );
         }
@@ -117,23 +114,22 @@ class CsvUploadPage extends React.Component {
         }
 
         return (
-            <div>
+            <>
                 <h1>
                 </h1>
                 <h3>
                     CSV File Upload.
                 </h3>
                 <div>
-                    <input type="file" onChange={this.onFileChange}/>
-                    <button onClick={this.onFileUpload}>
-                        Upload!
+                    <input className="btn btn-secondary" type="file" onChange={this.onFileChange}/>
+                    <button className="btn btn-primary" onClick={this.onFileUpload}>
+                        Upload
                     </button>
-
-                    <form method="post" encType="multipart/form-data">
-                    </form>
                 </div>
                 {this.fileData()}
-            </div>
+
+                {error.toLocaleString()}
+            </>
         );
     }
 }
