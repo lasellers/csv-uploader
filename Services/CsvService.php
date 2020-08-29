@@ -11,19 +11,19 @@ use Illuminate\Support\Facades\File;
 
 class CsvService
 {
-    public function upload($filename, $content)
+    /*public function upload($filename, $content)
     {
         $path = storage_path('csv/' . $filename);
         return file_put_contents($path, $content);
-    }
+    }*/
 
-    public function destroy($filename)
+    /*public function destroy($filename)
     {
         $file = storage_path('csv') . "/$filename";
         return File::delete($file);
-    }
+    }*/
 
-    public function files()
+    /*public function files()
     {
         $path = storage_path('csv');
         $filesCollection = File::allFiles($path);
@@ -32,14 +32,14 @@ class CsvService
             $files[] = $file->getFilename();
         }
         return $files;
-    }
+    }*/
 
     /**
      * Load CSV as an array of arrays
      * @param $csvFilename
      * @return array
      */
-    public function loadCSV($csvFilename)
+    /*public function loadCSV($csvFilename)
     {
         $path = storage_path('csv/' . $csvFilename);
 
@@ -58,7 +58,7 @@ class CsvService
         }
 
         return [$headers, $rows];
-    }
+    }*/
 
     /**
      * Take a csv array of arrays + a mapped columns array and generate a remapped array of array plus unmapped array.
@@ -67,7 +67,7 @@ class CsvService
      * @param $csvRows
      * @param $mappedColumns
      */
-    public function remapCSV($csvRows, $mappedColumns): array
+    /*public function remapCSV($csvRows, $mappedColumns): array
     {
         $mappedRows = [];
         $unmappedRows = [];
@@ -88,30 +88,27 @@ class CsvService
         }
 
         return [$mappedRows, $unmappedRows];
-    }
+    }*/
 
-    public function processCSV($mappedRows, $unmappedRows)
+    /*public function processCSV($mappedRows, $unmappedRows)
     {
-    }
+    }*/
 
     public function saveCSV($mappedRows, $unmappedRows)
     {
         $mappedCount = 0;
-        $unmappedCount = 0;
-
         foreach ($mappedRows as $row) {
-            print_r($row);
             $result = Contact::create($row);
-            if($result->id>0)
-            $mappedCount ++;
+            if ($result->id > 0)
+                $mappedCount++;
         }
+
+        $unmappedCount = 0;
         foreach ($unmappedRows as $row) {
             $result = CustomAttributes::create($row);
-            if($result->id>0)
-                $unmappedCount ++;
+            if ($result->id > 0)
+                $unmappedCount++;
         }
-
-        //
 
         return [$mappedCount, $unmappedCount];
     }

@@ -1,7 +1,6 @@
 import React from 'react';
 import store from "../redux/store";
 import {Redirect} from "react-router";
-import {addRemappedCsvData} from "../redux/actions";
 
 class RemappingPreviewPage extends React.Component {
     constructor(props) {
@@ -12,28 +11,6 @@ class RemappingPreviewPage extends React.Component {
             goBack: false
         };
     }
-
-    /*
-    onPreviewAccept = async event => {
-        console.log('onPreviewAccept', event);
-        const header = store.getState().csv.header;
-        const data = store.getState().csv.data;
-
-        console.log('data**', data);
-        const remappedData = this.remappedCsv(
-            data,
-            this.state.remapped
-        );
-        console.log('remapped**', remappedData);
-
-        store.dispatch(addRemappedCsvData(remappedData));
-
-        // Update the state
-        this.setState({
-            remapped: remappedData,
-            goForward: true
-        });
-    }; */
 
     render() {
         const {error, goForward, goBack} = this.state;

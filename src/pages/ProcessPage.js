@@ -1,5 +1,6 @@
 import React from 'react';
 import {API_URL} from "../App";
+import store from "../redux/store";
 import {Redirect} from "react-router";
 
 class ProcessPage extends React.Component {
@@ -9,32 +10,46 @@ class ProcessPage extends React.Component {
             error: "",
             goBack: false,
             goForward: false,
-            isLoaded: false
+            isLoaded: false,
+            data: {
+                data_inserts: 0,
+                unmapped_data_inserts: 0,
+                data: [],
+                unmapped_data: []
+            }
         };
-
     }
 
     componentDidMount() {
-        fetch(API_URL + "/csv/process")
+        const data = store.getState().csv.remapped_csv_data;
+        const unmapped_data = store.getState().csv.unmapped_data;
+        fetch(API_URL + "/csv/save", {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({data: data, unmapped_data: unmapped_data})
+        })
             .then(res => res.json())
-            .then(
-                (result) => {
+            .then((data) => {
+                    console.log(data);
+                    console.log(data.inserts);
+                    console.log(data.mappedRows);
+                    console.log(data.unmappedRows);
                     this.setState({
                         isLoaded: true,
-                        messages: result
+                        data: data
                     });
                 },
                 (error) => {
-                    this.setState({
-                        isLoaded: true,
-                        error
-                    });
                 }
             )
     }
 
     render() {
         const {error, goForward, goBack, isLoaded} = this.state;
+        const data = this.state.data;
 
         if (goForward) {
             return <Redirect to='/contacts'/>;
@@ -54,15 +69,14 @@ class ProcessPage extends React.Component {
             <>
                 <div className="row">
                     <div className="col-12">
+                        <h1>Processed.</h1>
 
-                        <h1>Messages</h1>
-
-                        <div>
-                            <h1>Processed.</h1>
-                        </div>
+                        <p>data inserts: {data.data_inserts}</p>
+                        <p>unmapped data inserts: {data.unmapped_data_inserts}</p>
+                        <p>data: {data.data.length}</p>
+                        <p>unmapped data: {data.unmapped_data.length}</p>
 
                     </div>
-
                 </div>
 
                 <div>

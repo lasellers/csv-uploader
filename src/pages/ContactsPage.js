@@ -37,10 +37,7 @@ class ContactsPage extends React.Component {
             )
     };
 
-    onContactDelete = async (event) => {
-        console.log('onContactDelete',event);
-        const id = event;
-
+    onContactDelete = async (id) => {
         fetch(API_URL + "/contacts/" + id, {method: "DELETE"})
             .then(res => res.json())
             .then(
@@ -56,7 +53,7 @@ class ContactsPage extends React.Component {
         const {error, isLoaded, contacts, goBack, goHome} = this.state;
 
         if (goBack) {
-            return <Redirect to='/preview'/>;
+            return <Redirect to='/process'/>;
         }
         if (goHome) {
             return <Redirect to='/upload'/>;

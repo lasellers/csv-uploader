@@ -1,7 +1,7 @@
 import React from 'react';
 import store from "../redux/store";
 import {Redirect} from "react-router";
-import {addRemappedCsvData} from "../redux/actions";
+import {addRemappedCsvData, addUnmappedData} from "../redux/actions";
 
 class CsvColumnMappingPage extends React.Component {
     constructor(props) {
@@ -20,26 +20,21 @@ class CsvColumnMappingPage extends React.Component {
     onMappingChange = async (event) => {
         const id = (event.target.id.split('-'))[1]; //event.target.selectedIndex;
         const value = event.target.value;
-        console.log(id,'=',value);
 
         const remapped_order = this.state.remapped_order;
         remapped_order[id] = value;
-        console.log(remapped_order);
         this.setState({remapped_order: remapped_order})
     };
 
     onMappingAccept = async event => {
-        console.log('onMappingAccept', event);
         const header = store.getState().csv.header;
         const csv_data = store.getState().csv.csv_data;
         const remapped_order = this.state.remapped_order;
 
-        console.log('remapped_order', remapped_order);
-        console.log('csv_data', csv_data);
-        const remappedData = this.remappedCsv(csv_data, remapped_order);
-        console.log('remappedData**', remappedData);
+        const [remappedData, unmappedData] = this.remappedCsv(csv_data, remapped_order);
 
         store.dispatch(addRemappedCsvData(remappedData));
+        store.dispatch(addUnmappedData(unmappedData));
 
         // Update the state
         this.setState({
@@ -57,7 +52,7 @@ class CsvColumnMappingPage extends React.Component {
             });
             newRows.push(newRow);
         });
-        return newRows;
+        return [newRows,[]];
     };
 
     render() {

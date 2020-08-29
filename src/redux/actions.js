@@ -12,10 +12,10 @@ export const addCsvData = data => ({
     }
 });
 
-export const addRemappedCsvHeader = data => ({
-    type: 'ADD_REMAPPED_CSV_HEADER',
+export const addUnmappedData = data => ({
+    type: 'ADD_UNMAPPED_DATA',
     payload: {
-        remapped_csv_header: data
+        unmapped_data: data
     }
 });
 

@@ -1,7 +1,7 @@
 const initialState = {
     csv_header: [],
     csv_data: [],
-    remapped_csv_header: [],
+    unmapped_data: [],
     remapped_csv_data: [],
     remapped_order: [],
     // read only SSOA
@@ -26,11 +26,11 @@ export default function (state = initialState, action) {
                 csv_data
             };
         }
-        case 'ADD_REMAPPED_CSV_HEADER': {
-            const {remapped_csv_data} = action.payload;
+        case 'ADD_UNMAPPED_DATA': {
+            const {unmapped_data} = action.payload;
             return {
                 ...state,
-                remapped_csv_data
+                unmapped_data
             };
         }
         case 'ADD_REMAPPED_CSV_DATA': {

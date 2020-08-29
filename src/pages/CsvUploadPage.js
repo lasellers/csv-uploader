@@ -26,8 +26,6 @@ class CsvUploadPage extends React.Component {
         event.preventDefault();
 
         const files = event.target.files;
-        console.log('onFileChange', event);
-        console.log('files', files);
         if (files.length > 0) {
             const csv = (await files[0].text());
             const [header, data] = this.csvToArray(csv);
@@ -65,10 +63,6 @@ class CsvUploadPage extends React.Component {
     onFileUpload = async (event) => {
         event.preventDefault();
 
-        console.log('onFileUpload', event);
-
-        console.log('event target ', event.target);
-
         // Create an object of formData
         const formData = new FormData();
 
@@ -79,17 +73,11 @@ class CsvUploadPage extends React.Component {
             this.state.selectedFile.name
         );
 
-        console.log('formData', formData);
-
         const requestOptions = {
             method: 'POST',
             redirect: 'none',
             body: formData
         };
-        console.log(requestOptions);
-
-        // Details of the uploaded file
-        console.log(this.state.selectedFile);
 
         this.setState({goForward: true});
     };
@@ -97,8 +85,6 @@ class CsvUploadPage extends React.Component {
     // File content to be displayed after
     // file upload is complete
     fileData = () => {
-        console.log('fileData', this.state.selectedFile);
-
         if (this.state.selectedFile) {
             return (
                 <div>
