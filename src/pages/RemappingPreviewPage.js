@@ -51,7 +51,7 @@ class RemappingPreviewPage extends React.Component {
         return (
             <>
                 <div className="row">
-                    <div className="col-6">
+                    <div className="col-12">
 
                         <h1>Preview</h1>
 
@@ -74,9 +74,6 @@ class RemappingPreviewPage extends React.Component {
                             ))}
                             </tbody>
                         </table>
-
-                    </div>
-                    <div className="col-6">
 
                     </div>
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import {API_URL} from "../App";
-import store from "../redux/store";
 import {Redirect} from "react-router";
 
 class ProcessPage extends React.Component {
@@ -54,16 +53,13 @@ class ProcessPage extends React.Component {
         return (
             <>
                 <div className="row">
-                    <div className="col-6">
+                    <div className="col-12">
 
                         <h1>Messages</h1>
 
                         <div>
                             <h1>Processed.</h1>
                         </div>
-
-                    </div>
-                    <div className="col-6">
 
                     </div>
 

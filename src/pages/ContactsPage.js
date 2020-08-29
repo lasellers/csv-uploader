@@ -15,6 +15,10 @@ class ContactsPage extends React.Component {
     }
 
     componentDidMount() {
+        this.getContacts();
+    }
+
+    getContacts = () => {
         fetch(API_URL + "/contacts")
             .then(res => res.json())
             .then(
@@ -31,7 +35,22 @@ class ContactsPage extends React.Component {
                     });
                 }
             )
-    }
+    };
+
+    onContactDelete = async (event) => {
+        console.log('onContactDelete',event);
+        const id = event;
+
+        fetch(API_URL + "/contacts/" + id, {method: "DELETE"})
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    this.getContacts();
+                },
+                (error) => {
+                }
+            );
+    };
 
     render() {
         const {error, isLoaded, contacts, goBack, goHome} = this.state;
@@ -56,7 +75,7 @@ class ContactsPage extends React.Component {
         return (
             <>
                 <div className="row">
-                    <div className="col-6">
+                    <div className="col-12">
 
                         <h1>Contacts</h1>
 
@@ -71,6 +90,7 @@ class ContactsPage extends React.Component {
                                 <th>Sticky Phone</th>
                                 <th>Created</th>
                                 <th>Updated</th>
+                                <th>x</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -84,21 +104,19 @@ class ContactsPage extends React.Component {
                                     <td>{contact.sticky_phone_number_id}</td>
                                     <td>{contact.created_at}</td>
                                     <td>{contact.updated_at}</td>
+                                    <td><button onClick={ () => this.onContactDelete(contact.id)}>X</button></td>
                                 </tr>
                             ))}
                             </tbody>
                         </table>
 
                     </div>
-                    <div className="col-6">
-
-                    </div>
 
                 </div>
 
                 <div>
-                    <button onClick={() => this.setState({goBack: true} )} >Back</button>
-                    <button onClick={() => this.setState({goHome: true} )} >Home</button>
+                    <button onClick={() => this.setState({goBack: true})}>Back</button>
+                    <button onClick={() => this.setState({goHome: true})}>Home</button>
                 </div>
 
                 {error.toLocaleString()}
