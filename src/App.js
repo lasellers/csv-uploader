@@ -26,25 +26,6 @@ function App(props) {
         setIsLoggedIn(user.isLoggedIn);
     });*/
 
-    let nav = <>
-        <div className="wrapper">
-            <nav id="sidebar">
-                <div className="sidebar-header">
-                    <h3>Steps</h3>
-                </div>
-
-                <ul className="list-unstyled components">
-                    <Nav.Link as={Link} to="/uploads">CSV Upload</Nav.Link>
-                    <Nav.Link as={Link} to="/mapping">Column Mapping</Nav.Link>
-                    <Nav.Link as={Link} to="/preview">Preview</Nav.Link>
-                    <Nav.Link as={Link} to="/process">Process</Nav.Link>
-                    <Nav.Link as={Link} to="/contacts">Contacts</Nav.Link>
-                </ul>
-            </nav>
-
-        </div>
-    </>;
-
     return (
         <BrowserRouter>
             <header id="App-header">
@@ -53,22 +34,23 @@ function App(props) {
                         <h1>CSV Uploader</h1>
                     </Nav>
                     <Nav className="ml-auto">
+                        Steps
+                        <ul className="steps-inline">
+                        <Nav.Link as={Link} to="/upload">CSV Upload</Nav.Link>
+                        <Nav.Link as={Link} to="/mapping">Column Mapping</Nav.Link>
+                        <Nav.Link as={Link} to="/preview">Preview</Nav.Link>
+                        <Nav.Link as={Link} to="/process">Process</Nav.Link>
+                        <Nav.Link as={Link} to="/contacts">Contacts</Nav.Link>
+                    </ul>
                     </Nav>
                 </Navbar>
             </header>
-
-            <Navbar bg="light" expand="lg">
-                <Navbar.Toggle aria-controls="basic-navbar-nav"/>
-                <Navbar.Collapse id="basic-navbar-nav">
-                    {nav}
-                </Navbar.Collapse>
-            </Navbar>
 
             <main className="App">
                 <div id="App-body">
                     <Switch>
                         <Route path="/" component={CsvUploadPage} exact/>
-                        <Route path="/uploads" component={CsvUploadPage}/>
+                        <Route path="/upload" component={CsvUploadPage}/>
                         <Route path="/mapping" component={CsvColumnMappingPage} exact/>
                         <Route path="/preview" component={RemappingPreviewPage} exact/>
                         <Route path="/process" component={ProcessPage} exact/>

@@ -10,7 +10,7 @@ export default [
         Component: CsvUploadPage
     },
     {
-        path: '/uploads',
+        path: '/upload',
         Component: CsvUploadPage
     },
     {

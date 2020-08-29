@@ -9,6 +9,7 @@ class ContactsPage extends React.Component {
         this.state = {
             error: "",
             goBack: false,
+            goHome: false,
             contacts: []
         };
     }
@@ -33,10 +34,13 @@ class ContactsPage extends React.Component {
     }
 
     render() {
-        const {error, isLoaded, contacts, goBack} = this.state;
+        const {error, isLoaded, contacts, goBack, goHome} = this.state;
 
         if (goBack) {
             return <Redirect to='/preview'/>;
+        }
+        if (goHome) {
+            return <Redirect to='/upload'/>;
         }
 
         const columns = store.getState().csv.namedColumns;
@@ -94,6 +98,7 @@ class ContactsPage extends React.Component {
 
                 <div>
                     <button onClick={() => this.setState({goBack: true} )} >Back</button>
+                    <button onClick={() => this.setState({goHome: true} )} >Home</button>
                 </div>
 
                 {error.toLocaleString()}
