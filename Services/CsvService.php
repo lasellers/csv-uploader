@@ -99,17 +99,21 @@ class CsvService
         $mappedCount = 0;
         foreach ($mappedRows as $row) {
             $model = Contact::make($row);
-            $model->save();
-            if ($model->id > 0)
-                $mappedCount++;
+            if (!$model->exists()) {
+                $model->save();
+                if ($model->id > 0)
+                    $mappedCount++;
+            }
         }
 
         $unmappedCount = 0;
         foreach ($unmappedRows as $row) {
             $model = CustomAttributes::make($row);
-            $model->save();
-            if ($model->id > 0)
-                $unmappedCount++;
+            if (!$model->exists()) {
+                $model->save();
+                if ($model->id > 0)
+                    $unmappedCount++;
+            }
         }
 
         return [$mappedCount, $unmappedCount];
