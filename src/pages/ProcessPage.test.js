@@ -6,8 +6,7 @@ var chai = require('chai');
 var assert = chai.assert;    // Using Assert style
 var expect = chai.expect;    // Using Expect style to.be ...
 var should = chai.should();  // Using Should style
-import App from './App';
-import CsvUploadPage from "./pages/CsvUploadPage";
+import ProcessPage from "./ProcessPage";
 
 /*
 test('renders without crashing (testing library)', () => {
@@ -21,22 +20,30 @@ test('renders menu title (testing library)', () => {
 });
 */
 
-it("renders without crashing (enzyme)", () => {
-  shallow(<App />);
+it("renders without crashing", () => {
+    shallow(<ProcessPage />);
 });
 
-it("renders menu title (enzyme)", () => {
-  const wrapper = shallow(<App />);
-  const title = <h1>CSV Uploader</h1>;
-  expect(wrapper.contains(title)).to.equal(true);
+it("renders menu title", () => {
+    const wrapper = shallow(<ProcessPage />);
+    const title =  <h1>Process</h1>
+    expect(wrapper.contains(title)).to.equal(true);
 });
-
-it("Has header and main", () => {
-  const wrapper = shallow(<App />);
-  expect(wrapper.find('main')).to.have.lengthOf(1);
-  expect(wrapper.find('header')).to.have.lengthOf(1);
+/*
+it("Has back nav button", () => {
+    const wrapper = shallow(<ContactsPage />);
+    const button = wrapper.find('.btn-secondary');
+    expect(button.text()).to.equal('Back');
 });
-
+it("Has next nav button", () => {
+    const wrapper = shallow(<div><button className='btn btn-primary'>Next</button></div>);
+    //const wrapper = shallow(<ContactsPage />);
+    console.log(wrapper);
+    //const button = wrapper.find('.btn-primary');
+    const button = wrapper.find({ class:'btn btn-primary'});
+    expect(button.text()).to.equal('Next');
+});
+*/
 /*
 it("Has CsvUploadPage component", () => {
   const wrapper = shallow(<App />);

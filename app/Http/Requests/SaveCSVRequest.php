@@ -6,7 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class SaveCSVRequest extends FormRequest
 {
-    protected $expectsJson = true;
     protected $redirect = false;
 
     /**
@@ -29,8 +28,6 @@ class SaveCSVRequest extends FormRequest
         return [
             'data' => '',
             'unmapped_data' => '',
-            'headers' => '',
-            'mapped_columns' => '',
         ];
     }
 }

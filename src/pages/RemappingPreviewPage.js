@@ -7,18 +7,18 @@ class RemappingPreviewPage extends React.Component {
         super(props);
         this.state = {
             error: "",
-            goForward: false,
+            goNext: false,
             goBack: false
         };
     }
 
     render() {
-        const {error, goForward, goBack} = this.state;
+        const {error, goNext, goBack} = this.state;
 
         const columns = store.getState().csv.namedColumns;
         const data = store.getState().csv.remapped_csv_data;
 
-        if (goForward) {
+        if (goNext) {
             return <Redirect to='/process'/>;
         }
         if (goBack) {
@@ -28,8 +28,9 @@ class RemappingPreviewPage extends React.Component {
         const nav = (
             <>
                 <div>
-                    <button className="btn btn-secondary mr-2" onClick={() => this.setState({goBack: true})}>Back</button>
-                    <button className="btn btn-primary ml-2" onClick={() => this.setState({goForward: true})}>Next</button>
+                    <button className="btn btn-secondary mr-2" onClick={() => this.setState({goBack: true})}>Back
+                    </button>
+                    <button className="btn btn-primary ml-2" onClick={() => this.setState({goNext: true})}>Next</button>
                 </div>
 
                 {error.toLocaleString()}
@@ -43,16 +44,16 @@ class RemappingPreviewPage extends React.Component {
                 <table className="table table-striped">
                     <thead>
                     <tr>
-                        {columns.map(column => (
-                            <th>{column}</th>
+                        {columns.map((column, index) => (
+                            <th key={index}>{column}</th>
                         ))}
                     </tr>
                     </thead>
                     <tbody>
-                    {data.map(row => (
-                        <tr key={row.id}>
-                            {row.map(col => (
-                                <td>{col}</td>
+                    {data.map((row, index) => (
+                        <tr key={index}>
+                            {row.map((col, index2) => (
+                                <td key={index + "." + index2}>{col}</td>
                             ))}
                         </tr>
                     ))}

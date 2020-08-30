@@ -3,14 +3,16 @@ import {API_URL} from "../App";
 import store from "../redux/store";
 import {Redirect} from "react-router";
 
-class ContactsPage extends React.Component {
+class CustomAttributesPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             error: "",
             goBack: false,
-            goNext: false,
-            contacts: []
+            goHome: false,
+            contacts: [
+                {custom_attributes: []}
+            ]
         };
     }
 
@@ -22,6 +24,7 @@ class ContactsPage extends React.Component {
         fetch(API_URL + "/contacts")
             .then(res => res.json())
             .then((contacts) => {
+                console.log(contacts);
                     this.setState({
                         isLoaded: true,
                         contacts
@@ -37,8 +40,8 @@ class ContactsPage extends React.Component {
             )
     };
 
-    onContactDelete = async (id) => {
-        fetch(API_URL + "/contacts/" + id, {method: "DELETE"})
+    onCustomAttributeDelete = async (id) => {
+        fetch(API_URL + "/custom-attributes/" + id, {method: "DELETE"})
             .then(res => res.json())
             .then(
                 (result) => {
@@ -51,22 +54,24 @@ class ContactsPage extends React.Component {
     };
 
     render() {
-        const {error, isLoaded, contacts, goBack, goNext} = this.state;
+        const {error, isLoaded, contacts, goBack, goHome} = this.state;
+        const customAttributes = contacts.flatMap(row => {
+            return row.custom_attributes;
+        });
+        const columns = store.getState().csv.namedColumns;
 
         if (goBack) {
-            return <Redirect to='/process'/>;
+            return <Redirect to='/contacts'/>;
         }
-        if (goNext) {
-            return <Redirect to='/custom-attributes'/>;
+        if (goHome) {
+            return <Redirect to='/upload'/>;
         }
-
-        const columns = store.getState().csv.namedColumns;
 
         const nav = (
             <>
                 <div>
                     <button className="btn btn-secondary mr-2" onClick={() => this.setState({goBack: true})}>Back</button>
-                    <button className="btn btn-primary ml-2" onClick={() => this.setState({goNext: true})}>Next</button>
+                    <button className="btn btn-primary ml-2" onClick={() => this.setState({goHome: true})}>Home</button>
                 </div>
 
                 {error.toLocaleString()}
@@ -76,42 +81,34 @@ class ContactsPage extends React.Component {
         if (!isLoaded)
             return (
                 <>
-                    <h1>Contacts</h1>
+                    <h1>Custom Attributes</h1>
                     <p>None.</p>
                 </>
             );
 
         return (
             <>
-                <h1>Contacts</h1>
+                <h1>Custom Attributes</h1>
 
                 <table className="table table-striped">
                     <thead>
                     <tr>
                         <th>id</th>
-                        <th>Team</th>
-                        <th>Name</th>
-                        <th>Phone</th>
-                        <th>Email</th>
-                        <th>Sticky Phone</th>
-                        <th>Created</th>
-                        <th>Updated</th>
+                        <th>Contact Id</th>
+                        <th>Key</th>
+                        <th>Value</th>
                         <th>x</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {contacts.map(contact => (
-                        <tr key={contact.id}>
-                            <td>{contact.id}</td>
-                            <td>{contact.team_id}</td>
-                            <td>{contact.name}</td>
-                            <td>{contact.phone}</td>
-                            <td>{contact.email}</td>
-                            <td>{contact.sticky_phone_number_id}</td>
-                            <td>{contact.created_at}</td>
-                            <td>{contact.updated_at}</td>
+                        {customAttributes.map(customAttribute => (
+                        <tr key={customAttribute.contact_id + '.' + customAttribute.id}>
+                            <td>{customAttribute.id}</td>
+                            <td>{customAttribute.contact_id}</td>
+                            <td>{customAttribute.key}</td>
+                            <td>{customAttribute.value}</td>
                             <td>
-                                <button onClick={() => this.onContactDelete(contact.id)}>X</button>
+                                <button onClick={() => this.onCustomAttributeDelete(customAttribute.id)}>X</button>
                             </td>
                         </tr>
                     ))}
@@ -124,4 +121,4 @@ class ContactsPage extends React.Component {
     }
 }
 
-export default ContactsPage;
+export default CustomAttributesPage;

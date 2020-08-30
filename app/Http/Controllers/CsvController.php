@@ -8,6 +8,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\File; // Illuminate\Filesystem\Filesystem
 use App\Contact;
 use App\CustomAttributes;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ProcessCSVRequest;
 use App\Http\Requests\UploadCSVRequest;
@@ -23,6 +24,72 @@ class CsvController extends Controller
     public function __construct(CsvService $service)
     {
         $this->service = $service;
+    }
+
+    /**
+     * Preps all in/out data and then calls service to save contacts and contact custom attributes
+     *
+     * @param SaveCSVRequest $request
+     * @return array
+     */
+    public function save(SaveCSVRequest $request)
+    {
+        //$columns = ['team_id', 'name', 'phone', 'email', 'sticky_phone_number_id', 'created_at', 'updated_at'];
+        //$columns2 = ['contact_id', 'key', 'value'];
+
+        $columns = Schema::getColumnListing('contacts');
+        $columnsCA = Schema::getColumnListing('custom_attributes');
+        unset($columns[0]);
+        unset($columnsCA[0]);
+        $columns = array_values($columns);
+        $columnsCA = array_values($columnsCA);
+
+        //
+        $mappedRows = $request->get('data');
+        if (is_string($mappedRows)) {
+            $mappedRows = json_decode(trim($mappedRows));
+        }
+        if (is_array($mappedRows)) {
+            foreach ($mappedRows as $index => $row) {
+                $newRow = [];
+                foreach ($row as $index2 => $value) {
+                    $newRow[$columns[$index2]] = $value;
+                }
+                $mappedRows[$index] = $newRow;
+            }
+        }
+
+        // 2
+        $unmappedRows = $request->get('unmapped_data');
+        if (is_string($unmappedRows)) {
+            $unmappedRows = json_decode(trim($unmappedRows));
+        }
+        if (is_array($unmappedRows)) {
+            foreach ($unmappedRows as $index => $row) {
+                $newRow = [];
+                foreach ($row as $index2 => $value) {
+                    $newRow[$columnsCA[$index2]] = $value;
+                }
+                $unmappedRows[$index] = $newRow;
+            }
+        }
+
+        //
+        [$dataInserts, $unmappedDataInserts, $newUnmappedData] = $data = $this->service->saveCSV($mappedRows, $unmappedRows);
+
+        /*return response()->json([
+            'data_inserts' => $dataInserts,
+            'unmapped_data_inserts' => $unmappedDataInserts,
+            'data' => $mappedRows,
+            'unmapped_data' => $newUnmappedData
+        ]);*/
+
+        return [
+            'data_inserts' => $dataInserts,
+            'unmapped_data_inserts' => $unmappedDataInserts,
+            'data' => $mappedRows,
+            'unmapped_data' => $newUnmappedData
+        ];
     }
 
     /**
@@ -105,56 +172,4 @@ class CsvController extends Controller
     {
     }*/
 
-
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function save(SaveCSVRequest $request)
-    {
-        $columns = ['team_id', 'name', 'phone', 'email', 'sticky_phone_number_id', 'created_at', 'updated_at'];
-        $columns2 = ['contact_id', 'key', 'value'];
-
-        //$headers = ($request->get('headers'));
-        //$mapped_columns = ($request->get('mapped_columns'));
-
-        $mappedRows = $request->get('data');
-        if(is_string($mappedRows)) {
-            $mappedRows = json_decode(trim($mappedRows));
-        }
-        if (is_array($mappedRows)) {
-            foreach ($mappedRows as $index => $row) {
-                $newRow = [];
-                foreach ($row as $index2 => $value) {
-                    $newRow[$columns[$index2]] = $value;
-                }
-                $mappedRows[$index] = $newRow;
-            }
-        }
-
-        // 2
-        $unmappedRows = $request->get('unmapped_data');
-        if(is_string($unmappedRows)) {
-            $unmappedRows = json_decode(trim($unmappedRows));
-        }
-        if (is_array($unmappedRows)) {
-            foreach ($unmappedRows as $index => $row) {
-                $newRow = [];
-                foreach ($row as $index2 => $value) {
-                    $newRow[$columns2[$index2]] = $value;
-                }
-                $unmappedRows[$index] = $newRow;
-            }
-        }
-
-        //
-        $inserts = $this->service->saveCSV($mappedRows, $unmappedRows);
-
-        return response()->json([
-            'data_inserts' => $inserts[0],
-            'unmapped_data_inserts' => $inserts[1],
-            'data' => $mappedRows,
-            'unmapped_data' => $unmappedRows
-        ]);
-    }
 }

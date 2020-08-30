@@ -9,7 +9,7 @@ class CsvColumnMappingPage extends React.Component {
         this.state = {
             error: "",
             remapped_order: store.getState().csv.order,
-            goForward: false,
+            goNext: false,
             goBack: false
         };
 
@@ -39,7 +39,7 @@ class CsvColumnMappingPage extends React.Component {
         // Update the state
         this.setState({
             remapped: remappedData,
-            goForward: true
+            goNext: true
         });
     };
 
@@ -56,9 +56,9 @@ class CsvColumnMappingPage extends React.Component {
     };
 
     render() {
-        const {error, goForward, goBack} = this.state;
+        const {error, goNext, goBack} = this.state;
 
-        if (goForward) {
+        if (goNext) {
             return <Redirect to='/preview'/>;
         }
         if (goBack) {

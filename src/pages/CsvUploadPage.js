@@ -12,7 +12,7 @@ class CsvUploadPage extends React.Component {
             selectedFile: null,
             header: null,
             data: null,
-            goForward: false
+            goNext: false
         };
 
         this.onFileChange = this.onFileChange.bind(this);
@@ -48,39 +48,18 @@ class CsvUploadPage extends React.Component {
         const header = rows.shift().trim().split(",");
         let newRows = [];
         rows.forEach(row => {
-            newRows.push(row.trim().split(","));
+            const line = row.trim();
+            if (line.length > 0) newRows.push(line.split(","));
         });
         return [
             header,
             newRows
         ];
-        /*return {
-            header: header,
-            rows: newRows
-        };*/
     };
 
     // On file upload (click the upload button)
     onFileUpload = async (event) => {
-        //  event.preventDefault();
-
-        // Create an object of formData
-        /*   const formData = new FormData();
-
-           // Update the formData object
-           formData.append(
-               "file.csv",
-               this.state.selectedFile,
-               this.state.selectedFile.name
-           );
-
-           const requestOptions = {
-               method: 'POST',
-               redirect: 'none',
-               body: formData
-           };*/
-
-        this.setState({goForward: true});
+        this.setState({goNext: true});
     };
 
     // File content to be displayed after
@@ -93,8 +72,8 @@ class CsvUploadPage extends React.Component {
                     <hr/>
                     <p>File Name: {this.state.selectedFile.name}</p>
                     <p>File Type: {this.state.selectedFile.type}</p>
-                    <p>Rows: {this.state.data.length}</p>
                     <p>Last Modified: {this.state.selectedFile.lastModifiedDate.toDateString()}</p>
+                    <p>Rows: {this.state.data.length}</p>
                 </>
             );
         } else {
@@ -108,9 +87,9 @@ class CsvUploadPage extends React.Component {
     };
 
     render() {
-        const {error, goForward} = this.state;
+        const {error, goNext} = this.state;
 
-        if (goForward) {
+        if (goNext) {
             return <Redirect to='/mapping'/>;
         }
 

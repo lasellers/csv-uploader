@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Contact;
+use App\CustomAttributes;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -12,7 +13,7 @@ class ContactsController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index(Request $request)
+    public function index()
     {
         try {
             $contacts = Contact::with(['customAttributes'])
@@ -43,9 +44,28 @@ class ContactsController extends Controller
             }
             return response()->json(['result' => false]);
         } catch (\Exception $e) {
-            return $this->returnAPIError($e);
+            return self::returnAPIError($e);
         }
     }
 
+    /**
+     * Delete custom attributes
+     * ContactIdRequest
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function customAttributesDestroy($id)
+    {
+        try {
+            $customAttribute = CustomAttributes::find($id);
+            if(!is_null($customAttribute)) {
+                $result = $customAttribute->delete();
+                return response()->json(['result' => $result]);
+            }
+            return response()->json(['result' => false]);
+        } catch (\Exception $e) {
+            return self::returnAPIError($e);
+        }
+    }
 
 }

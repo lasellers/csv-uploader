@@ -9,7 +9,7 @@ class ProcessPage extends React.Component {
         this.state = {
             error: "",
             goBack: false,
-            goForward: false,
+            goNext: false,
             isLoaded: false,
             data: {
                 data_inserts: 0,
@@ -45,10 +45,10 @@ class ProcessPage extends React.Component {
     }
 
     render() {
-        const {error, goForward, goBack, isLoaded} = this.state;
+        const {error, goNext, goBack, isLoaded} = this.state;
         const data = this.state.data;
 
-        if (goForward) {
+        if (goNext) {
             return <Redirect to='/contacts'/>;
         }
         if (goBack) {
@@ -58,8 +58,10 @@ class ProcessPage extends React.Component {
         const nav = (
             <>
                 <div>
-                    <button className="btn btn-secondary mr-2" onClick={() => this.setState({goBack: true})}>Back</button>
-                    <button className="btn btn-primary ml-2" onClick={() => this.setState({goForward: true})}>Next</button>
+                    <button className="btn btn-secondary mr-2" onClick={() => this.setState({goBack: true})}>Back
+                    </button>
+                    <button className="btn btn-primary ml-2" onClick={() => this.setState({goNext: true})}>Next
+                    </button>
                 </div>
 
                 {error.toLocaleString()}
@@ -68,22 +70,23 @@ class ProcessPage extends React.Component {
 
         if (!isLoaded)
             return (
-                <div>
-                    <h1>Processing...</h1>
-                </div>
+                <>
+                    <h1>Process</h1>
+                    <p>Processing....</p>
+                </>
             );
 
         return (
             <>
-                <h1>Processed</h1>
+                <h1>Process</h1>
                 <p>CSV records have been added to database.</p>
 
-                <hr />
+                <hr/>
 
                 <p>Data inserts: {data.data_inserts}</p>
                 <p>Unmapped data inserts: {data.unmapped_data_inserts}</p>
-                <p>Data rows: {data.data.length}</p>
-                <p>Unmapped data rows: {data.unmapped_data.length}</p>
+                <p>Data rows: {data.data?.length}</p>
+                <p>Unmapped data rows: {data.unmapped_data?.length}</p>
 
                 {nav}
             </>

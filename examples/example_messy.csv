@@ -1,5 +1,0 @@
-team_id,name,phone,email,sticky_phone_number_id,created_at,updated_at
-1,John Smith,555-555-5555,john@smith.com,12345,2000-01-01,2000-01
-1,Bob Smith,555-555-5556,bob@smith.com,12346,2000-01-01,2000-01
-2,Jane Cordova,555-555-6000,jane@cordova.com,12347,2001-10-01,2001-10-01
-3,Jill Cordova,555-555-6001,jill@cordova.com,12348,2001-10-01,2001-10-01

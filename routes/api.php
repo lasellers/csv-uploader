@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 Route::post('csv/save', 'CsvController@save');
 
+Route::delete('custom-attributes/{id}', 'ContactsController@customAttributesDestroy');
 Route::delete('contacts/{id}', 'ContactsController@destroy');
 Route::get('contacts', 'ContactsController@index');
 

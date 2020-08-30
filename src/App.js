@@ -12,20 +12,12 @@ import CsvColumnMappingPage from "./pages/CsvColumnMappingPage";
 import RemappingPreviewPage from "./pages/RemappingPreviewPage";
 import ProcessPage from "./pages/ProcessPage";
 import ContactsPage from "./pages/ContactsPage";
+import CustomAttributesPage from "./pages/CustomAttributesPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
 export const API_URL = "http://localhost:8000/api";
 
 function App(props) {
-//    const [user, setUser] = useState(store.getState().user);
-    //const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-    /*    store.subscribe(function () {
-            const user = store.getState().user;
-            setUser(user.user);
-            setIsLoggedIn(user.isLoggedIn);
-        });*/
-
     return (
         <BrowserRouter>
             <header id="App-header">
@@ -41,6 +33,7 @@ function App(props) {
                             <Nav.Link as={Link} to="/preview">Preview</Nav.Link>
                             <Nav.Link as={Link} to="/process">Process</Nav.Link>
                             <Nav.Link as={Link} to="/contacts">Contacts</Nav.Link>
+                            <Nav.Link as={Link} to="/custom-attributes">Custom Attributes</Nav.Link>
                         </ul>
                     </Nav>
                 </Navbar>
@@ -57,6 +50,7 @@ function App(props) {
                                 <Route path="/preview" component={RemappingPreviewPage} exact/>
                                 <Route path="/process" component={ProcessPage} exact/>
                                 <Route path="/contacts" component={ContactsPage} exact/>
+                                <Route path="/custom-attributes" component={CustomAttributesPage} exact/>
                                 <Route path="/not-found" component={NotFoundPage} exact/>
                                 <Route component={NotFoundPage}/>
                             </Switch>

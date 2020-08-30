@@ -11,6 +11,54 @@ use Illuminate\Support\Facades\File;
 
 class CsvService
 {
+    /**
+     * Actually saves contact and custom attributes data to DB.
+     * Note special handing of contact_id field.
+     * @param $mappedRows
+     * @param $unmappedRows
+     * @return array
+     */
+    public function saveCSV($mappedRows, $unmappedRows)
+    {
+        $mappedCount = 0;
+        $unmappedCount = 0;
+
+        $newUnmappedRows = $unmappedRows;
+
+        foreach ($mappedRows as $index => $row) {
+            $model = Contact::firstOrCreate($row, $row);
+
+            $model->refresh();
+
+            if ($model->id > 0) {
+                $mappedCount++;
+
+                //
+                foreach ($unmappedRows as $index2 => $row2) {
+                    // The custom attributes (ie unmapped rows) we receive from the frontend have a contact id that
+                    // maps to the row index of the mapped rows (ie contacts). Now that we've saved a contact and
+                    // it's model id, we replace the temp contact id with the read DB ID before saving custom attributes.
+                    if ($row2['contact_id'] == $index) {
+                        $row2['contact_id'] = $model->id;
+
+                        $newUnmappedRows[$index2] = $row2;
+
+                        $model2 = CustomAttributes::firstOrCreate($row2, $row2);
+                        $model2->refresh();
+
+                        if ($model2->id > 0) {
+                            $unmappedCount++;
+                        }
+                    }
+                }
+                //
+
+            }
+        }
+
+        return [$mappedCount, $unmappedCount, $newUnmappedRows];
+    }
+
     /*public function upload($filename, $content)
     {
         $path = storage_path('csv/' . $filename);
@@ -93,30 +141,5 @@ class CsvService
     /*public function processCSV($mappedRows, $unmappedRows)
     {
     }*/
-
-    public function saveCSV($mappedRows, $unmappedRows)
-    {
-        $mappedCount = 0;
-        foreach ($mappedRows as $row) {
-            $model = Contact::make($row);
-            if (!$model->exists()) {
-                $model->save();
-                if ($model->id > 0)
-                    $mappedCount++;
-            }
-        }
-
-        $unmappedCount = 0;
-        foreach ($unmappedRows as $row) {
-            $model = CustomAttributes::make($row);
-            if (!$model->exists()) {
-                $model->save();
-                if ($model->id > 0)
-                    $unmappedCount++;
-            }
-        }
-
-        return [$mappedCount, $unmappedCount];
-    }
 
 }
