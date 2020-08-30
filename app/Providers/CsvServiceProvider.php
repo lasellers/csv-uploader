@@ -18,7 +18,6 @@ class CsvServiceProvider extends ServiceProvider
         $this->app->bind('App\Services\CsvService', function ($app) {
             return new CsvService();
         });
-
     }
 
     /**

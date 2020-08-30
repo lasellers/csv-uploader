@@ -28,5 +28,4 @@ class CsvControllerTest extends TestCase
             ->assertStatus(Response::HTTP_OK)
             ->assertJsonStructure(self::MOCK_STRUCTURE);
     }
-
 }

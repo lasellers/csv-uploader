@@ -67,13 +67,18 @@ class CsvColumnMappingPage extends React.Component {
 
         const columns = store.getState().csv.namedColumns;
         const order = store.getState().csv.order;
-        const remapped_order = this.state.remapped_order;
         const data = store.getState().csv.csv_data;
+
+        let remapped_order = this.state.remapped_order;
+        header.forEach(h => {
+
+        });
 
         const nav = (
             <>
                 <div>
-                    <button className="btn btn-secondary mr-2" onClick={() => this.setState({goBack: true})}>Back</button>
+                    <button className="btn btn-secondary mr-2" onClick={() => this.setState({goBack: true})}>Back
+                    </button>
                     <button className="btn btn-primary ml-2" onClick={this.onMappingAccept}>Next</button>
                 </div>
                 {error.toLocaleString()}
@@ -110,7 +115,7 @@ class CsvColumnMappingPage extends React.Component {
                             <td>
                                 <select id={"select-" + index} value={remapped_order[index]}
                                         onChange={this.onMappingChange}>
-                                    <option key={-1} value=""></option>
+                                    <option key={-1} value=""> (None)</option>
                                     {order.map((orderValue, index2) => (
                                         <option id={index + '.' + index2} key={index2}
                                                 value={index2}>{columns[index2]} (Ex: {data[0][index2]})</option>

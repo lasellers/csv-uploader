@@ -78,5 +78,4 @@ class CsvControllerTest extends TestCase
         self::assertCount(2, $contacts);
         self::assertCount(2, $customAttributes);
     }
-
 }

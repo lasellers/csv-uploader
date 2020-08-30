@@ -18,22 +18,12 @@ class CsvServiceTest extends TestCase
 {
     use DatabaseTransactions;
 
-    //const MOCK_UNIT = ["MOCK" => true];
-    //const MOCK_STRUCTURE = ["MOCK"];
-
     /** @var CsvService */
     protected $service;
 
     protected function setUp(): void
     {
         parent::setUp();
-
-        // For the controller we're not actually interested in the main service function as we test that
-        // in the services tests, so this test is a pseudo unit test
-        /*$mock = \Mockery::mock('overload:' . CsvController::class);
-        $mock->shouldReceive('save')
-            ->andReturn(self::MOCK_UNIT);
-        $this->app->instance(CsvController::class, $mock);*/
 
         $this->service = new CsvService();
     }
@@ -65,22 +55,10 @@ class CsvServiceTest extends TestCase
         self::assertArrayHasKey('unmapped_data_inserts', $response);
         self::assertArrayHasKey('data', $response);
         self::assertArrayHasKey('unmapped_data', $response);
-/*
-        $contacts = Contact::all();
-        $customAttributes = CustomAttributes::all();
-        print_r($contacts->toArray());
-        print_r($customAttributes->toArray());*/
+        /*
+                $contacts = Contact::all();
+                $customAttributes = CustomAttributes::all();
+                print_r($contacts->toArray());
+                print_r($customAttributes->toArray());*/
     }
-
 }
-
-
-/*
- *         return [
-            'data_inserts' => $dataInserts,
-            'unmapped_data_inserts' => $unmappedDataInserts,
-            'data' => $mappedRows,
-            'unmapped_data' => $newUnmappedData
-        ];
-
- */

@@ -85,5 +85,4 @@ class ContactsControllerTest extends TestCase
             ->assertJsonStructure(self::MOCK_STRUCTURE);
         ;
     }
-
 }

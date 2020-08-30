@@ -38,7 +38,7 @@ class ContactsController extends Controller
     {
         try {
             $contact = Contact::find($id);
-            if(!is_null($contact)) {
+            if (!is_null($contact)) {
                 $result = $contact->delete();
                 return response()->json(['result' => $result]);
             }
@@ -58,7 +58,7 @@ class ContactsController extends Controller
     {
         try {
             $customAttribute = CustomAttributes::find($id);
-            if(!is_null($customAttribute)) {
+            if (!is_null($customAttribute)) {
                 $result = $customAttribute->delete();
                 return response()->json(['result' => $result]);
             }
@@ -67,5 +67,4 @@ class ContactsController extends Controller
             return self::returnAPIError($e);
         }
     }
-
 }
