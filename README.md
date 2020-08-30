@@ -31,3 +31,8 @@ See examples folder. There are csv files to test various use and error cases.
 
 See the file `CSVUploader.postman_collection.json`. This is an export of a postman collection
 for the project.
+
+
+## Versions
+
+v1 Initial
