@@ -1,11 +1,8 @@
 import React, {useState} from 'react';
-import store from "./redux/store";
-import {BrowserRouter, Link, Route, Switch} from "react-router-dom";
+import {BrowserRouter, Route, Switch} from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import './App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
 
 import CsvUploadPage from "./pages/CsvUploadPage";
 import CsvColumnMappingPage from "./pages/CsvColumnMappingPage";
@@ -15,30 +12,14 @@ import ContactsPage from "./pages/ContactsPage";
 import CustomAttributesPage from "./pages/CustomAttributesPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
+import NavHeader from "./components/NavHeader";
+
 export const API_URL = "http://localhost:8000/api";
 
 function App(props) {
     return (
         <BrowserRouter>
-            <header id="App-header">
-                <Navbar expand="lg">
-                    <Nav className="">
-                        <h1>CSV Uploader</h1>
-                    </Nav>
-                    <Nav className="ml-auto">
-                        Steps
-                        <ul className="steps-inline">
-                            <Nav.Link as={Link} to="/upload">CSV Upload</Nav.Link>
-                            <Nav.Link as={Link} to="/mapping">Column Mapping</Nav.Link>
-                            <Nav.Link as={Link} to="/preview">Preview</Nav.Link>
-                            <Nav.Link as={Link} to="/process">Process</Nav.Link>
-                            <Nav.Link as={Link} to="/contacts">Contacts</Nav.Link>
-                            <Nav.Link as={Link} to="/custom-attributes">Custom Attributes</Nav.Link>
-                        </ul>
-                    </Nav>
-                </Navbar>
-            </header>
-
+            <NavHeader />
             <main className="App">
                 <div id="App-body">
                     <div className="row">
@@ -58,7 +39,6 @@ function App(props) {
                     </div>
                 </div>
             </main>
-
         </BrowserRouter>
     )
 }

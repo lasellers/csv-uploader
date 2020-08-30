@@ -2,6 +2,7 @@ import React from 'react';
 import {API_URL} from "../App";
 import store from "../redux/store";
 import {Redirect} from "react-router";
+import {BsFillTrashFill} from 'react-icons/bs';
 
 class ContactsPage extends React.Component {
     constructor(props) {
@@ -65,7 +66,8 @@ class ContactsPage extends React.Component {
         const nav = (
             <>
                 <div>
-                    <button className="btn btn-secondary mr-2" onClick={() => this.setState({goBack: true})}>Back</button>
+                    <button className="btn btn-secondary mr-2" onClick={() => this.setState({goBack: true})}>Back
+                    </button>
                     <button className="btn btn-primary ml-2" onClick={() => this.setState({goNext: true})}>Next</button>
                 </div>
 
@@ -96,7 +98,6 @@ class ContactsPage extends React.Component {
                         <th>Sticky Phone</th>
                         <th>Created</th>
                         <th>Updated</th>
-                        <th>x</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -111,7 +112,7 @@ class ContactsPage extends React.Component {
                             <td>{contact.created_at}</td>
                             <td>{contact.updated_at}</td>
                             <td>
-                                <button onClick={() => this.onContactDelete(contact.id)}>X</button>
+                                <button className="btn" onClick={() => this.onContactDelete(contact.id)}><BsFillTrashFill/></button>
                             </td>
                         </tr>
                     ))}

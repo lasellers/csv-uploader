@@ -2,6 +2,7 @@ import React from 'react';
 import {API_URL} from "../App";
 import store from "../redux/store";
 import {Redirect} from "react-router";
+import {BsFillTrashFill} from 'react-icons/bs';
 
 class CustomAttributesPage extends React.Component {
     constructor(props) {
@@ -97,7 +98,6 @@ class CustomAttributesPage extends React.Component {
                         <th>Contact Id</th>
                         <th>Key</th>
                         <th>Value</th>
-                        <th>x</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -108,7 +108,7 @@ class CustomAttributesPage extends React.Component {
                             <td>{customAttribute.key}</td>
                             <td>{customAttribute.value}</td>
                             <td>
-                                <button onClick={() => this.onCustomAttributeDelete(customAttribute.id)}>X</button>
+                                <button className="btn" onClick={() => this.onCustomAttributeDelete(customAttribute.id)}><BsFillTrashFill/></button>
                             </td>
                         </tr>
                     ))}

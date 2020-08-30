@@ -42,15 +42,4 @@ it("Has CsvUploadPage component", () => {
   const wrapper = shallow(<App />);
   expect(wrapper.find(CsvUploadPage)).to.have.lengthOf(1);
 });
-it("Has Upload button", () => {
-  const wrapper = shallow(<App />);
-  const text = <button>Upload</button>;
-  expect(wrapper.contains(text)).to.equal(true);
-});
-
-it("Has Choose File button", () => {
-  const wrapper = shallow(<App />);
-  const text = <input type="file" />;
-  expect(wrapper.contains(text)).to.equal(true);
-});
 */
