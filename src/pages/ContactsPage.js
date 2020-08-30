@@ -3,6 +3,7 @@ import {API_URL} from "../App";
 import store from "../redux/store";
 import {Redirect} from "react-router";
 import {BsFillTrashFill} from 'react-icons/bs';
+import ErrorBox from "../components/ErrorBox";
 
 class ContactsPage extends React.Component {
     constructor(props) {
@@ -21,7 +22,12 @@ class ContactsPage extends React.Component {
 
     getContacts = () => {
         fetch(API_URL + "/contacts")
-            .then(res => res.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw Error(response.statusText);
+                }
+                return response.json();
+            })
             .then((contacts) => {
                     this.setState({
                         isLoaded: true,
@@ -61,8 +67,6 @@ class ContactsPage extends React.Component {
             return <Redirect to='/custom-attributes'/>;
         }
 
-        const columns = store.getState().csv.namedColumns;
-
         const nav = (
             <>
                 <div>
@@ -70,8 +74,6 @@ class ContactsPage extends React.Component {
                     </button>
                     <button className="btn btn-primary ml-2" onClick={() => this.setState({goNext: true})}>Next</button>
                 </div>
-
-                {error.toLocaleString()}
             </>
         );
 
@@ -120,6 +122,8 @@ class ContactsPage extends React.Component {
                 </table>
 
                 {nav}
+
+                <ErrorBox error={error}/>
             </>
         );
     }

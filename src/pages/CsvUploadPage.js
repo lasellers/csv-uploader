@@ -3,6 +3,7 @@ import store from "../redux/store";
 import {Redirect} from "react-router";
 import {addCsvHeaders} from "../redux/actions";
 import {addCsvData} from "../redux/actions";
+import ErrorBox from "../components/ErrorBox";
 
 class CsvUploadPage extends React.Component {
     constructor(props) {
@@ -108,7 +109,7 @@ class CsvUploadPage extends React.Component {
 
                 {this.uploadedFileData()}
 
-                {error.toLocaleString()}
+                <ErrorBox error={error}/>
             </>
         );
     }

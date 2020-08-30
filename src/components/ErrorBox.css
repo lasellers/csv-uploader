@@ -1,0 +1,5 @@
+.alert-error {
+    margin: 0 !important;
+    padding: 2em 1em 1em 1em !important;
+    background-color: indianred;
+}

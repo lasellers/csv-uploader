@@ -3,6 +3,7 @@ import {API_URL} from "../App";
 import store from "../redux/store";
 import {Redirect} from "react-router";
 import {BsFillTrashFill} from 'react-icons/bs';
+import ErrorBox from "../components/ErrorBox";
 
 class CustomAttributesPage extends React.Component {
     constructor(props) {
@@ -23,7 +24,12 @@ class CustomAttributesPage extends React.Component {
 
     getContacts = () => {
         fetch(API_URL + "/contacts")
-            .then(res => res.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw Error(response.statusText);
+                }
+                return response.json();
+            })
             .then((contacts) => {
                 console.log(contacts);
                     this.setState({
@@ -74,9 +80,7 @@ class CustomAttributesPage extends React.Component {
                     <button className="btn btn-secondary mr-2" onClick={() => this.setState({goBack: true})}>Back</button>
                     <button className="btn btn-primary ml-2" onClick={() => this.setState({goHome: true})}>Home</button>
                 </div>
-
-                {error.toLocaleString()}
-            </>
+           </>
         );
 
         if (!isLoaded)
@@ -116,6 +120,8 @@ class CustomAttributesPage extends React.Component {
                 </table>
 
                 {nav}
+
+                <ErrorBox error={error}/>
             </>
         );
     }

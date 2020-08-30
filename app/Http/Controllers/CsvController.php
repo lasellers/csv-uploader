@@ -9,10 +9,8 @@ use Illuminate\Support\Facades\File; // Illuminate\Filesystem\Filesystem
 use App\Contact;
 use App\CustomAttributes;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\Storage;
-use App\Http\Requests\ProcessCSVRequest;
-use App\Http\Requests\UploadCSVRequest;
 use App\Services\CsvService;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class CsvController extends Controller
 {
@@ -41,9 +39,6 @@ class CsvController extends Controller
         $contactColumns = array_values($contactColumns);
         $customAttributeColumns = array_values($customAttributeColumns);
 
-        $contactIntegerFields = [0, 4]; //team_id, sticky_phone_number_id_
-        $customAttributeIntegerFields = [0]; //contact_id
-
         //
         $mappedRows = $request->get('data');
         if (is_string($mappedRows)) {
@@ -53,9 +48,6 @@ class CsvController extends Controller
             foreach ($mappedRows as $index => $contact) {
                 $newContact = [];
                 foreach ($contact as $index2 => $value) {
-                    if (in_array($index2, $contactIntegerFields)) {
-                        if (!is_numeric($value)) $value = 0;
-                    }
                     $newContact[$contactColumns[$index2]] = $value;
                 }
                 $mappedRows[$index] = $newContact;
@@ -71,9 +63,6 @@ class CsvController extends Controller
             foreach ($unmappedRows as $index => $contactAttribute) {
                 $newContactAttribute = [];
                 foreach ($contactAttribute as $index2 => $value) {
-                    if (in_array($index2, $customAttributeIntegerFields)) {
-                        if (!is_numeric($value)) $value = 0;
-                    }
                     $newContactAttribute[$customAttributeColumns[$index2]] = $value;
                 }
                 $unmappedRows[$index] = $newContactAttribute;
@@ -81,24 +70,22 @@ class CsvController extends Controller
         }
 
         //
-        [$dataInserts, $unmappedDataInserts, $newUnmappedData] = $this->service->saveCSV(
+        [$dataInserts, $unmappedDataInserts, $newUnmappedData, $errors] = $this->service->saveCSV(
             $mappedRows,
             $unmappedRows
         );
 
-        /*return response()->json([
-            'data_inserts' => $dataInserts,
-            'unmapped_data_inserts' => $unmappedDataInserts,
-            'data' => $mappedRows,
-            'unmapped_data' => $newUnmappedData
-        ]);*/
+        if (count($errors) > 0) {
+            throw new HttpException(   Response::HTTP_UNPROCESSABLE_ENTITY,'CSV format error.');
+        }
 
-        return [
+        return response()->json([
             'data_inserts' => $dataInserts,
             'unmapped_data_inserts' => $unmappedDataInserts,
             'data' => $mappedRows,
-            'unmapped_data' => $newUnmappedData
-        ];
+            'unmapped_data' => $newUnmappedData,
+            'errors' => $errors
+        ]);
     }
 
     /**

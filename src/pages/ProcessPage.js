@@ -2,6 +2,7 @@ import React from 'react';
 import {API_URL} from "../App";
 import store from "../redux/store";
 import {Redirect} from "react-router";
+import ErrorBox from "../components/ErrorBox";
 
 class ProcessPage extends React.Component {
     constructor(props) {
@@ -35,14 +36,24 @@ class ProcessPage extends React.Component {
             },
             body: JSON.stringify({data: data, unmapped_data: unmapped_data})
         })
-            .then(res => res.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw Error(response.statusText);
+                }
+                return response.json();
+            })
             .then((data) => {
                     this.setState({
                         isLoaded: true,
-                        data: data
+                        data
                     });
                 },
                 (error) => {
+                    this.setState({
+                        error,
+                        isLoaded: true,
+                        data: []
+                    });
                     console.error(error);
                 }
             )
@@ -67,8 +78,6 @@ class ProcessPage extends React.Component {
                     <button className="btn btn-primary ml-2" onClick={() => this.setState({goNext: true})}>Next
                     </button>
                 </div>
-
-                {error.toLocaleString()}
             </>
         );
 
@@ -93,6 +102,8 @@ class ProcessPage extends React.Component {
                 <p>Unmapped data rows: {data.unmapped_data?.length}</p>
 
                 {nav}
+
+                <ErrorBox error={error}/>
             </>
         );
     }

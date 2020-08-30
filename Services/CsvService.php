@@ -8,6 +8,9 @@ use App\Http\Requests\UploadCSVRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Database\QueryException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class CsvService
 {
@@ -20,52 +23,61 @@ class CsvService
      */
     public function saveCSV($mappedRows, $unmappedRows)
     {
+        $errors = [];
         $mappedCount = 0;
         $unmappedCount = 0;
 
         $newUnmappedRows = $unmappedRows;
 
         foreach ($mappedRows as $index => $contactData) {
-            $contact = Contact::firstOrCreate([
-                'team_id' => $contactData['team_id'],
-                'name' => $contactData['name'],
-                'phone' => $contactData['phone'],
-                'email' => $contactData['email'],
-                'sticky_phone_number_id' => $contactData['sticky_phone_number_id'],
-                'created_at' => $contactData['created_at'],
-                'updated_at' => $contactData['updated_at'],
-            ], $contactData);
+            try {
+                $contact = Contact::firstOrCreate([
+                    'team_id' => $contactData['team_id'],
+                    'name' => $contactData['name'],
+                    'phone' => $contactData['phone'],
+                    'email' => $contactData['email'],
+                    'sticky_phone_number_id' => $contactData['sticky_phone_number_id'],
+                    'created_at' => $contactData['created_at'],
+                    'updated_at' => $contactData['updated_at'],
+                ], $contactData);
 
-            if ($contact->wasRecentlyCreated) {
-                $mappedCount++;
+                if ($contact->wasRecentlyCreated) {
+                    $mappedCount++;
 
-                //
-                foreach ($unmappedRows as $index2 => $customAttributeData) {
-                    // The custom attributes (ie unmapped rows) we receive from the frontend have a contact id that
-                    // maps to the row index of the mapped rows (ie contacts). Now that we've saved a contact and
-                    // it's model id, we replace the temp contact id with the read DB ID before saving custom attributes.
-                    if ($customAttributeData['contact_id'] === $index) {
-                        $customAttributeData['contact_id'] = $contact->id;
+                    //
+                    foreach ($unmappedRows as $index2 => $customAttributeData) {
+                        // The custom attributes (ie unmapped rows) we receive from the frontend have a contact id that
+                        // maps to the row index of the mapped rows (ie contacts). Now that we've saved a contact and
+                        // it's model id, we replace the temp contact id with the read DB ID before saving custom attributes.
+                        if ($customAttributeData['contact_id'] === $index) {
+                            $customAttributeData['contact_id'] = $contact->id;
 
-                        $newUnmappedRows[$index2] = $customAttributeData;
+                            $newUnmappedRows[$index2] = $customAttributeData;
 
-                        $customAttribute = CustomAttributes::firstOrCreate([
-                            'contact_id' => $customAttributeData['contact_id'],
-                            'key' => $customAttributeData['key'],
-                            'value' => $customAttributeData['value'],
-                        ], $customAttributeData);
+                            $customAttribute = CustomAttributes::firstOrCreate([
+                                'contact_id' => $customAttributeData['contact_id'],
+                                'key' => $customAttributeData['key'],
+                                'value' => $customAttributeData['value'],
+                            ], $customAttributeData);
 
-                        if ($customAttribute->wasRecentlyCreated) {
-                            $unmappedCount++;
+                            if ($customAttribute->wasRecentlyCreated) {
+                                $unmappedCount++;
+                            }
                         }
                     }
+                    //
                 }
-                //
 
+                // Because some of the fields don't have defaults or require numerics, etc this is a last line of
+                // defense against bad data -- which can happen when we input csv that doesn't have all of the required
+                // fields.
+            } catch (QueryException $e) {
+                $errors[] = $e->getMessage();
+                Log::error($e->getMessage());
             }
         }
 
-        return [$mappedCount, $unmappedCount, $newUnmappedRows];
+        return [$mappedCount, $unmappedCount, $newUnmappedRows, $errors];
     }
 
     /*public function upload($filename, $content)

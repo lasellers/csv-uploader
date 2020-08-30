@@ -2,6 +2,7 @@ import React from 'react';
 import store from "../redux/store";
 import {Redirect} from "react-router";
 import {addRemappedCsvData, addUnmappedData} from "../redux/actions";
+import ErrorBox from "../components/ErrorBox";
 
 class CsvColumnMappingPage extends React.Component {
     constructor(props) {
@@ -128,7 +129,6 @@ class CsvColumnMappingPage extends React.Component {
             return <Redirect to='/upload'/>;
         }
 
-
         const namedColumns = store.getState().csv.namedColumns;
         const csv_headers = store.getState().csv.csv_headers;
         const csv_data = store.getState().csv.csv_data;
@@ -141,7 +141,6 @@ class CsvColumnMappingPage extends React.Component {
                     </button>
                     <button className="btn btn-primary ml-2" onClick={this.onMappingAccept}>Next</button>
                 </div>
-                {error.toLocaleString()}
             </>
         );
 
@@ -195,6 +194,8 @@ class CsvColumnMappingPage extends React.Component {
                 </table>
 
                 {nav}
+
+                <ErrorBox error={error}/>
             </>
         );
     }

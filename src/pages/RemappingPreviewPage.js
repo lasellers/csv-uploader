@@ -1,6 +1,7 @@
 import React from 'react';
 import store from "../redux/store";
 import {Redirect} from "react-router";
+import ErrorBox from "../components/ErrorBox";
 
 class RemappingPreviewPage extends React.Component {
     constructor(props) {
@@ -32,8 +33,6 @@ class RemappingPreviewPage extends React.Component {
                     </button>
                     <button className="btn btn-primary ml-2" onClick={() => this.setState({goNext: true})}>Next</button>
                 </div>
-
-                {error.toLocaleString()}
             </>
         );
 
@@ -61,6 +60,8 @@ class RemappingPreviewPage extends React.Component {
                 </table>
 
                 {nav}
+
+                <ErrorBox error={error}/>
             </>
         );
     }
