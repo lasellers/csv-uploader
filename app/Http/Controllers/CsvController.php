@@ -34,15 +34,15 @@ class CsvController extends Controller
      */
     public function save(SaveCSVRequest $request)
     {
-        //$columns = ['team_id', 'name', 'phone', 'email', 'sticky_phone_number_id', 'created_at', 'updated_at'];
-        //$columns2 = ['contact_id', 'key', 'value'];
+        $contactColumns = Schema::getColumnListing('contacts');
+        $customAttributeColumns = Schema::getColumnListing('custom_attributes');
+        unset($contactColumns[0]); //remove id field
+        unset($customAttributeColumns[0]); //remove id field
+        $contactColumns = array_values($contactColumns);
+        $customAttributeColumns = array_values($customAttributeColumns);
 
-        $columns = Schema::getColumnListing('contacts');
-        $columnsCA = Schema::getColumnListing('custom_attributes');
-        unset($columns[0]);
-        unset($columnsCA[0]);
-        $columns = array_values($columns);
-        $columnsCA = array_values($columnsCA);
+        $contactIntegerFields = [0, 4]; //team_id, sticky_phone_number_id_
+        $customAttributeIntegerFields = [0]; //contact_id
 
         //
         $mappedRows = $request->get('data');
@@ -50,12 +50,15 @@ class CsvController extends Controller
             $mappedRows = json_decode(trim($mappedRows));
         }
         if (is_array($mappedRows)) {
-            foreach ($mappedRows as $index => $row) {
-                $newRow = [];
-                foreach ($row as $index2 => $value) {
-                    $newRow[$columns[$index2]] = $value;
+            foreach ($mappedRows as $index => $contact) {
+                $newContact = [];
+                foreach ($contact as $index2 => $value) {
+                    if (in_array($index2, $contactIntegerFields)) {
+                        if (!is_numeric($value)) $value = 0;
+                    }
+                    $newContact[$contactColumns[$index2]] = $value;
                 }
-                $mappedRows[$index] = $newRow;
+                $mappedRows[$index] = $newContact;
             }
         }
 
@@ -65,16 +68,18 @@ class CsvController extends Controller
             $unmappedRows = json_decode(trim($unmappedRows));
         }
         if (is_array($unmappedRows)) {
-            foreach ($unmappedRows as $index => $row) {
-                $newRow = [];
-                foreach ($row as $index2 => $value) {
-                    $newRow[$columnsCA[$index2]] = $value;
+            foreach ($unmappedRows as $index => $contactAttribute) {
+                $newContactAttribute = [];
+                foreach ($contactAttribute as $index2 => $value) {
+                    if (in_array($index2, $customAttributeIntegerFields)) {
+                        if (!is_numeric($value)) $value = 0;
+                    }
+                    $newContactAttribute[$customAttributeColumns[$index2]] = $value;
                 }
-                $unmappedRows[$index] = $newRow;
+                $unmappedRows[$index] = $newContactAttribute;
             }
         }
 
-        //
         //
         [$dataInserts, $unmappedDataInserts, $newUnmappedData] = $this->service->saveCSV(
             $mappedRows,

@@ -1,7 +1,7 @@
 import React from 'react';
 import store from "../redux/store";
 import {Redirect} from "react-router";
-import {addCsvHeader} from "../redux/actions";
+import {addCsvHeaders} from "../redux/actions";
 import {addCsvData} from "../redux/actions";
 
 class CsvUploadPage extends React.Component {
@@ -31,7 +31,7 @@ class CsvUploadPage extends React.Component {
             const csv = (await files[0].text());
             const [header, data] = this.csvToArray(csv);
 
-            store.dispatch(addCsvHeader(header));
+            store.dispatch(addCsvHeaders(header));
             store.dispatch(addCsvData(data));
 
             // Update the state
@@ -66,6 +66,7 @@ class CsvUploadPage extends React.Component {
     // file upload is complete
     uploadedFileData = () => {
         if (this.state.selectedFile) {
+            const headers = store.getState().csv.csv_headers.join(', ');
             return (
                 <>
                     <p><b>CSV File Details</b></p>
@@ -74,6 +75,7 @@ class CsvUploadPage extends React.Component {
                     <p>File Type: {this.state.selectedFile.type}</p>
                     <p>Last Modified: {this.state.selectedFile.lastModifiedDate.toDateString()}</p>
                     <p>Rows: {this.state.data.length}</p>
+                    <p>Headers: {headers}</p>
                 </>
             );
         } else {

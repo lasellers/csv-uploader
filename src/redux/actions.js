@@ -1,7 +1,7 @@
-export const addCsvHeader = data => ({
-    type: 'ADD_CSV_HEADER',
+export const addCsvHeaders = data => ({
+    type: 'ADD_CSV_HEADERS',
     payload: {
-        csv_header: data
+        csv_headers: data
     }
 });
 

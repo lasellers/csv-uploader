@@ -1,5 +1,5 @@
 const initialState = {
-    csv_header: [],
+    csv_headers: [],
     csv_data: [],
     unmapped_data: [],
     remapped_csv_data: [],
@@ -7,18 +7,18 @@ const initialState = {
     // read only SSOA
     columns: ['team_id', 'name', 'phone', 'email', 'sticky_phone_number_id', 'created_at', 'updated_at'],
     namedColumns: ['Team Id', 'Name', 'Phone', 'Email', 'Sticky Phone Number Id', 'Created', 'Updated'],
-    order: [0, 1, 2, 3, 4, 5, 6, 7],
+//    order: [0, 1, 2, 3, 4, 5, 6],
     columnsWId: ['id', 'team_id', 'name', 'phone', 'email', 'sticky_phone_number_id', 'created_at', 'updated_at'],
     namedColumnsWId: ['#', 'Team Id', 'Name', 'Phone', 'Email', 'Sticky Phone Number Id', 'Created', 'Updated'],
 };
 
 export default function (state = initialState, action) {
     switch (action.type) {
-        case 'ADD_CSV_HEADER': {
-            const {csv_header} = action.payload;
+        case 'ADD_CSV_HEADERS': {
+            const {csv_headers} = action.payload;
             return {
                 ...state,
-                csv_header
+                csv_headers
             };
         }
         case 'ADD_CSV_DATA': {

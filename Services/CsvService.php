@@ -25,28 +25,37 @@ class CsvService
 
         $newUnmappedRows = $unmappedRows;
 
-        foreach ($mappedRows as $index => $row) {
-            $model = Contact::firstOrCreate($row, $row);
+        foreach ($mappedRows as $index => $contactData) {
+            $contact = Contact::firstOrCreate([
+                'team_id' => $contactData['team_id'],
+                'name' => $contactData['name'],
+                'phone' => $contactData['phone'],
+                'email' => $contactData['email'],
+                'sticky_phone_number_id' => $contactData['sticky_phone_number_id'],
+                'created_at' => $contactData['created_at'],
+                'updated_at' => $contactData['updated_at'],
+            ], $contactData);
 
-            $model->refresh();
-
-            if ($model->id > 0) {
+            if ($contact->wasRecentlyCreated) {
                 $mappedCount++;
 
                 //
-                foreach ($unmappedRows as $index2 => $row2) {
+                foreach ($unmappedRows as $index2 => $customAttributeData) {
                     // The custom attributes (ie unmapped rows) we receive from the frontend have a contact id that
                     // maps to the row index of the mapped rows (ie contacts). Now that we've saved a contact and
                     // it's model id, we replace the temp contact id with the read DB ID before saving custom attributes.
-                    if ($row2['contact_id'] == $index) {
-                        $row2['contact_id'] = $model->id;
+                    if ($customAttributeData['contact_id'] === $index) {
+                        $customAttributeData['contact_id'] = $contact->id;
 
-                        $newUnmappedRows[$index2] = $row2;
+                        $newUnmappedRows[$index2] = $customAttributeData;
 
-                        $model2 = CustomAttributes::firstOrCreate($row2, $row2);
-                        $model2->refresh();
+                        $customAttribute = CustomAttributes::firstOrCreate([
+                            'contact_id' => $customAttributeData['contact_id'],
+                            'key' => $customAttributeData['key'],
+                            'value' => $customAttributeData['value'],
+                        ], $customAttributeData);
 
-                        if ($model2->id > 0) {
+                        if ($customAttribute->wasRecentlyCreated) {
                             $unmappedCount++;
                         }
                     }

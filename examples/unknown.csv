@@ -1,0 +1,5 @@
+f1,f2,f3,f4,f5,f6,f7,f8,f9,f10
+foo a,1,John Smith UNKNOWN,555-555-5555,john@smith.com,12345,goo a,2000-01-01,2000-01,bar a
+foo b,1,Bob Smith UNKNOWN,555-555-5556,bob@smith.com,12346,goo b,2000-01-01,2000-01,bar b
+foo c,2,Jane Cordova UNKNOWN,555-555-6000,jane@cordova.com,12347,goo c,2001-10-01,2001-10-01,bar c
+foo d,3,Jill Cordova UNKNOWN,555-555-6001,jill@cordova.com,12348,goo d,2001-10-01,2001-10-01,bar d
