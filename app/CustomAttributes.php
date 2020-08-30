@@ -19,7 +19,7 @@ class CustomAttributes extends Model
     ];
 
     //
-    public function Contact(): BelongsTo
+    public function contact(): BelongsTo
     {
         $this->belongsTo(Contact::class);
     }

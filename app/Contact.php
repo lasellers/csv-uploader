@@ -21,7 +21,7 @@ class Contact extends Model
     ];
 
     //
-    public function CustomAttributes(): HasMany
+    public function customAttributes(): HasMany
     {
         return $this->hasMany(CustomAttributes::class);
     }

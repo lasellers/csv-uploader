@@ -75,7 +75,11 @@ class CsvController extends Controller
         }
 
         //
-        [$dataInserts, $unmappedDataInserts, $newUnmappedData] = $data = $this->service->saveCSV($mappedRows, $unmappedRows);
+        //
+        [$dataInserts, $unmappedDataInserts, $newUnmappedData] = $this->service->saveCSV(
+            $mappedRows,
+            $unmappedRows
+        );
 
         /*return response()->json([
             'data_inserts' => $dataInserts,
