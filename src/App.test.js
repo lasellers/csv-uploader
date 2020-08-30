@@ -6,7 +6,6 @@ var assert = chai.assert;    // Using Assert style
 var expect = chai.expect;    // Using Expect style to.be ...
 var should = chai.should();  // Using Should style
 import App from './App';
-import CsvUploadPage from "./pages/CsvUploadPage";
 import NavHeader from "./components/NavHeader";
 
 it("renders without crashing", () => {

@@ -1,5 +1,4 @@
 import React from 'react';
-//import { render } from '@testing-library/react';
 import { shallow, mount } from 'enzyme';
 import sinon from 'sinon';
 var chai = require('chai');
@@ -7,18 +6,6 @@ var assert = chai.assert;    // Using Assert style
 var expect = chai.expect;    // Using Expect style to.be ...
 var should = chai.should();  // Using Should style
 import ContactsPage from "./ContactsPage";
-
-/*
-test('renders without crashing (testing library)', () => {
-  const { getByText } = render(<App />);
-});
-
-test('renders menu title (testing library)', () => {
-  const { getByText } = render(<App />);
-  const linkElement = getByText(/CSV Uploader/i);
-  expect(linkElement).toBeInTheDocument();
-});
-*/
 
 it("renders without crashing", () => {
     shallow(<ContactsPage />);
