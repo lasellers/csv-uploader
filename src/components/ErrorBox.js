@@ -1,10 +1,13 @@
 import React from "react";
 import './ErrorBox.css';
 
-function ErrorBox(props) {
+function ErrorBox({error}) {
+    console.log(error);
+    console.log(error.error);
+    console.log(error.hasOwnProperty('error'));
     return (
         <>
-            <p className={props.error.length > 0 ? "alert-error" : ""}>{props.error.toLocaleString()}</p>
+            <p className={(error !== "") ? "alert-error" : ""}>{error.toLocaleString()}</p>
         </>
     )
 }

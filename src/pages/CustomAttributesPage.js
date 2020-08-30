@@ -65,7 +65,6 @@ class CustomAttributesPage extends React.Component {
         const customAttributes = contacts.flatMap(row => {
             return row.custom_attributes;
         });
-        const columns = store.getState().csv.namedColumns;
 
         if (goBack) {
             return <Redirect to='/contacts'/>;
