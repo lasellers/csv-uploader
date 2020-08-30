@@ -25,9 +25,6 @@ class ProcessPage extends React.Component {
         const data = store.getState().csv.remapped_csv_data;
         const unmapped_data = store.getState().csv.unmapped_data;
 
-        console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2');
-        console.log(data);
-        console.log(unmapped_data);
         fetch(API_URL + "/csv/save", {
             method: "POST",
             headers: {

@@ -1,6 +1,5 @@
 import React from 'react';
 import {API_URL} from "../App";
-import store from "../redux/store";
 import {Redirect} from "react-router";
 import {BsFillTrashFill} from 'react-icons/bs';
 import ErrorBox from "../components/ErrorBox";
@@ -31,7 +30,6 @@ class CustomAttributesPage extends React.Component {
                 return response.json();
             })
             .then((contacts) => {
-                console.log(contacts);
                     this.setState({
                         isLoaded: true,
                         contacts
@@ -50,12 +48,14 @@ class CustomAttributesPage extends React.Component {
     onCustomAttributeDelete = async (id) => {
         fetch(API_URL + "/custom-attributes/" + id, {method: "DELETE"})
             .then(res => res.json())
-            .then(
-                (result) => {
+            .then((result) => {
                     this.getContacts();
                 },
                 (error) => {
                     console.error(error);
+                    this.setState({
+                        error
+                    });
                 }
             );
     };

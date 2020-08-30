@@ -6,7 +6,6 @@ import ErrorBox from "../components/ErrorBox";
 
 class CsvColumnMappingPage extends React.Component {
     constructor(props) {
-        console.log('constructor ***********');
         super(props);
 
         // Normally the default order is 0,1,2,3,4,5,6,7 and the like as far the the dropdown goes.
@@ -18,7 +17,7 @@ class CsvColumnMappingPage extends React.Component {
 
         this.state = {
             error: "",
-            remapped_order: remapped_order, //order,
+            remapped_order: remapped_order,
             goNext: false,
             goBack: false,
             dropdownOrder: order
@@ -29,21 +28,15 @@ class CsvColumnMappingPage extends React.Component {
     }
 
     onMappingChange = async (event) => {
-        console.log('');
-        console.log('onMappingChange begin');
         const id = (event.target.id.split('-'))[1]; //event.target.selectedIndex;
         const value = event.target.value;
 
         const remapped_order = this.state.remapped_order;
         remapped_order[id] = value;
-        console.log('onMappingChange',this.state.remapped_order);
-        console.log('onMappingChange end');
-        console.log('');
         await this.setState({remapped_order: remapped_order});
     };
 
     onMappingAccept = async event => {
-        console.log('onMappingAccept');
         const csv_headers = store.getState().csv.csv_headers;
         const csv_data = store.getState().csv.csv_data;
         const remapped_order = this.state.remapped_order;
@@ -72,8 +65,6 @@ class CsvColumnMappingPage extends React.Component {
         let newContacts = [];
         let newCustomAttributes = [];
 
-        console.log(remapped_order);
-
         contacts.forEach(function (contact, contact_id) {
             let newContact = new Array(db_headers.length).fill("");
 
@@ -91,8 +82,6 @@ class CsvColumnMappingPage extends React.Component {
 
             newContacts.push(newContact);
         });
-        console.log(newContacts);
-        console.log(newCustomAttributes);
         return [newContacts, newCustomAttributes];
     };
 
@@ -103,19 +92,13 @@ class CsvColumnMappingPage extends React.Component {
      */
     defaultRemappedOrder = (columns, csv_headers, order) => {
         let remapped_order = new Array(columns.length).fill(-1);
-        console.log('defaultRemappedOrder: csv_headers', csv_headers);
-        console.log('defaultRemappedOrder: columns', columns);
-        console.log('defaultRemappedOrder: remapped_order ', remapped_order);
 
         columns.forEach((header, index) => {
-            console.info('index=', index, 'header', header);
             const index2 = csv_headers.indexOf(header);
             if (index2 >= 0) {
-                console.info(' ***** index=', index, 'index2=', index2, columns[index], columns[index2]);
                 remapped_order[index] = index2;
             }
         });
-        console.log('defaultRemappedOrder: end remapped_order', remapped_order);
         return remapped_order;
     };
 
@@ -154,9 +137,6 @@ class CsvColumnMappingPage extends React.Component {
             )
         }
 
-        console.log('* namedColumns',namedColumns);
-        console.log('* this.state.dropdownOrder',this.state.dropdownOrder);
-        console.log('* this.state.remapped_order',this.state.remapped_order);
         return (
             <>
                 <h1>Remapping</h1>

@@ -1,6 +1,5 @@
 import React from 'react';
 import {API_URL} from "../App";
-import store from "../redux/store";
 import {Redirect} from "react-router";
 import {BsFillTrashFill} from 'react-icons/bs';
 import ErrorBox from "../components/ErrorBox";
@@ -53,6 +52,9 @@ class ContactsPage extends React.Component {
                 },
                 (error) => {
                     console.error(error);
+                    this.setState({
+                        error
+                    });
                 }
             );
     };
