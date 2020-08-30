@@ -7,6 +7,20 @@
 	"item": [
 		{
 			"name": "csv/upload empty",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5a9b279b-e57e-44ba-8149-31cb02a812b9",
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -35,6 +49,20 @@
 		},
 		{
 			"name": "csv/upload",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "38c96958-7560-4d23-a168-4d26149ca92f",
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -68,6 +96,20 @@
 		},
 		{
 			"name": "csv/upload OPTIONS",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a76fb435-0d8c-4a95-b742-c6883fdfff9b",
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "OPTIONS",
 				"header": [],
@@ -101,6 +143,20 @@
 		},
 		{
 			"name": "csv/files",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3452ef6a-84af-4f5f-8a69-a2e1193e5fb3",
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -119,6 +175,20 @@
 		},
 		{
 			"name": "csv/file/{filename}",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "36939bc7-863a-440e-af4c-3f129c3202de",
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -138,6 +208,20 @@
 		},
 		{
 			"name": "csv/remap/{filename}",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "cc633a78-0adc-4e8c-a5ba-988ea3808e53",
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -166,6 +250,20 @@
 		},
 		{
 			"name": "csv/{filename}",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4ffc09cd-9dd4-428b-bce7-0e475f274eac",
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -184,11 +282,25 @@
 		},
 		{
 			"name": "cvs/process",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ba5f4c55-ce6c-48d8-a8f5-ae204aff0bec",
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "{{API_URL}}/csv/process?filename=\"default.csv\"&mapped_columns=\"0,1,2,3,4,5,6\"",
+					"raw": "{{API_URL}}/csv/process?filename=\"test.csv\"&mapped_columns=\"0,1,2,3,4,5,6,7\"",
 					"host": [
 						"{{API_URL}}"
 					],
@@ -199,11 +311,53 @@
 					"query": [
 						{
 							"key": "filename",
-							"value": "\"default.csv\""
+							"value": "\"test.csv\""
 						},
 						{
 							"key": "mapped_columns",
-							"value": "\"0,1,2,3,4,5,6\""
+							"value": "\"0,1,2,3,4,5,6,7\""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cvs/save",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a499b58b-5e42-4fb3-8d0e-7276984c51f6",
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/csv/save?unmapped_data=[[0,\"blah\",\"foo POSTMAN\"],[0,\"blah2\",\"foo2 POSTMAN\"]]&data=[[1,\"John C. POSTMAN\",\"555-555-5555\",\"john@smith.com\",\"12345\",\"2000-01-01\",\"2000-01-02\"],[1,\"Jane C. POSTMAN\",\"555-555-5555\",\"john@smith.com\",\"12345\",\"2000-01-01\",\"2000-01-02\"]]",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"csv",
+						"save"
+					],
+					"query": [
+						{
+							"key": "unmapped_data",
+							"value": "[[0,\"blah\",\"foo POSTMAN\"],[0,\"blah2\",\"foo2 POSTMAN\"]]"
+						},
+						{
+							"key": "data",
+							"value": "[[1,\"John C. POSTMAN\",\"555-555-5555\",\"john@smith.com\",\"12345\",\"2000-01-01\",\"2000-01-02\"],[1,\"Jane C. POSTMAN\",\"555-555-5555\",\"john@smith.com\",\"12345\",\"2000-01-01\",\"2000-01-02\"]]"
 						}
 					]
 				}
@@ -212,6 +366,20 @@
 		},
 		{
 			"name": "root api",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f2551c69-8f43-4de3-9cd8-182160543afb",
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(405);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -226,6 +394,20 @@
 		},
 		{
 			"name": "root web",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "be9204ba-9ba3-43ab-b063-a88b3a5a99b1",
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -240,6 +422,20 @@
 		},
 		{
 			"name": "cvs/process empty",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9c3ceb67-4574-430b-94c9-35da282b617c",
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -268,6 +464,20 @@
 		},
 		{
 			"name": "contacts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b3aa98a2-2f78-4ac8-b931-0c087003aacf",
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -285,6 +495,20 @@
 		},
 		{
 			"name": "contacts/{id}",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "113fe8da-19bf-41af-a68e-dd90a7fbcda9",
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -295,6 +519,38 @@
 					],
 					"path": [
 						"contacts",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "custom-attributes/{id}",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f5d2048a-23c2-4cb9-a13e-ed03458780e6",
+						"exec": [
+							"pm.test(\"Status test\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/custom-attributes/1",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"custom-attributes",
 						"1"
 					]
 				}
@@ -326,12 +582,12 @@
 	],
 	"variable": [
 		{
-			"id": "26cfec48-2075-49d5-ae80-7f306108f225",
+			"id": "a52b32a5-c9ef-4892-92d5-56afe152543d",
 			"key": "API_URL",
 			"value": "localhost:8000/api"
 		},
 		{
-			"id": "5c3a6739-8375-461a-b1a1-f6eab6e342b8",
+			"id": "e4bb0497-45d1-4fa5-95b7-b381c944711e",
 			"key": "WEB_URL",
 			"value": "localhost:8000"
 		}
