@@ -1,17 +1,22 @@
 ## CSV Uploader
 
-## Setup
+A demo of a CSV file uploader.
 
-sudo docker-compose up
+## Startup
+
+`sudo docker-compose up` to start docker db.
+`php artisan serve` to start Laravel API server.
+`npm run start` to start React frontend.
 
 ## Frontend
 
+React, Redux, Component state.
+
 ## Backend
+
+PHP Laravel 7 API
 
 ## Examples
 
 See examples folder.
 
-## ---------------
-composer global require laravel/installer
-$HOME/.composer/vendor/bin
