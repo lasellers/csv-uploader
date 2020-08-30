@@ -76,7 +76,7 @@ class CsvController extends Controller
         );
 
         if (count($errors) > 0) {
-            throw new HttpException(   Response::HTTP_UNPROCESSABLE_ENTITY,'CSV format error.');
+            throw new HttpException(Response::HTTP_UNPROCESSABLE_ENTITY, 'CSV format error.');
         }
 
         return response()->json([

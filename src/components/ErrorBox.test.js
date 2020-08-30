@@ -12,10 +12,18 @@ import ErrorBox from "./ErrorBox";
 it("renders without crashing", () => {
     shallow(<ErrorBox/>);
 });
-/*
-it("renders", () => {
-    const wrapper = shallow(<ErrorBox/>);
-    const title = <h1>CSV File Upload</h1>
-    expect(wrapper.contains(title)).to.equal(true);
+
+it("renders error", () => {
+    const mockText = "Error: Lorem Ipsum";
+    const wrapper = shallow(<ErrorBox error={mockText}/>);
+    console.log( wrapper.debug() );
+    const p = wrapper.find('p');
+    expect(p.text()).to.equal(mockText);
 });
-*/
+
+it("renders NavHeader error", () => {
+    const wrapper = shallow(<ErrorBox/>);
+    console.log( wrapper.debug() );
+    const p = wrapper.find('p');
+    expect(p.text()).to.equal('');
+});
