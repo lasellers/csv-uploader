@@ -76,6 +76,9 @@
     ],
     "phpunit": "phpunit --verbose --colors=always",
     "test": "phpunit --verbose --colors=always",
+    "test-unit": "phpunit --verbose --testsuite Unit --colors=always",
+    "test-integration": "phpunit --testsuite Integration --verbose --colors=always",
+    "test-feature": "phpunit --testsuite Feature --verbose --colors=always",
     "ci": [
       "@lint",
       "@phpstan",

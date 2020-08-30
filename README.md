@@ -42,7 +42,13 @@ for the project.
 
 `composer run phpstan` to run static analyzer.
 
-`composer run test` to run phpunit tests.
+`composer run test` to run all phpunit tests.
+
+`composer run test-unit` to run phpunit unit tests.
+
+`composer run test-integration` to run phpunit integration tests.
+
+`composer run test-feature` to run phpunit feature tests.
 
 
 ### Frontend
