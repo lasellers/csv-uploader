@@ -343,5 +343,4 @@ class CsvControllerTest extends TestCase
         self::assertEquals(0, $data['contact_inserts']);
         self::assertEquals(0, $data['custom_attribute_inserts']);
     }
-
 }

@@ -31,8 +31,7 @@ class Controller extends BaseController
     public static function returnAPIError(
         \Exception $e,
         string $errorString = "API Error"
-    ): JsonResponse
-    {
+    ): JsonResponse {
         if (app()->environment('production')) {
             return response()->json([
                 'message' => $errorString,
@@ -59,8 +58,7 @@ class Controller extends BaseController
     public static function returnAPIUnprocessableError(
         array $errors,
         string $errorString = "Unprocessable Entity Error"
-    ): JsonResponse
-    {
+    ): JsonResponse {
         if (app()->environment('production')) {
             return response()->json([
                 'message' => $errorString,

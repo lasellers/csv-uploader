@@ -9,7 +9,8 @@ use Illuminate\Http\Response;
 class CustomAttributeRequest extends FormRequest
 {
     // FormRequest tries to redirect us to an url by default -- this makes it return a proper json error.
-    protected function failedValidation(Validator $validator) {
+    protected function failedValidation(Validator $validator)
+    {
         throw new HttpResponseException(response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY));
     }
 

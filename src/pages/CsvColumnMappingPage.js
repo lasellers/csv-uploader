@@ -2,7 +2,6 @@ import React from 'react';
 import store from "../redux/store";
 import {Redirect} from "react-router";
 import {addRemappedCsvData, addUnmappedData} from "../redux/actions";
-import ErrorBox from "../components/ErrorBox";
 
 class CsvColumnMappingPage extends React.Component {
     constructor(props) {
@@ -174,8 +173,6 @@ class CsvColumnMappingPage extends React.Component {
                 </table>
 
                 {nav}
-
-                <ErrorBox/>
             </>
         );
     }

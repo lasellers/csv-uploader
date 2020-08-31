@@ -1,5 +1,5 @@
 const initialState = {
-    error: "",
+    error: null,
     csv_headers: [],
     csv_data: [],
     unmapped_data: [],

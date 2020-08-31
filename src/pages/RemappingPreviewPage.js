@@ -1,7 +1,6 @@
 import React from 'react';
 import store from "../redux/store";
 import {Redirect} from "react-router";
-import ErrorBox from "../components/ErrorBox";
 
 class RemappingPreviewPage extends React.Component {
     constructor(props) {
@@ -59,8 +58,6 @@ class RemappingPreviewPage extends React.Component {
                 </table>
 
                 {nav}
-
-                <ErrorBox/>
             </>
         );
     }

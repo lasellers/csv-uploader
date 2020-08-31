@@ -2,7 +2,6 @@ import React from 'react';
 import {API_URL} from "../App";
 import {Redirect} from "react-router";
 import {BsFillTrashFill} from 'react-icons/bs';
-import ErrorBox from "../components/ErrorBox";
 import store from "../redux/store";
 import {addError} from "../redux/actions";
 
@@ -128,8 +127,6 @@ class CustomAttributesPage extends React.Component {
                 </table>
 
                 {nav}
-
-                <ErrorBox/>
             </>
         );
     }

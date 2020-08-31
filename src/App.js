@@ -13,6 +13,7 @@ import CustomAttributesPage from "./pages/CustomAttributesPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
 import NavHeader from "./components/NavHeader";
+import ErrorBox from "./components/ErrorBox";
 
 export const API_URL = process.env.REACT_APP_API_URL;
 
@@ -20,6 +21,7 @@ function App(props) {
     return (
         <BrowserRouter>
             <NavHeader/>
+            <ErrorBox/>
             <main className="App">
                 <div id="App-body">
                     <div className="container-fluid">

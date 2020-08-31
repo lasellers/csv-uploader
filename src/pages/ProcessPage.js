@@ -2,7 +2,6 @@ import React from 'react';
 import {API_URL} from "../App";
 import store from "../redux/store";
 import {Redirect} from "react-router";
-import ErrorBox from "../components/ErrorBox";
 import {addError} from "../redux/actions";
 
 class ProcessPage extends React.Component {
@@ -101,8 +100,6 @@ class ProcessPage extends React.Component {
                 <p>Custom Attributes data rows: {data.custom_attributes?.length}</p>
 
                 {nav}
-
-                <ErrorBox/>
             </>
         );
     }

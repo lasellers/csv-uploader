@@ -1,26 +1,53 @@
-import React from "react";
-import store from "../redux/store";
+import React, { useState } from 'react';import store from "../redux/store";
 import {addError} from "../redux/actions";
 import './ErrorBox.css';
 
 function ErrorBox() {
-    let error = store.getState().csv.error;
-    console.log(error);
+    const [ error, setError ] = useState(null);
 
-    if (typeof error !== "object")
+    store.subscribe(function () {
+        const csv = store.getState().csv;
+        setError(csv.error);
+    });
+
+    if (error === null)
         return (<>
         </>);
 
-    return (
+    if (typeof error === 'string') {
+        return (
+            <>
+                <p className="alert-error">{error.toLocaleString()}</p>
+                <button className="btn btn-primary btn-sm" onClick={() => {
+                    store.dispatch(addError(null));
+                }}>Clear Error
+                </button>
+            </>
+        );
+    }
+
+    if (typeof error === "object") {
+        return (
+            <>
+                <p className="alert-error">{error.toLocaleString()}</p>
+                <button className="btn btn-primary btn-sm" onClick={() => {
+                    store.dispatch(addError(null));
+                }}>Clear Error
+                </button>
+            </>
+        );
+    }
+
+    return (<>
         <>
-            <p className="alert-error">{error.toLocaleString()}</p>
+            <p className="alert-error">Unknown Error</p>
             <button className="btn btn-primary btn-sm" onClick={() => {
-                error = "";
-                store.dispatch(addError(""));
+                store.dispatch(addError(null));
             }}>Clear Error
             </button>
         </>
-    )
+    </>);
+
 }
 
 export default ErrorBox;
