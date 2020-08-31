@@ -1,4 +1,5 @@
 const initialState = {
+    error: "",
     csv_headers: [],
     csv_data: [],
     unmapped_data: [],
@@ -7,7 +8,6 @@ const initialState = {
     // read only SSOA
     columns: ['team_id', 'name', 'phone', 'email', 'sticky_phone_number_id', 'created_at', 'updated_at'],
     namedColumns: ['Team Id', 'Name', 'Phone', 'Email', 'Sticky Phone Number Id', 'Created', 'Updated'],
-//    order: [0, 1, 2, 3, 4, 5, 6],
     columnsWId: ['id', 'team_id', 'name', 'phone', 'email', 'sticky_phone_number_id', 'created_at', 'updated_at'],
     namedColumnsWId: ['#', 'Team Id', 'Name', 'Phone', 'Email', 'Sticky Phone Number Id', 'Created', 'Updated'],
 };
@@ -47,6 +47,13 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 remapped_order
+            };
+        }
+        case 'ADD_ERROR': {
+            const {error} = action.payload;
+            return {
+                ...state,
+                error
             };
         }
         default:

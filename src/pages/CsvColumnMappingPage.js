@@ -69,7 +69,7 @@ class CsvColumnMappingPage extends React.Component {
             let newContact = new Array(db_headers.length).fill("");
 
             remapped_order.forEach(function (order, index) {
-                if (remapped_order[index] >=0) {
+                if (remapped_order[index] >= 0) {
                     newContact[index] = contact[remapped_order[index]];
                 }
             });
@@ -103,7 +103,7 @@ class CsvColumnMappingPage extends React.Component {
     };
 
     render() {
-        const {error, goNext, goBack} = this.state;
+        const {goNext, goBack} = this.state;
 
         if (goNext) {
             return <Redirect to='/preview'/>;
@@ -175,7 +175,7 @@ class CsvColumnMappingPage extends React.Component {
 
                 {nav}
 
-                <ErrorBox error={error}/>
+                <ErrorBox/>
             </>
         );
     }

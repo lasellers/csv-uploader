@@ -3,6 +3,8 @@ import {API_URL} from "../App";
 import {Redirect} from "react-router";
 import {BsFillTrashFill} from 'react-icons/bs';
 import ErrorBox from "../components/ErrorBox";
+import store from "../redux/store";
+import {addError} from "../redux/actions";
 
 class ContactsPage extends React.Component {
     constructor(props) {
@@ -23,40 +25,41 @@ class ContactsPage extends React.Component {
         fetch(API_URL + "/contacts")
             .then(response => {
                 if (!response.ok) {
-                    throw Error(response.statusText);
+                    return Promise.reject(response.statusText);
                 }
                 return response.json();
             })
             .then((contacts) => {
+                if (Array.isArray(contacts)) {
                     this.setState({
                         isLoaded: true,
                         contacts
                     });
-                },
-                (error) => {
-                    console.error(error);
-                    this.setState({
-                        isLoaded: true,
-                        error
-                    });
                 }
-            )
+            })
+            .catch((error) => {
+                console.error(error);
+                store.dispatch(addError(error));
+                this.setState({
+                    isLoaded: true,
+                    contacts: []
+                });
+            });
     };
 
     onContactDelete = async (id) => {
         fetch(API_URL + "/contacts/" + id, {method: "DELETE"})
             .then(res => res.json())
-            .then(
-                (result) => {
-                    this.getContacts();
-                },
-                (error) => {
-                    console.error(error);
-                    this.setState({
-                        error
-                    });
-                }
-            );
+            .then((result) => {
+                this.getContacts();
+            })
+            .catch((error) => {
+                console.error(error);
+                store.dispatch(addError(error));
+                this.setState({
+                    contacts: [] // if error, set this to empty array
+                });
+            });
     };
 
     render() {
@@ -116,7 +119,8 @@ class ContactsPage extends React.Component {
                             <td>{contact.created_at}</td>
                             <td>{contact.updated_at}</td>
                             <td>
-                                <button className="btn" onClick={() => this.onContactDelete(contact.id)}><BsFillTrashFill/></button>
+                                <button className="btn" onClick={() => this.onContactDelete(contact.id)}>
+                                    <BsFillTrashFill/></button>
                             </td>
                         </tr>
                     ))}

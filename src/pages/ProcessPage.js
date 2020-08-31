@@ -3,12 +3,12 @@ import {API_URL} from "../App";
 import store from "../redux/store";
 import {Redirect} from "react-router";
 import ErrorBox from "../components/ErrorBox";
+import {addError} from "../redux/actions";
 
 class ProcessPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            error: "",
             goBack: false,
             goNext: false,
             isLoaded: false,
@@ -40,24 +40,23 @@ class ProcessPage extends React.Component {
                 return response.json();
             })
             .then((data) => {
-                    this.setState({
-                        isLoaded: true,
-                        data
-                    });
-                },
-                (error) => {
-                    this.setState({
-                        error,
-                        isLoaded: true,
-                        data: []
-                    });
-                    console.error(error);
-                }
-            )
+                this.setState({
+                    isLoaded: true,
+                    data
+                });
+            })
+            .catch((error) => {
+                console.error(error);
+                store.dispatch(addError(error));
+                this.setState({
+                    isLoaded: true,
+                    data: []
+                });
+            });
     }
 
     render() {
-        const {error, goNext, goBack, isLoaded} = this.state;
+        const {goNext, goBack, isLoaded} = this.state;
         const data = this.state.data;
 
         if (goNext) {
@@ -96,14 +95,14 @@ class ProcessPage extends React.Component {
                 <p>Contact inserts: {data.contact_inserts}</p>
                 <p>Contacts rows: {data.contacts?.length}</p>
 
-                <br />
+                <br/>
 
                 <p>Custom Attribute inserts: {data.custom_attribute_inserts}</p>
                 <p>Custom Attributes data rows: {data.custom_attributes?.length}</p>
 
                 {nav}
 
-                <ErrorBox error={error}/>
+                <ErrorBox/>
             </>
         );
     }

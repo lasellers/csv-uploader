@@ -11,13 +11,12 @@
 # use csvuploader;
 # show tables;
 
-version: '3.1'
+version: '3'
 services:
-  #PHP Service
   app:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: db.Dockerfile
     image: digitalocean.com/php
     container_name: csvuploader_app
     restart: unless-stopped
@@ -30,7 +29,10 @@ services:
       - csvuploader_default
 
   webserver:
-    image: nginx:alpine
+    build:
+      context: .
+      dockerfile: nginx.Dockerfile
+    #image: nginx:alpine
     container_name: csvuploader_webserver
     restart: unless-stopped
     tty: true
@@ -69,6 +71,19 @@ services:
     networks:
       csvuploader_default:
       #ipv4_address: 172.18.0.1
+
+#  react-csv:
+#    container_name: react-csv
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    volumes:
+#      - '.:/app'
+#      - '/app/node_modules'
+#    ports:
+#      - 3001:3000
+#    environment:
+#      - CHOKIDAR_USEPOLLING=true
 
 #volumes:
 #  redis-data:

@@ -3,12 +3,13 @@ import {API_URL} from "../App";
 import {Redirect} from "react-router";
 import {BsFillTrashFill} from 'react-icons/bs';
 import ErrorBox from "../components/ErrorBox";
+import store from "../redux/store";
+import {addError} from "../redux/actions";
 
 class CustomAttributesPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            error: "",
             goBack: false,
             goHome: false,
             contacts: [
@@ -25,21 +26,26 @@ class CustomAttributesPage extends React.Component {
         fetch(API_URL + "/contacts")
             .then(response => {
                 if (!response.ok) {
-                    throw Error(response.statusText);
+                    return Promise.reject(response.statusText);
                 }
                 return response.json();
             })
             .then((contacts) => {
+                if (Array.isArray(contacts)) {
                     this.setState({
                         isLoaded: true,
                         contacts
                     });
-                },
-                (error) => {
+                }
+            })
+            .catch((error) => {
                     console.error(error);
+                    store.dispatch(addError(error));
                     this.setState({
                         isLoaded: true,
-                        error
+                        contacts: [ // if error, set this to empty array
+                            {custom_attributes: []}
+                        ]
                     });
                 }
             )
@@ -49,19 +55,19 @@ class CustomAttributesPage extends React.Component {
         fetch(API_URL + "/custom-attributes/" + id, {method: "DELETE"})
             .then(res => res.json())
             .then((result) => {
-                    this.getContacts();
-                },
-                (error) => {
-                    console.error(error);
-                    this.setState({
-                        error
-                    });
-                }
-            );
+                this.getContacts();
+            })
+            .catch((error) => {
+                console.error(error);
+                store.dispatch(addError(error));
+                this.setState({
+                    contacts: [] // if error, set this to empty array
+                });
+            });
     };
 
     render() {
-        const {error, isLoaded, contacts, goBack, goHome} = this.state;
+        const {isLoaded, contacts, goBack, goHome} = this.state;
         const customAttributes = contacts.flatMap(row => {
             return row.custom_attributes;
         });
@@ -76,10 +82,11 @@ class CustomAttributesPage extends React.Component {
         const nav = (
             <>
                 <div>
-                    <button className="btn btn-secondary mr-2" onClick={() => this.setState({goBack: true})}>Back</button>
+                    <button className="btn btn-secondary mr-2" onClick={() => this.setState({goBack: true})}>Back
+                    </button>
                     <button className="btn btn-primary ml-2" onClick={() => this.setState({goHome: true})}>Home</button>
                 </div>
-           </>
+            </>
         );
 
         if (!isLoaded)
@@ -104,14 +111,16 @@ class CustomAttributesPage extends React.Component {
                     </tr>
                     </thead>
                     <tbody>
-                        {customAttributes.map(customAttribute => (
+                    {customAttributes.map(customAttribute => (
                         <tr key={customAttribute.contact_id + '.' + customAttribute.id}>
                             <td>{customAttribute.id}</td>
                             <td>{customAttribute.contact_id}</td>
                             <td>{customAttribute.key}</td>
                             <td>{customAttribute.value}</td>
                             <td>
-                                <button className="btn" onClick={() => this.onCustomAttributeDelete(customAttribute.id)}><BsFillTrashFill/></button>
+                                <button className="btn"
+                                        onClick={() => this.onCustomAttributeDelete(customAttribute.id)}>
+                                    <BsFillTrashFill/></button>
                             </td>
                         </tr>
                     ))}
@@ -120,7 +129,7 @@ class CustomAttributesPage extends React.Component {
 
                 {nav}
 
-                <ErrorBox error={error}/>
+                <ErrorBox/>
             </>
         );
     }

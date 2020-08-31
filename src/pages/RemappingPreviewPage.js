@@ -7,14 +7,13 @@ class RemappingPreviewPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            error: "",
             goNext: false,
             goBack: false
         };
     }
 
     render() {
-        const {error, goNext, goBack} = this.state;
+        const {goNext, goBack} = this.state;
 
         const columns = store.getState().csv.namedColumns;
         const data = store.getState().csv.remapped_csv_data;
@@ -61,7 +60,7 @@ class RemappingPreviewPage extends React.Component {
 
                 {nav}
 
-                <ErrorBox error={error}/>
+                <ErrorBox/>
             </>
         );
     }

@@ -9,7 +9,6 @@ class CsvUploadPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            error: "",
             selectedFile: null,
             header: null,
             data: null,
@@ -90,7 +89,7 @@ class CsvUploadPage extends React.Component {
     };
 
     render() {
-        const {error, goNext} = this.state;
+        const {goNext} = this.state;
 
         if (goNext) {
             return <Redirect to='/mapping'/>;
@@ -109,7 +108,7 @@ class CsvUploadPage extends React.Component {
 
                 {this.uploadedFileData()}
 
-                <ErrorBox error={error}/>
+                <ErrorBox/>
             </>
         );
     }

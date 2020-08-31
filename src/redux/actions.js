@@ -32,3 +32,10 @@ export const addRemappedColumnOrder = data => ({
         remapped_order: data
     }
 });
+
+export const addError = data => ({
+    type: 'ADD_ERROR',
+    payload: {
+        error: data
+    }
+});
