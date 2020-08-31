@@ -132,6 +132,8 @@ class ContactsControllerTest extends TestCase
      */
     public function destroyNull()
     {
+        $this->expectException(\TypeError::class);
+
         $response = $this->controller->destroy(null);
 
         $data = json_decode($response->content(), true);
@@ -186,6 +188,8 @@ class ContactsControllerTest extends TestCase
      */
     public function customAttributeDestroyNull()
     {
+        $this->expectException(\TypeError::class);
+
         $response = $this->controller->customAttributeDestroy(null);
 
         $data = json_decode($response->content(), true);
