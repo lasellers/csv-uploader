@@ -6,7 +6,7 @@
 namespace Tests\Integration\Controllers;
 
 use App\Contact;
-use App\CustomAttributes;
+use App\CustomAttribute;
 use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\CsvController;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -141,20 +141,20 @@ class ContactsControllerTest extends TestCase
     /**
      * @test
      */
-    public function customAttributesDestroy()
+    public function customAttributeDestroy()
     {
-        $customAttribute = CustomAttributes::create([
+        $customAttribute = CustomAttribute::create([
             'contact_id' => 99999,
             'key' => 'foo',
             'value' => 'bar'
         ]);
 
-        $count = CustomAttributes::where('id', $customAttribute->id)->count();
+        $count = CustomAttribute::where('id', $customAttribute->id)->count();
         self::assertEquals(1, $count);
 
-        $this->controller->customAttributesDestroy($customAttribute->id);
+        $this->controller->customAttributeDestroy($customAttribute->id);
 
-        $count = CustomAttributes::where('id', $customAttribute->id)->count();
+        $count = CustomAttribute::where('id', $customAttribute->id)->count();
         self::assertEquals(0, $count);
     }
 
@@ -162,21 +162,21 @@ class ContactsControllerTest extends TestCase
      * We delete twice to see what happens.
      * @test
      */
-    public function customAttributesDestroyDoesntExist()
+    public function customAttributeDestroyDoesntExist()
     {
-        $customAttribute = CustomAttributes::create([
+        $customAttribute = CustomAttribute::create([
             'contact_id' => 99999,
             'key' => 'foo',
             'value' => 'bar'
         ]);
 
-        $count = CustomAttributes::where('id', $customAttribute->id)->count();
+        $count = CustomAttribute::where('id', $customAttribute->id)->count();
         self::assertEquals(1, $count);
 
-        $this->controller->customAttributesDestroy($customAttribute->id);
-        $this->controller->customAttributesDestroy($customAttribute->id);
+        $this->controller->customAttributeDestroy($customAttribute->id);
+        $this->controller->customAttributeDestroy($customAttribute->id);
 
-        $count = CustomAttributes::where('id', $customAttribute->id)->count();
+        $count = CustomAttribute::where('id', $customAttribute->id)->count();
         self::assertEquals(0, $count);
     }
 
@@ -184,9 +184,9 @@ class ContactsControllerTest extends TestCase
      * Delete null to see if it crashes.
      * @test
      */
-    public function customAttributesDestroyNull()
+    public function customAttributeDestroyNull()
     {
-        $response = $this->controller->customAttributesDestroy(null);
+        $response = $this->controller->customAttributeDestroy(null);
 
         $data = json_decode($response->content(), true);
         self::assertEquals(false, $data['result']);

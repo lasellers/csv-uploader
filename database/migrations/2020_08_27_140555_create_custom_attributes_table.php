@@ -17,7 +17,7 @@ class CreateCustomAttributesTable extends Migration
             $table->id();
             $table->timestamps();
         });*/
-
+        // Normally would use blueprint as it works better against multiple DB tests but...
        DB::statement("
        CREATE TABLE custom_attributes (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,

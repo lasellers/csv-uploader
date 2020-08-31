@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Contact;
-use App\CustomAttributes;
+use App\CustomAttribute;
 use App\Http\Requests\UploadCSVRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -54,7 +54,7 @@ class CsvService
 
                             $newCustomAttributes[$customAttributesIndex] = $customAttributeData;
 
-                            $customAttribute = CustomAttributes::firstOrCreate([
+                            $customAttribute = CustomAttribute::firstOrCreate([
                                 'contact_id' => $customAttributeData['contact_id'],
                                 'key' => $customAttributeData['key'],
                                 'value' => $customAttributeData['value'],

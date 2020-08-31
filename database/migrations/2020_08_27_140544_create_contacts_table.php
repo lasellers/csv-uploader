@@ -17,7 +17,7 @@ class CreateContactsTable extends Migration
             $table->id();
             $table->timestamps();
         });*/
-
+        // Normally would use blueprint as it works better against multiple DB tests but...
         DB::statement("CREATE TABLE contacts (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `team_id` int(10) unsigned NOT NULL,

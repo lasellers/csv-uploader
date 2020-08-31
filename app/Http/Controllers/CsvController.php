@@ -77,15 +77,15 @@ class CsvController extends Controller
      */
     public function save(SaveCSVRequest $request)
     {
-        $mappedRows = $request->get('contacts');
-        $unmappedRows = $request->get('custom_attributes');
+        $contacts = $request->get('contacts');
+        $customAttributes = $request->get('custom_attributes');
 
-        [$mappedRows, $unmappedRows] = $this->convertSimpleArrayToAssociateArray($mappedRows, $unmappedRows);
+        [$contacts, $customAttributes] = $this->convertSimpleArrayToAssociateArray($contacts, $customAttributes);
 
         //
-        [$contactInserts, $customAttributeInserts, $newUnmappedData, $errors] = $this->service->saveCSV(
-            $mappedRows,
-            $unmappedRows
+        [$contactInserts, $customAttributeInserts, $newCustomAttributes, $errors] = $this->service->saveCSV(
+            $contacts,
+            $customAttributes
         );
 
         if (count($errors) > 0) {
@@ -95,8 +95,8 @@ class CsvController extends Controller
         return response()->json([
             'contact_inserts' => $contactInserts,
             'custom_attribute_inserts' => $customAttributeInserts,
-            'contacts' => $mappedRows,
-            'custom_attributes' => $newUnmappedData,
+            'contacts' => $contacts,
+            'custom_attributes' => $newCustomAttributes,
             'errors' => $errors
         ]);
     }

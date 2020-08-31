@@ -6,7 +6,7 @@
 namespace Tests\Integration\Controllers;
 
 use App\Contact;
-use App\CustomAttributes;
+use App\CustomAttribute;
 use App\Http\Controllers\CsvController;
 use App\Http\Requests\SaveCSVRequest;
 use App\Services\CsvService;
@@ -65,7 +65,7 @@ class CsvServiceTest extends TestCase
 
         // get the last ones added to db and check contact_id matches up
         $contacts = Contact::orderBy('id', 'desc')->get()->take(2);
-        $customAttributes = CustomAttributes::orderBy('id', 'desc')->get()->take(2);
+        $customAttributes = CustomAttribute::orderBy('id', 'desc')->get()->take(2);
         self::assertCount(2, $contacts);
         self::assertCount(2, $customAttributes);
         $customAttributesContactIds = array_column($customAttributes->toArray(), 'contact_id');

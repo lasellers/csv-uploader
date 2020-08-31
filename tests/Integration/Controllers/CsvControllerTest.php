@@ -6,7 +6,7 @@
 namespace Tests\Integration\Controllers;
 
 use App\Contact;
-use App\CustomAttributes;
+use App\CustomAttribute;
 use App\Http\Controllers\CsvController;
 use App\Http\Requests\SaveCSVRequest;
 use App\Services\CsvService;
@@ -45,8 +45,8 @@ class CsvControllerTest extends TestCase
         $request = new SaveCSVRequest(
             [
                 'contacts' => [
-                    [1, "John C. Smith", "555-555-5555", "john@smith.com", "12345", "2000-01-01", "2000-01-02"],
-                    [1, "Jane C. Smith", "555-555-5555", "jane@smith.com", "12346", "2000-01-01", "2010-03-04"]
+                    [1, "John C. Smith TEST", "555-555-5555", "john@smithTEST.com", "12345", "2000-01-01", "2000-01-02"],
+                    [1, "Jane C. Smith TEST", "555-555-5555", "jane@smithTEST.com", "12346", "2000-01-01", "2010-03-04"]
                 ],
                 'custom_attributes' => [
                     [0, "blah", "foo"],
@@ -68,7 +68,7 @@ class CsvControllerTest extends TestCase
 
         // get the last ones added to db and check contact_id matches up
         $contacts = Contact::orderBy('id', 'desc')->get()->take(2);
-        $customAttributes = CustomAttributes::orderBy('id', 'desc')->get()->take(2);
+        $customAttributes = CustomAttribute::orderBy('id', 'desc')->get()->take(2);
         self::assertCount(2, $contacts);
         self::assertCount(2, $customAttributes);
         $customAttributesContactIds = array_column($customAttributes->toArray(), 'contact_id');
@@ -142,8 +142,8 @@ class CsvControllerTest extends TestCase
     public function convertSimpleArrayToAssociateArray()
     {
         $contactsData = [
-            [99999, "John C. Smith SAVE", "555-555-5555", "john@smithSAVE.com", "12345", "2000-01-01", "2000-01-02"],
-            [99999, "Jane C. Smith SAVE", "555-555-5555", "jane@smithSAVE.com", "12346", "2000-01-02", "2010-03-04"]
+            [99999, "John C. Smith TEST", "555-555-5555", "john@smithTEST.com", "12345", "2000-01-01", "2000-01-02"],
+            [99999, "Jane C. Smith TEST", "555-555-5555", "jane@smithTEST.com", "12346", "2000-01-02", "2010-03-04"]
         ];
         $customAttributesData = [
             [0, "blah1", "foo1"],
@@ -156,11 +156,11 @@ class CsvControllerTest extends TestCase
         );
 
         $contactsTest = [
-            ['team_id' => 99999, 'name' => "John C. Smith SAVE", 'phone' => "555-555-5555",
-                'email' => "john@smithSAVE.com", 'sticky_phone_number_id' => "12345",
+            ['team_id' => 99999, 'name' => "John C. Smith TEST", 'phone' => "555-555-5555",
+                'email' => "john@smithTEST.com", 'sticky_phone_number_id' => "12345",
                 'created_at' => "2000-01-01", 'updated_at' => "2000-01-02"],
-            ['team_id' => 99999, 'name' => "Jane C. Smith SAVE", 'phone' => "555-555-5555",
-                'email' => "jane@smithSAVE.com", 'sticky_phone_number_id' => "12346",
+            ['team_id' => 99999, 'name' => "Jane C. Smith TEST", 'phone' => "555-555-5555",
+                'email' => "jane@smithTEST.com", 'sticky_phone_number_id' => "12346",
                 'created_at' => "2000-01-02", 'updated_at' => "2010-03-04"]
         ];
         $customAttributesTest = [
@@ -204,8 +204,8 @@ class CsvControllerTest extends TestCase
     public function convertSimpleArrayToAssociateArrayNoCustomAttributes()
     {
         $contactsData = [
-            [99999, "John C. Smith SAVE", "555-555-5555", "john@smithSAVE.com", "12345", "2000-01-01", "2000-01-02"],
-            [99999, "Jane C. Smith SAVE", "555-555-5555", "jane@smithSAVE.com", "12346", "2000-01-02", "2010-03-04"]
+            [99999, "John C. Smith TEST", "555-555-5555", "john@smithTEST.com", "12345", "2000-01-01", "2000-01-02"],
+            [99999, "Jane C. Smith TEST", "555-555-5555", "jane@smithTEST.com", "12346", "2000-01-02", "2010-03-04"]
         ];
         $customAttributesData = [
         ];
@@ -216,11 +216,11 @@ class CsvControllerTest extends TestCase
         );
 
         $contactsTest = [
-            ['team_id' => 99999, 'name' => "John C. Smith SAVE", 'phone' => "555-555-5555",
-                'email' => "john@smithSAVE.com", 'sticky_phone_number_id' => "12345",
+            ['team_id' => 99999, 'name' => "John C. Smith TEST", 'phone' => "555-555-5555",
+                'email' => "john@smithTEST.com", 'sticky_phone_number_id' => "12345",
                 'created_at' => "2000-01-01", 'updated_at' => "2000-01-02"],
-            ['team_id' => 99999, 'name' => "Jane C. Smith SAVE", 'phone' => "555-555-5555",
-                'email' => "jane@smithSAVE.com", 'sticky_phone_number_id' => "12346",
+            ['team_id' => 99999, 'name' => "Jane C. Smith TEST", 'phone' => "555-555-5555",
+                'email' => "jane@smithTEST.com", 'sticky_phone_number_id' => "12346",
                 'created_at' => "2000-01-02", 'updated_at' => "2010-03-04"]
         ];
         $customAttributesTest = [
@@ -262,6 +262,9 @@ class CsvControllerTest extends TestCase
 
     /**
      * Caught a bug. Turns out it was because the updated_at date for the first two was "2000-01".
+     * We change it here so that one of them has a valid date but the other doesn't. So we would expect 1 to save and
+     * 1 not to (i.e., one will be rejected).
+     *
      * @test
      */
     public function saveDups()
@@ -269,10 +272,10 @@ class CsvControllerTest extends TestCase
         $request = new SaveCSVRequest(
             [
                 'contacts' => [
-                    [1, "John Smith A", "555-555-5555", "john@smith.com", "12345", "2000-01-01", "2000-01-01"],
-                    [1, "Bob Smith B", "555-555-5556", "bob@smith.com", "12346", "2000-01-01", "2000-01-01"],
-                    [2, "Jane Cordova C", "555-555-6000", "jane@smith.com", "12347", "2000-01-01", "2001-10-01"],
-                    [3, "Jill Cordova D", "555-555-6001", "jill@smith.com", "12348", "2000-01-01", "2001-10-01"]
+                    [1, "John Smith TEST A", "555-555-5555", "john@smith.com", "12345", "2000-01-01", "2000-01"],
+                    [1, "Bob Smith TEST B", "555-555-5556", "bob@smith.com", "12346", "2000-01-01", "2000-01-01"],
+                    [2, "Jane Cordova TEST C", "555-555-6000", "jane@smith.com", "12347", "2000-01-01", "2001-10-01"],
+                    [3, "Jill Cordova TEST D", "555-555-6001", "jill@smith.com", "12348", "2000-01-01", "2001-10-01"]
                 ],
                 'custom_attributes' => [
                 ]

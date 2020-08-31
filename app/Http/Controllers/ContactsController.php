@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Contact;
-use App\CustomAttributes;
+use App\CustomAttribute;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class ContactsController extends Controller
 {
@@ -51,10 +50,10 @@ class ContactsController extends Controller
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function customAttributesDestroy($id)
+    public function customAttributeDestroy($id)
     {
         try {
-            $customAttribute = CustomAttributes::find($id);
+            $customAttribute = CustomAttribute::find($id);
             if (!is_null($customAttribute)) {
                 $result = $customAttribute->delete();
                 return response()->json(['result' => $result]);

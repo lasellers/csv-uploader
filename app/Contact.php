@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\CustomAttributes;
+use App\CustomAttribute;
 use phpDocumentor\Reflection\Types\Integer;
 
 class Contact extends Model
@@ -23,6 +23,6 @@ class Contact extends Model
     //
     public function customAttributes(): HasMany
     {
-        return $this->hasMany(CustomAttributes::class);
+        return $this->hasMany(CustomAttribute::class);
     }
 }
