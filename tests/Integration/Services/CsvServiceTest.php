@@ -34,31 +34,37 @@ class CsvServiceTest extends TestCase
     }
 
     /**
+     * Tests the csv/save API's main service call.
      * @test
      */
     public function save()
     {
-        $data = [
-            [1, "John C. Smith", "555-555-5555", "john@smith.com", "12345", "2000-01-01", "2000-01-02"],
-            [1, "Jane C. Smith", "555-555-5555", "john@smith.com", "12345", "2000-01-01", "2000-01-02"]
+        $contacts = [
+            ['team_id' => 99999, 'name' => "John C. Smith SAVE", 'phone' => "555-555-5555", 'email' => "john@smithSAVE.com", 'sticky_phone_number_id' => "12345", 'created_at' => "2000-01-01", 'updated_at' => "2000-01-02"],
+            ['team_id' => 99999, 'name' => "Jane C. Smith SAVE", 'phone' => "555-555-5555", 'email' => "jane@smithSAVE.com", 'sticky_phone_number_id' => "12346", 'created_at' => "2000-01-02", 'updated_at' => "2010-03-04"]
         ];
-        $unmapped_data = [
-            [0, "blah", "foo"],
-            [0, "blah2", "foo2"]
+        $customAttributes = [
+            ['contact_id' => 0, 'key' => "blah1", 'value' => "foo1"],
+            ['contact_id' => 0, 'key' => "blah2", 'value' => "foo2"]
         ];
 
-        $response = $this->service->saveCSV($data, $unmapped_data);
+        $response = $this->service->saveCSV($contacts, $customAttributes);
 
         self::assertNotNull($response);
-        self::assertIsObject($response);
-        self::assertArrayHasKey('data_inserts', $response);
-        self::assertArrayHasKey('unmapped_data_inserts', $response);
-        self::assertArrayHasKey('data', $response);
-        self::assertArrayHasKey('unmapped_data', $response);
-        /*
-                $contacts = Contact::all();
-                $customAttributes = CustomAttributes::all();
-                print_r($contacts->toArray());
-                print_r($customAttributes->toArray());*/
+        self::assertIsArray($response);
+        self::assertCount(4, $response);
+        [$contactInserts, $customAttributeInserts, $customAttributesData, $errors] = $response;
+        self::assertIsNumeric($contactInserts);
+        self::assertIsNumeric($customAttributeInserts);
+        self::assertIsArray($customAttributesData);
+        self::assertIsArray($errors);
+
+        // get the last ones added to db and check contact_id matches up
+        $contacts = Contact::orderBy('id', 'desc')->get()->take(2);
+        $customAttributes = CustomAttributes::orderBy('id', 'desc')->get()->take(2);
+        self::assertCount(2, $contacts);
+        self::assertCount(2, $customAttributes);
+        $customAttributesContactIds = array_column($customAttributes->toArray(), 'contact_id');
+        self::assertContains($contacts[1]->id, $customAttributesContactIds);
     }
 }

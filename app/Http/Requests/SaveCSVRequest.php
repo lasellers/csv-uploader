@@ -26,8 +26,8 @@ class SaveCSVRequest extends FormRequest
     public function rules()
     {
         return [
-            'data' => '',
-            'unmapped_data' => '',
+            'contacts' => '',
+            'custom_attributes' => '',
         ];
     }
 }

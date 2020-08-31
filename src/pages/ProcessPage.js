@@ -13,17 +13,17 @@ class ProcessPage extends React.Component {
             goNext: false,
             isLoaded: false,
             data: {
-                data_inserts: 0,
-                unmapped_data_inserts: 0,
-                data: [],
-                unmapped_data: []
+                contact_inserts: 0,
+                custom_attribute_inserts: 0,
+                contacts: [],
+                custom_attributes: []
             }
         };
     }
 
     componentDidMount() {
-        const data = store.getState().csv.remapped_csv_data;
-        const unmapped_data = store.getState().csv.unmapped_data;
+        const contacts = store.getState().csv.remapped_csv_data;
+        const custom_attributes = store.getState().csv.unmapped_data;
 
         fetch(API_URL + "/csv/save", {
             method: "POST",
@@ -31,7 +31,7 @@ class ProcessPage extends React.Component {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({data: data, unmapped_data: unmapped_data})
+            body: JSON.stringify({contacts, custom_attributes})
         })
             .then(response => {
                 if (!response.ok) {
@@ -93,10 +93,10 @@ class ProcessPage extends React.Component {
 
                 <hr/>
 
-                <p>Data inserts: {data.data_inserts}</p>
-                <p>Unmapped data inserts: {data.unmapped_data_inserts}</p>
-                <p>Data rows: {data.data?.length}</p>
-                <p>Unmapped data rows: {data.unmapped_data?.length}</p>
+                <p>Contact inserts: {data.contact_inserts}</p>
+                <p>Custom Attribute inserts: {data.custom_attribute_inserts}</p>
+                <p>Contacts rows: {data.contacts?.length}</p>
+                <p>Custom Attributes data rows: {data.custom_attributes?.length}</p>
 
                 {nav}
 

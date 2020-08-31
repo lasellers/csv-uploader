@@ -24,13 +24,8 @@ class CsvController extends Controller
         $this->service = $service;
     }
 
-    /**
-     * Preps all in/out data and then calls service to save contacts and contact custom attributes
-     *
-     * @param SaveCSVRequest $request
-     * @return array
-     */
-    public function save(SaveCSVRequest $request)
+
+    public function convertSimpleArrayToAssociateArray($contactsData, $customAttributesData)
     {
         $contactColumns = Schema::getColumnListing('contacts');
         $customAttributeColumns = Schema::getColumnListing('custom_attributes');
@@ -40,37 +35,56 @@ class CsvController extends Controller
         $customAttributeColumns = array_values($customAttributeColumns);
 
         //
-        $mappedRows = $request->get('data');
-        if (is_string($mappedRows)) {
-            $mappedRows = json_decode(trim($mappedRows));
+        if (is_string($contactsData)) {
+            $contactsData = json_decode(trim($contactsData));
         }
-        if (is_array($mappedRows)) {
-            foreach ($mappedRows as $index => $contact) {
-                $newContact = [];
-                foreach ($contact as $index2 => $value) {
-                    $newContact[$contactColumns[$index2]] = $value;
-                }
-                $mappedRows[$index] = $newContact;
+        if (!is_array($contactsData)) {
+            $contactsData = [];
+        }
+        foreach ($contactsData as $index => $contact) {
+            $newContact = [];
+            foreach ($contact as $index2 => $value) {
+                $newContact[$contactColumns[$index2]] = $value;
             }
+            $contactsData[$index] = $newContact;
         }
 
         // 2
-        $unmappedRows = $request->get('unmapped_data');
-        if (is_string($unmappedRows)) {
-            $unmappedRows = json_decode(trim($unmappedRows));
+        if (is_string($customAttributesData)) {
+            $customAttributesData = json_decode(trim($customAttributesData));
         }
-        if (is_array($unmappedRows)) {
-            foreach ($unmappedRows as $index => $contactAttribute) {
-                $newContactAttribute = [];
-                foreach ($contactAttribute as $index2 => $value) {
-                    $newContactAttribute[$customAttributeColumns[$index2]] = $value;
-                }
-                $unmappedRows[$index] = $newContactAttribute;
+        if (!is_array($customAttributesData)) {
+            $customAttributesData = [];
+        }
+        foreach ($customAttributesData as $index => $contactAttribute) {
+            $newContactAttribute = [];
+            foreach ($contactAttribute as $index2 => $value) {
+                $newContactAttribute[$customAttributeColumns[$index2]] = $value;
             }
+            $customAttributesData[$index] = $newContactAttribute;
         }
 
+        return [$contactsData, $customAttributesData];
+    }
+
+    /**
+     * Preps all in/out data and then calls service to save contacts and contact custom attributes.
+     *
+     * Of special note, takes the incoming contacts/customAttributes data which is stripped of key names (simple array)
+     * and adds them (associative array).
+     *
+     * @param SaveCSVRequest $request
+     * @return array
+     */
+    public function save(SaveCSVRequest $request)
+    {
+        $mappedRows = $request->get('contacts');
+        $unmappedRows = $request->get('custom_attributes');
+
+        [$mappedRows, $unmappedRows] = $this->convertSimpleArrayToAssociateArray($mappedRows, $unmappedRows);
+
         //
-        [$dataInserts, $unmappedDataInserts, $newUnmappedData, $errors] = $this->service->saveCSV(
+        [$contactInserts, $customAttributeInserts, $newUnmappedData, $errors] = $this->service->saveCSV(
             $mappedRows,
             $unmappedRows
         );
@@ -80,10 +94,10 @@ class CsvController extends Controller
         }
 
         return response()->json([
-            'data_inserts' => $dataInserts,
-            'unmapped_data_inserts' => $unmappedDataInserts,
-            'data' => $mappedRows,
-            'unmapped_data' => $newUnmappedData,
+            'contact_inserts' => $contactInserts,
+            'custom_attribute_inserts' => $customAttributeInserts,
+            'contacts' => $mappedRows,
+            'custom_attributes' => $newUnmappedData,
             'errors' => $errors
         ]);
     }

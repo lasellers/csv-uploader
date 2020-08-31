@@ -17,19 +17,19 @@ class CsvService
     /**
      * Actually saves contact and custom attributes data to DB.
      * Note special handing of contact_id field.
-     * @param $mappedRows
-     * @param $unmappedRows
+     * @param $contacts
+     * @param $customAttributes
      * @return array
      */
-    public function saveCSV($mappedRows, $unmappedRows)
+    public function saveCSV($contacts, $customAttributes)
     {
         $errors = [];
-        $mappedCount = 0;
-        $unmappedCount = 0;
+        $contactInserts = 0;
+        $customAttributeInserts = 0;
 
-        $newUnmappedRows = $unmappedRows;
+        $newCustomAttributes = $customAttributes;
 
-        foreach ($mappedRows as $index => $contactData) {
+        foreach ($contacts as $contactsIndex => $contactData) {
             try {
                 $contact = Contact::firstOrCreate([
                     'team_id' => $contactData['team_id'],
@@ -42,17 +42,17 @@ class CsvService
                 ], $contactData);
 
                 if ($contact->wasRecentlyCreated) {
-                    $mappedCount++;
+                    $contactInserts++;
 
                     //
-                    foreach ($unmappedRows as $index2 => $customAttributeData) {
+                    foreach ($customAttributes as $customAttributesIndex => $customAttributeData) {
                         // The custom attributes (ie unmapped rows) we receive from the frontend have a contact id that
                         // maps to the row index of the mapped rows (ie contacts). Now that we've saved a contact and
                         // it's model id, we replace the temp contact id with the read DB ID before saving custom attributes.
-                        if ($customAttributeData['contact_id'] === $index) {
+                        if ($customAttributeData['contact_id'] === $contactsIndex) {
                             $customAttributeData['contact_id'] = $contact->id;
 
-                            $newUnmappedRows[$index2] = $customAttributeData;
+                            $newCustomAttributes[$customAttributesIndex] = $customAttributeData;
 
                             $customAttribute = CustomAttributes::firstOrCreate([
                                 'contact_id' => $customAttributeData['contact_id'],
@@ -61,7 +61,7 @@ class CsvService
                             ], $customAttributeData);
 
                             if ($customAttribute->wasRecentlyCreated) {
-                                $unmappedCount++;
+                                $customAttributeInserts++;
                             }
                         }
                     }
@@ -77,7 +77,7 @@ class CsvService
             }
         }
 
-        return [$mappedCount, $unmappedCount, $newUnmappedRows, $errors];
+        return [$contactInserts, $customAttributeInserts, $newCustomAttributes, $errors];
     }
 
     /*public function upload($filename, $content)

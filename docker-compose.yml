@@ -63,9 +63,9 @@ services:
       - MARIADB_USER=${DB_USERNAME}
       - MARIADB_PASSWORD=${DB_PASSWORD}
     volumes:
-      #  - csvuploader_db:/var/lib/mysql
-      - ./database/db:/docker-entrypoint-initdb.d
+      # - csvuploader_db:/var/lib/mysql
       # - ./db:/var/lib/mysql
+      - ./database/db:/docker-entrypoint-initdb.d
     networks:
       csvuploader_default:
       #ipv4_address: 172.18.0.1
