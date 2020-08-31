@@ -265,6 +265,8 @@ class CsvControllerTest extends TestCase
      * We change it here so that one of them has a valid date but the other doesn't. So we would expect 1 to save and
      * 1 not to (i.e., one will be rejected).
      *
+     * The validator we added should reject the first one so instead of 4 inserts we should get 3.
+     *
      * @test
      */
     public function saveDups()
@@ -289,7 +291,7 @@ class CsvControllerTest extends TestCase
         self::assertInstanceOf(JsonResponse::class, $response);
         $data = json_decode($response->content(), true);
 
-        self::assertEquals(4, $data['contact_inserts']);
+        self::assertEquals(3, $data['contact_inserts']);
         self::assertEquals(0, $data['custom_attribute_inserts']);
 
         // 2
@@ -312,4 +314,34 @@ class CsvControllerTest extends TestCase
         self::assertEquals(0, $data['contact_inserts']);
         self::assertEquals(0, $data['custom_attribute_inserts']);
     }
+
+    /**
+     * All of these should be rejected by the validator.
+     * @test
+     */
+    public function saveBadData()
+    {
+        $request = new SaveCSVRequest(
+            [
+                'contacts' => [
+                    [null, null, null, null, null, null, null],
+                    ["foo", null, null, null, null, "foo2", "foo2"],
+                ],
+                'custom_attributes' => [
+                    [null, null, null],
+                ]
+            ]
+        );
+
+        // 1
+        $response = $this->controller->save($request);
+
+        self::assertNotNull($response);
+        self::assertInstanceOf(JsonResponse::class, $response);
+        $data = json_decode($response->content(), true);
+
+        self::assertEquals(0, $data['contact_inserts']);
+        self::assertEquals(0, $data['custom_attribute_inserts']);
+    }
+
 }

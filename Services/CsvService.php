@@ -4,13 +4,11 @@ namespace App\Services;
 
 use App\Contact;
 use App\CustomAttribute;
-use App\Http\Requests\UploadCSVRequest;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\File;
+use App\Http\Requests\ContactRequest;
+use App\Http\Requests\CustomAttributeRequest;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\QueryException;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use Illuminate\Support\Facades\Validator;
 
 class CsvService
 {
@@ -31,43 +29,47 @@ class CsvService
 
         foreach ($contacts as $contactsIndex => $contactData) {
             try {
-                $contact = Contact::firstOrCreate([
-                    'team_id' => $contactData['team_id'],
-                    'name' => $contactData['name'],
-                    'phone' => $contactData['phone'],
-                    'email' => $contactData['email'],
-                    'sticky_phone_number_id' => $contactData['sticky_phone_number_id'],
-                    'created_at' => $contactData['created_at'],
-                    'updated_at' => $contactData['updated_at'],
-                ], $contactData);
+                if ($this->validateContactData($contactData)) {
+                    $contact = Contact::firstOrCreate([
+                        'team_id' => $contactData['team_id'],
+                        'name' => $contactData['name'],
+                        'phone' => $contactData['phone'],
+                        'email' => $contactData['email'],
+                        'sticky_phone_number_id' => $contactData['sticky_phone_number_id'],
+                        'created_at' => $contactData['created_at'],
+                        'updated_at' => $contactData['updated_at'],
+                    ], $contactData);
 
-                if ($contact->wasRecentlyCreated) {
-                    $contactInserts++;
+                    if ($contact->wasRecentlyCreated) {
+                        $contactInserts++;
 
-                    //
-                    foreach ($customAttributes as $customAttributesIndex => $customAttributeData) {
-                        // The custom attributes (ie unmapped rows) we receive from the frontend have a contact id that
-                        // maps to the row index of the mapped rows (ie contacts). Now that we've saved a contact and
-                        // it's model id, we replace the temp contact id with the read DB ID before saving custom attributes.
-                        if ($customAttributeData['contact_id'] === $contactsIndex) {
-                            $customAttributeData['contact_id'] = $contact->id;
+                        //
+                        foreach ($customAttributes as $customAttributesIndex => $customAttributeData) {
+                            // The custom attributes (ie unmapped rows) we receive from the frontend have a contact id that
+                            // maps to the row index of the mapped rows (ie contacts). Now that we've saved a contact and
+                            // it's model id, we replace the temp contact id with the read DB ID before saving custom attributes.
+                            if ($customAttributeData['contact_id'] === $contactsIndex) {
+                                $customAttributeData['contact_id'] = $contact->id;
 
-                            $newCustomAttributes[$customAttributesIndex] = $customAttributeData;
+                                $newCustomAttributes[$customAttributesIndex] = $customAttributeData;
 
-                            $customAttribute = CustomAttribute::firstOrCreate([
-                                'contact_id' => $customAttributeData['contact_id'],
-                                'key' => $customAttributeData['key'],
-                                'value' => $customAttributeData['value'],
-                            ], $customAttributeData);
+                                if ($this->validateCustomAttributeData($customAttributeData)) {
 
-                            if ($customAttribute->wasRecentlyCreated) {
-                                $customAttributeInserts++;
+                                    $customAttribute = CustomAttribute::firstOrCreate([
+                                        'contact_id' => $customAttributeData['contact_id'],
+                                        'key' => $customAttributeData['key'],
+                                        'value' => $customAttributeData['value'],
+                                    ], $customAttributeData);
+
+                                    if ($customAttribute->wasRecentlyCreated) {
+                                        $customAttributeInserts++;
+                                    }
+                                }
                             }
                         }
+                        //
                     }
-                    //
                 }
-
                 // Because some of the fields don't have defaults or require numerics, etc this is a last line of
                 // defense against bad data -- which can happen when we input csv that doesn't have all of the required
                 // fields.
@@ -78,6 +80,24 @@ class CsvService
         }
 
         return [$contactInserts, $customAttributeInserts, $newCustomAttributes, $errors];
+    }
+
+    protected function validateContactData($contact)
+    {
+        $validator = Validator::make($contact, ContactRequest::rules());
+        if ($validator->fails()) {
+            return false;
+        }
+        return true;
+    }
+
+    protected function validateCustomAttributeData($customAttribute)
+    {
+        $validator = Validator::make($customAttribute, CustomAttributeRequest::rules());
+        if ($validator->fails()) {
+            return false;
+        }
+        return true;
     }
 
     /*public function upload($filename, $content)
