@@ -3,3 +3,10 @@
     background-color: indianred;
     font-size: xx-large;
 }
+.errors {
+    margin: 0 !important;
+    padding: .5em;
+    background-color: indianred;
+    color: black;
+    font-size: small;
+}

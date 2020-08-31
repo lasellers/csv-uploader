@@ -62,7 +62,7 @@ class ContactsPage extends React.Component {
     };
 
     render() {
-        const {error, isLoaded, contacts, goBack, goNext} = this.state;
+        const {isLoaded, contacts, goBack, goNext} = this.state;
 
         if (goBack) {
             return <Redirect to='/process'/>;

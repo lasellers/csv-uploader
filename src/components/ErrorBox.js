@@ -1,9 +1,10 @@
-import React, { useState } from 'react';import store from "../redux/store";
+import React, {useState} from 'react';
+import store from "../redux/store";
 import {addError} from "../redux/actions";
 import './ErrorBox.css';
 
 function ErrorBox() {
-    const [ error, setError ] = useState(null);
+    const [error, setError] = useState(null);
 
     store.subscribe(function () {
         const csv = store.getState().csv;
@@ -27,9 +28,18 @@ function ErrorBox() {
     }
 
     if (typeof error === "object") {
+        let messages = [];
+        for (const [key, value] of Object.entries(error)) {
+            for (const [key2, value2] of Object.entries(value)) {
+                messages.push({field: key2, message: value2});
+            }
+        }
+
         return (
             <>
-                <p className="alert-error">{error.toLocaleString()}</p>
+                {messages.map((message, index) => (
+                    <p key={index} className="alert-error errors"><b>{message.field}</b> : {message.message}</p>
+                ))};
                 <button className="btn btn-primary btn-sm" onClick={() => {
                     store.dispatch(addError(null));
                 }}>Clear Error

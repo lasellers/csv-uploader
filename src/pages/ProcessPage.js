@@ -43,6 +43,7 @@ class ProcessPage extends React.Component {
                     isLoaded: true,
                     data
                 });
+                store.dispatch(addError(data.errors));
             })
             .catch((error) => {
                 console.error(error);
