@@ -27,7 +27,7 @@ class SaveCSVRequest extends FormRequest
     {
         return [
             'contacts' => 'required|array',
-            'custom_attributes' => 'required|array',
+            'custom_attributes' => 'array', // not required because we don't usually have this data
         ];
     }
 }

@@ -88,9 +88,9 @@ class CsvController extends Controller
             $customAttributes
         );
 
-        if (count($errors) > 0) {
-            return self::returnAPIUnprocessableError($errors,'CSV format error.');
-        }
+        //if (count($errors) > 0) {
+        //    return self::returnAPIUnprocessableError($errors,'CSV format error.');
+        //}
 
         return response()->json([
             'contact_inserts' => $contactInserts,
