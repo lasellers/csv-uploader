@@ -24,7 +24,14 @@ class CsvController extends Controller
         $this->service = $service;
     }
 
-
+    /**
+     * Takes the incoming contacts/customAttributes data which is stripped of key names (simple array)
+     * and adds them (associative array).
+     *
+     * @param $contactsData
+     * @param $customAttributesData
+     * @return array
+     */
     public function convertSimpleArrayToAssociateArray($contactsData, $customAttributesData)
     {
         $contactColumns = Schema::getColumnListing('contacts');
@@ -69,9 +76,6 @@ class CsvController extends Controller
 
     /**
      * Preps all in/out data and then calls service to save contacts and contact custom attributes.
-     *
-     * Of special note, takes the incoming contacts/customAttributes data which is stripped of key names (simple array)
-     * and adds them (associative array).
      *
      * @param SaveCSVRequest $request
      * @return array

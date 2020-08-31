@@ -73,6 +73,9 @@ class CsvControllerTest extends TestCase
         self::assertCount(2, $customAttributes);
         $customAttributesContactIds = array_column($customAttributes->toArray(), 'contact_id');
         self::assertContains($contacts[1]->id, $customAttributesContactIds);
+
+        self::assertEquals(2, $data['contact_inserts']);
+        self::assertEquals(2, $data['custom_attribute_inserts']);
     }
 
     /**
@@ -99,6 +102,9 @@ class CsvControllerTest extends TestCase
         self::assertArrayHasKey('custom_attribute_inserts', $data);
         self::assertArrayHasKey('contacts', $data);
         self::assertArrayHasKey('custom_attributes', $data);
+
+        self::assertEquals(0, $data['contact_inserts']);
+        self::assertEquals(0, $data['custom_attribute_inserts']);
     }
 
     /**
@@ -123,6 +129,9 @@ class CsvControllerTest extends TestCase
         self::assertArrayHasKey('custom_attribute_inserts', $data);
         self::assertArrayHasKey('contacts', $data);
         self::assertArrayHasKey('custom_attributes', $data);
+
+        self::assertEquals(0, $data['contact_inserts']);
+        self::assertEquals(0, $data['custom_attribute_inserts']);
     }
 
     /**
@@ -249,5 +258,55 @@ class CsvControllerTest extends TestCase
 
         self::assertEquals($contacts, $contactsTest);
         self::assertEquals($customAttributes, $customAttributesTest);
+    }
+
+    /**
+     * Caught a bug. Turns out it was because the updated_at date for the first two was "2000-01".
+     * @test
+     */
+    public function saveDups()
+    {
+        $request = new SaveCSVRequest(
+            [
+                'contacts' => [
+                    [1, "John Smith A", "555-555-5555", "john@smith.com", "12345", "2000-01-01", "2000-01-01"],
+                    [1, "Bob Smith B", "555-555-5556", "bob@smith.com", "12346", "2000-01-01", "2000-01-01"],
+                    [2, "Jane Cordova C", "555-555-6000", "jane@smith.com", "12347", "2000-01-01", "2001-10-01"],
+                    [3, "Jill Cordova D", "555-555-6001", "jill@smith.com", "12348", "2000-01-01", "2001-10-01"]
+                ],
+                'custom_attributes' => [
+                ]
+            ]
+        );
+
+        // 1
+        $response = $this->controller->save($request);
+
+        self::assertNotNull($response);
+        self::assertInstanceOf(JsonResponse::class, $response);
+        $data = json_decode($response->content(), true);
+
+        self::assertEquals(4, $data['contact_inserts']);
+        self::assertEquals(0, $data['custom_attribute_inserts']);
+
+        // 2
+        $response = $this->controller->save($request);
+
+        self::assertNotNull($response);
+        self::assertInstanceOf(JsonResponse::class, $response);
+        $data = json_decode($response->content(), true);
+
+        self::assertEquals(0, $data['contact_inserts']);
+        self::assertEquals(0, $data['custom_attribute_inserts']);
+
+        // 3
+        $response = $this->controller->save($request);
+
+        self::assertNotNull($response);
+        self::assertInstanceOf(JsonResponse::class, $response);
+        $data = json_decode($response->content(), true);
+
+        self::assertEquals(0, $data['contact_inserts']);
+        self::assertEquals(0, $data['custom_attribute_inserts']);
     }
 }
