@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Contact;
 use App\CustomAttribute;
+use App\Http\Requests\DestroyContactRequest;
+use App\Http\Requests\DestroyCustomAttributeRequest;
 use Illuminate\Http\Request;
 
 class ContactsController extends Controller
@@ -26,11 +28,11 @@ class ContactsController extends Controller
 
     /**
      * Delete contact
-     * ContactIdRequest
-     * @param $id
+     *
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         try {
             $contact = Contact::find($id);
@@ -45,12 +47,12 @@ class ContactsController extends Controller
     }
 
     /**
-     * Delete custom attributes
-     * ContactIdRequest
-     * @param $id
+     * Delete custom attribute
+     *
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function customAttributeDestroy($id)
+    public function customAttributeDestroy(int $id)
     {
         try {
             $customAttribute = CustomAttribute::find($id);

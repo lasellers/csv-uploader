@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Response;
 
-class SaveCSVRequest extends FormRequest
+class DestroyCustomAttributeRequest extends FormRequest
 {
     // FormRequest tries to redirect us to an url by default -- this makes it return a proper json error.
     protected function failedValidation(Validator $validator) {
@@ -32,8 +32,7 @@ class SaveCSVRequest extends FormRequest
     public function rules()
     {
         return [
-            'contacts' => 'required|array',
-            'custom_attributes' => 'array', // not required because we don't usually have this data
+            'id' => 'numeric'
         ];
     }
 }
