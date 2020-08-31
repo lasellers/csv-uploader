@@ -19,7 +19,7 @@ function NavHeader(props) {
                         <ul className="steps-inline">
                             <Nav.Link as={Link} to="/upload">
                                 <div
-                                    className={location.pathname.includes(['', '/', '/upload']) ? 'btn btn-step active' : 'btn btn-step'}>1
+                                    className={['', '/', '/upload'].includes(location.pathname) ? 'btn btn-step active' : 'btn btn-step'}>1
                                 </div>
                             </Nav.Link>
                             <Nav.Link as={Link} to="/mapping">
