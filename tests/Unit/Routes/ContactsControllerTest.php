@@ -47,10 +47,10 @@ class ContactsControllerTest extends TestCase
     /**
      * @test
      */
-    public function customAttributesDestroy()
+    public function customAttributeDestroy()
     {
         $mock = \Mockery::mock('overload:ContactsController');
-        $mock->shouldReceive('customAttributesDestroy')->andReturn(self::MOCK_UNIT);
+        $mock->shouldReceive('customAttributeDestroy')->andReturn(self::MOCK_UNIT);
         $this->app->instance(ContactsController::class, $mock);
 
         $response = $this->withoutMiddleware()

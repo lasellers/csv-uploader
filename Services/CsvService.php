@@ -29,7 +29,9 @@ class CsvService
 
         foreach ($contacts as $contactsIndex => $contactData) {
             try {
-                if ($this->validateContactData($contactData)) {
+                [$valid, $error] = $this->validateContactData($contactData);
+                if (!$valid) $errors[] = $error;
+                if ($valid) {
                     $contact = Contact::firstOrCreate([
                         'team_id' => $contactData['team_id'],
                         'name' => $contactData['name'],
@@ -53,7 +55,9 @@ class CsvService
 
                                 $newCustomAttributes[$customAttributesIndex] = $customAttributeData;
 
-                                if ($this->validateCustomAttributeData($customAttributeData)) {
+                                [$valid, $error] = $this->validateCustomAttributeData($customAttributeData);
+                                if (!$valid) $errors[] = $error;
+                                if ($valid) {
 
                                     $customAttribute = CustomAttribute::firstOrCreate([
                                         'contact_id' => $customAttributeData['contact_id'],
@@ -88,9 +92,10 @@ class CsvService
         if ($validator->fails()) {
             Log::error('Validator:Contact');
             Log::error($contact);
-            return false;
+            Log::error($validator->errors());
+            return [false, $validator->errors()];
         }
-        return true;
+        return [true, null];
     }
 
     protected function validateCustomAttributeData($customAttribute)
@@ -99,9 +104,10 @@ class CsvService
         if ($validator->fails()) {
             Log::error('Validator:CustomAttribute');
             Log::error($customAttribute);
-            return false;
+            Log::error($validator->errors());
+            return [false, $validator->errors()];
         }
-        return true;
+        return [true, null];
     }
 
     /*public function upload($filename, $content)
