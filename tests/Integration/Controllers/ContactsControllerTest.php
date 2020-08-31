@@ -10,6 +10,7 @@ use App\CustomAttributes;
 use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\CsvController;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Tests\TestCase;
 
@@ -33,25 +34,46 @@ class ContactsControllerTest extends TestCase
     }
 
     /**
-     * test
+     * @test
      */
     public function index()
     {
+        $contact = Contact::create([
+            'team_id' => 99999,
+            'name' => 'James INDEX',
+            'phone' => '12345678',
+            'email' => 'james@INDEX.com',
+            'sticky_phone_number_id' => 123,
+            'created_at' => '2020-08-02',
+            'updated_at' => '2020-08-03',
+        ]);
+
+        //
         $response = $this->controller->index();
 
+        //
         self::assertNotNull($response);
-        self::assertInstanceOf($response);
-        self::assertArrayHasKey('contacts_inserts', $response);
-        self::assertArrayHasKey('custom_attributes_inserts', $response);
-        self::assertArrayHasKey('contacts', $response);
-        self::assertArrayHasKey('custom_attributes', $response);
+        self::assertInstanceOf(JsonResponse::class, $response);
 
-        $contacts = Contact::all();
-        $customAttributes = CustomAttributes::all();
-        print_r($contacts->toArray());
-        print_r($customAttributes->toArray());
-        self::assertCount(2, $contacts);
-        self::assertCount(2, $customAttributes);
+        $items = json_decode($response->content(), true);
+        self::assertIsArray($items);
+
+        //
+        foreach ($items as $item) {
+            self::assertArrayHasKey('custom_attributes', $item);
+        }
+
+        //
+        $contactData = $contact->toArray();
+        $count = 0;
+        foreach ($items as $item) {
+            unset($item['custom_attributes']);
+            if ($contactData['id'] === $item['id']) {
+                self::assertEquals($contactData, $item);
+                $count++;
+            }
+        }
+        self::assertEquals(1, $count);
     }
 
     /**
