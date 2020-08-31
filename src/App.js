@@ -14,12 +14,13 @@ import NotFoundPage from "./pages/NotFoundPage";
 
 import NavHeader from "./components/NavHeader";
 
-export const API_URL = "http://localhost:8000/api";
+export const API_URL = process.env.REACT_APP_API_URL;
 
 function App(props) {
     return (
         <BrowserRouter>
             <NavHeader/>
+            api url: {process.env.API_URL}
             <main className="App">
                 <div id="App-body">
                     <div className="container-fluid">
