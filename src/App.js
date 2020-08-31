@@ -20,7 +20,6 @@ function App(props) {
     return (
         <BrowserRouter>
             <NavHeader/>
-            api url: {process.env.API_URL}
             <main className="App">
                 <div id="App-body">
                     <div className="container-fluid">
