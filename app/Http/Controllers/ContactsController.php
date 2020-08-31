@@ -21,10 +21,7 @@ class ContactsController extends Controller
                 ->get();
             return response()->json($contacts->toArray());
         } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Contacts lookup error ' . $e->getMessage(),
-                Response::HTTP_INTERNAL_SERVER_ERROR
-            ]);
+            return self::returnAPIError($e);
         }
     }
 

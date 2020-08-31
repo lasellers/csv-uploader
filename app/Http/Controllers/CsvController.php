@@ -4,13 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SaveCSVRequest;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\File; // Illuminate\Filesystem\Filesystem
-use App\Contact;
-use App\CustomAttributes;
 use Illuminate\Support\Facades\Schema;
 use App\Services\CsvService;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class CsvController extends Controller
 {
@@ -78,7 +73,7 @@ class CsvController extends Controller
      * Preps all in/out data and then calls service to save contacts and contact custom attributes.
      *
      * @param SaveCSVRequest $request
-     * @return array
+     * @return \Illuminate\Http\JsonResponse
      */
     public function save(SaveCSVRequest $request)
     {
@@ -94,7 +89,7 @@ class CsvController extends Controller
         );
 
         if (count($errors) > 0) {
-            throw new HttpException(Response::HTTP_UNPROCESSABLE_ENTITY, 'CSV format error.');
+            return self::returnAPIUnprocessableError($errors,'CSV format error.');
         }
 
         return response()->json([
