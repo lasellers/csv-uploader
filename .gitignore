@@ -1,6 +1,9 @@
 /node_modules
 /public/hot
-/public/storage
+/public/storage/framework
+/public/storage/views
+/public/storage/cache
+/public/storage/csv
 /storage/*.key
 /storage/framework
 /vendor
