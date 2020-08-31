@@ -191,5 +191,4 @@ class ContactsControllerTest extends TestCase
         $data = json_decode($response->content(), true);
         self::assertEquals(false, $data['result']);
     }
-
 }

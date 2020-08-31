@@ -40,8 +40,12 @@ class CsvServiceTest extends TestCase
     public function save()
     {
         $contacts = [
-            ['team_id' => 99999, 'name' => "John C. Smith SAVE", 'phone' => "555-555-5555", 'email' => "john@smithSAVE.com", 'sticky_phone_number_id' => "12345", 'created_at' => "2000-01-01", 'updated_at' => "2000-01-02"],
-            ['team_id' => 99999, 'name' => "Jane C. Smith SAVE", 'phone' => "555-555-5555", 'email' => "jane@smithSAVE.com", 'sticky_phone_number_id' => "12346", 'created_at' => "2000-01-02", 'updated_at' => "2010-03-04"]
+            ['team_id' => 99999, 'name' => "John C. Smith SAVE", 'phone' => "555-555-5555",
+                'email' => "john@smithSAVE.com", 'sticky_phone_number_id' => "12345",
+                'created_at' => "2000-01-01", 'updated_at' => "2000-01-02"],
+            ['team_id' => 99999, 'name' => "Jane C. Smith SAVE", 'phone' => "555-555-5555",
+                'email' => "jane@smithSAVE.com", 'sticky_phone_number_id' => "12346",
+                'created_at' => "2000-01-02", 'updated_at' => "2010-03-04"]
         ];
         $customAttributes = [
             ['contact_id' => 0, 'key' => "blah1", 'value' => "foo1"],
