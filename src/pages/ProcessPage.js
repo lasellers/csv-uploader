@@ -94,8 +94,11 @@ class ProcessPage extends React.Component {
                 <hr/>
 
                 <p>Contact inserts: {data.contact_inserts}</p>
-                <p>Custom Attribute inserts: {data.custom_attribute_inserts}</p>
                 <p>Contacts rows: {data.contacts?.length}</p>
+
+                <br />
+
+                <p>Custom Attribute inserts: {data.custom_attribute_inserts}</p>
                 <p>Custom Attributes data rows: {data.custom_attributes?.length}</p>
 
                 {nav}
