@@ -1,21 +1,23 @@
-# sudo docker build -t nginx-csv -f spa.Dockerfile .
-# sudo docker run -p 8080:80 nginx-csv
-FROM ubuntu:latest
+# sudo docker build -t csvuploader_spa -f spa.Dockerfile .
+# sudo docker run -it --rm -v ${PWD}:/app -v /app/node_modules -p 8080:80 -e CHOKIDAR_USEPOLLING=true --name csvuploader_spa csvuploader_spa
 
-USER root
+# sudo docker exec -it csvuploader_spa /bin/bash
+# node -v
+# npm -v
+# nginx -v
 
-RUN apt-get update
-RUN apt-get install -y nginx nodejs
+# FROM node:14-buster
+FROM node:14
 
+RUN apt-get update && apt-get install -y nginx
 RUN rm -v /etc/nginx/nginx.conf
-ADD nginx.conf /etc/nginx/
+ADD spa.nginx.conf /etc/nginx/conf.d/default.conf
+# /usr/share/nginx/html/index.html
 
-# RUN npm install --silent
+WORKDIR /app/SPA
+#COPY . .
+RUN npm install && npm run build --prod
 
-ADD ./SPA/build /app/
-
-RUN echo "daemon off;" >> /etc/nginx/nginx.conf
-
-EXPOSE 80
+EXPOSE 80 8080 3000
 
 CMD service nginx start

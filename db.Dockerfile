@@ -1,3 +1,11 @@
+# sudo docker build -t csvuploader_db -f db.Dockerfile .
+
+# sudo docker exec -it csvuploader_db /bin/bash
+# mysql -uroot -ppassword
+# show databases;
+# use csvuploader;
+# show tables;
+
 FROM bitnami/mariadb:latest
 
 ENV ALLOW_EMPTY_PASSWORD=yes

@@ -23,7 +23,7 @@ services:
     restart: unless-stopped
     tty: true
     volumes:
-      - '.:/app'
+      - './SPA/:/app/' # mirror ./SPA to container app folder
       - '/app/node_modules'
     ports:
       - 80:80
