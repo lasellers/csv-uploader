@@ -13,56 +13,68 @@
 
 version: '3'
 services:
-  # Laravel API
-  api:
-    build:
-      context: .
-      dockerfile: api.Dockerfile
-    image: digitalocean.com/php
-    container_name: csvuploader_api
-    restart: unless-stopped
-    tty: true
-    ports:
-      - "8001:8000" # poke a hole for artisan run serve
-      - "8000:80"
-    environment:
-      SERVICE_NAME: app
-      SERVICE_TAGS: dev
-    working_dir: /var/www
-
   # React SPA
   spa:
+    #hostname: spa.csvuploader.localhost.com
+    container_name: csvuploader_spa
     build:
       context: .
-      dockerfile: spa.Dockerfile
-    #image: nginx:alpine
-    container_name: csvuploader_spa
+      dockerfile: ./spa.Dockerfile
     restart: unless-stopped
     tty: true
     volumes:
       - '.:/app'
       - '/app/node_modules'
     ports:
-      - "80:80"
-      - "443:443"
-      - "3001:3000" # poke a hole for npm run start
+      - 80:80
+      - 443:443
+      - 3001:3000 # poke a hole for npm run start
+    expose:
+      - 80
+      - 443
     environment:
       - CHOKIDAR_USEPOLLING=true # for hot reload
+      - REACT_APP_API_URL=http://localhost::8000/api
+    depends_on:
+      - db
+      - api
+
+  # Laravel API
+  api:
+    container_name: csvuploader_api
+    #hostname: api.csvuploader.localhost.com
+    build:
+      context: .
+      dockerfile: ./api.Dockerfile
+    image: digitalocean.com/php
+    restart: unless-stopped
+    tty: true
+    ports:
+      - 8001:8000 # poke a hole for artisan run serve
+      - 8000:80
+    expose:
+      - 80
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    working_dir: /var/www
+    depends_on:
+      - db
 
   # MariaDB DB
   db:
-    image: mariadb
-    #build:
-    #  context: ./csvuploader_db/
-    #  dockerfile: ../Dockerfile
-    restart: always
-    #hostname: csvuploader.localhost.com
+    #hostname: db.csvuploader.localhost.com
     hostname: localhost
+    container_name: csvuploader_db
+    build:
+      context: .
+      dockerfile: ./db.Dockerfile
+    #image: mariadb
+    restart: always
     ports:
       - 3306:3306
     expose:
       - 3306
-    container_name: csvuploader_db
     environment:
       - MYSQL_DATABASE=${DB_DATABASE}
       - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
