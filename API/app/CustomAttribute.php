@@ -14,9 +14,9 @@ class CustomAttribute extends Model
         'contact_id', 'key', 'value'
     ];
 
-    protected $casts = [
-        'contact_id' => 'integer',
-    ];
+//    protected $casts = [
+//        'contact_id' => 'integer',
+//    ];
 
     //
     public function contact(): BelongsTo
