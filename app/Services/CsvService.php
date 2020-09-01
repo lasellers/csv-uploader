@@ -30,7 +30,9 @@ class CsvService
         foreach ($contacts as $contactsIndex => $contactData) {
             try {
                 [$valid, $error] = $this->validateContactData($contactData);
-                if (!$valid) $errors[] = $error;
+                if (!$valid) {
+                    $errors[] = $error;
+                }
                 if ($valid) {
                     $contact = Contact::firstOrCreate([
                         'team_id' => $contactData['team_id'],
@@ -56,9 +58,10 @@ class CsvService
                                 $newCustomAttributes[$customAttributesIndex] = $customAttributeData;
 
                                 [$valid, $error] = $this->validateCustomAttributeData($customAttributeData);
-                                if (!$valid) $errors[] = $error;
+                                if (!$valid) {
+                                    $errors[] = $error;
+                                }
                                 if ($valid) {
-
                                     $customAttribute = CustomAttribute::firstOrCreate([
                                         'contact_id' => $customAttributeData['contact_id'],
                                         'key' => $customAttributeData['key'],
@@ -192,5 +195,4 @@ class CsvService
     /*public function processCSV($mappedRows, $unmappedRows)
     {
     }*/
-
 }

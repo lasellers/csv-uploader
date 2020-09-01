@@ -39,3 +39,7 @@ export const addError = data => ({
         error: data
     }
 });
+
+export const clearError = data => ({
+    type: 'CLEAR_ERROR'
+});

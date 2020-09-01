@@ -1,18 +1,19 @@
 import React from 'react';
 import store from "../redux/store";
 import {Redirect} from "react-router";
-import {addRemappedCsvData, addUnmappedData} from "../redux/actions";
+import {addRemappedCsvData, addUnmappedData, clearError} from "../redux/actions";
 
 class CsvColumnMappingPage extends React.Component {
     constructor(props) {
         super(props);
 
-        // Normally the default order is 0,1,2,3,4,5,6,7 and the like as far the the dropdown goes.
-        const order = [...(store.getState().csv.columns).keys()];
-
-        const columns = store.getState().csv.columns;
+        const db_headers = store.getState().csv.db_headers;
         const csv_headers = store.getState().csv.csv_headers;
-        const remapped_order = this.defaultRemappedOrder(columns, csv_headers, order);
+
+        // Normally the default order is 0,1,2,3,4,5,6,7 and the like as far the the dropdown goes.
+        const order = [...(db_headers).keys()];
+
+        const remapped_order = this.defaultRemappedOrder(db_headers, csv_headers, order);
 
         this.state = {
             error: "",
@@ -39,7 +40,7 @@ class CsvColumnMappingPage extends React.Component {
         const csv_headers = store.getState().csv.csv_headers;
         const csv_data = store.getState().csv.csv_data;
         const remapped_order = this.state.remapped_order;
-        const db_headers = store.getState().csv.columns;
+        const db_headers = store.getState().csv.db_headers;
 
         const [remappedData, unmappedData] = this.remapCsvToContactsAndCustomAttributes(csv_data, remapped_order, csv_headers, db_headers);
 
@@ -58,6 +59,7 @@ class CsvColumnMappingPage extends React.Component {
      * @param contacts
      * @param remapped_order
      * @param csv_headers
+     * @param db_headers
      * @returns {[[], []]}
      */
     remapCsvToContactsAndCustomAttributes = (contacts, remapped_order, csv_headers, db_headers) => {
@@ -89,10 +91,10 @@ class CsvColumnMappingPage extends React.Component {
      * i.e., if they are the same order then mapping stays: 0,1,2,3,4,5,6.
      * If the headers are reversed then this comes out: 6,5,4,3,2,1,0
      */
-    defaultRemappedOrder = (columns, csv_headers, order) => {
-        let remapped_order = new Array(columns.length).fill(-1);
+    defaultRemappedOrder = (db_headers, csv_headers, order) => {
+        let remapped_order = new Array(db_headers.length).fill(-1);
 
-        columns.forEach((header, index) => {
+        db_headers.forEach((header, index) => {
             const index2 = csv_headers.indexOf(header);
             if (index2 >= 0) {
                 remapped_order[index] = index2;
@@ -111,7 +113,7 @@ class CsvColumnMappingPage extends React.Component {
             return <Redirect to='/upload'/>;
         }
 
-        const namedColumns = store.getState().csv.namedColumns;
+        const db_named_headers = store.getState().csv.db_named_headers;
         const csv_headers = store.getState().csv.csv_headers;
         const csv_data = store.getState().csv.csv_data;
         const headersCsv = store.getState().csv.csv_headers.join(', ');
@@ -121,7 +123,10 @@ class CsvColumnMappingPage extends React.Component {
                 <div>
                     <button className="btn btn-secondary mr-2" onClick={() => this.setState({goBack: true})}>Back
                     </button>
-                    <button className="btn btn-primary ml-2" onClick={this.onMappingAccept}>Next</button>
+                    <button className="btn btn-primary ml-2" onClick={ () => {
+                        store.dispatch(clearError());
+                        this.onMappingAccept();
+                    }}>Next</button>
                 </div>
             </>
         );
@@ -152,7 +157,7 @@ class CsvColumnMappingPage extends React.Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {namedColumns.map((column, index) => (
+                    {db_named_headers.map((column, index) => (
                         <tr key={index}>
                             <td>
                                 {column}

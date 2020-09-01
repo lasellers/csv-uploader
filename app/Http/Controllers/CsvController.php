@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SaveCSVRequest;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 use App\Services\CsvService;
 
@@ -12,7 +11,7 @@ class CsvController extends Controller
     /**
      * @var CsvService
      */
-    protected \App\Services\CsvService $service;
+    protected CsvService $service;
 
     public function __construct(CsvService $service)
     {
@@ -29,6 +28,7 @@ class CsvController extends Controller
      */
     public function convertSimpleArrayToAssociateArray($contactsData, $customAttributesData)
     {
+        // pull tables field names
         $contactColumns = Schema::getColumnListing('contacts');
         $customAttributeColumns = Schema::getColumnListing('custom_attributes');
         unset($contactColumns[0]); //remove id field
@@ -88,10 +88,6 @@ class CsvController extends Controller
             $customAttributes
         );
 
-        //if (count($errors) > 0) {
-        //    return self::returnAPIUnprocessableError($errors,'CSV format error.');
-        //}
-
         return response()->json([
             'contact_inserts' => $contactInserts,
             'custom_attribute_inserts' => $customAttributeInserts,
@@ -100,84 +96,4 @@ class CsvController extends Controller
             'errors' => $errors
         ]);
     }
-
-    /**
-     * Gets list of csv files in storage
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    /*public function index()
-    {
-        $files = $this->service->files();
-        return response()->json($files);
-    }*/
-
-    /**
-     * Deletes csv file in storage
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    /*public function destroy($filename)
-    {
-        $status = $this->service->destroy($filename);
-        return response()->json(['delete' => $status]);
-    }*/
-
-    /**
-     * Fetches csv file as array
-     * @param $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    /*public function file($filename)
-    {
-        $status = $this->service->file($filename);
-        return response()->json(['file' => $status]);
-    }*/
-
-    /**
-     * Uploads CSV file to storage
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    /*public function upload(UploadCSVRequest $request)
-    {
-        $filename = $request->get('filename');
-        $content = $request->get('content');
-
-        $result = $this->service->upload($filename, $content);
-        return response()->json(['length' => $result, 'filename' => $filename, 'content' => $content]);
-    }*/
-
-    /**
-     * @param $filename
-     * @return \Illuminate\Http\JsonResponse
-     */
-    /*public function getFile($filename)
-    {
-        [$headers, $rows] = $this->service->loadCSV($filename);
-        return response()->json(['count' => count($rows), 'headers' => $headers, 'data' => $rows]);
-    }*/
-
-    /**
-     * @param $filename
-     * @return \Illuminate\Http\JsonResponse
-     */
-    /*public function remapFile(ProcessCSVRequest $request)
-    {
-        $filename = $request->get('filename');
-        $mapped_columns = $request->get('mapped_columns');
-
-        [$headers, $rows] = $this->service->loadCSV($filename);
-        [$mappedRows, $unmappedRows] = $this->service->remapCSV($rows, $mapped_columns);
-        return response()->json(['data' => ['mapped' => $mappedRows, 'unmapped' => $unmappedRows]]);
-    }*/
-    /**
-     * The heart of things -- takes a list of columns to map to the csv data as input,
-     * a string to the csv in storage that is in question then call the service to merge the data in.
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    /*public function process(ProcessCSVRequest $request)
-    {
-    }*/
 }

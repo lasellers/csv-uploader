@@ -11,7 +11,6 @@ use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\CsvController;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
 use Tests\TestCase;
 
 class ContactsControllerTest extends TestCase

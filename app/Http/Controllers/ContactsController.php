@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Contact;
 use App\CustomAttribute;
-use App\Http\Requests\DestroyContactRequest;
-use App\Http\Requests\DestroyCustomAttributeRequest;
 use Illuminate\Http\Request;
 
 class ContactsController extends Controller

@@ -3,7 +3,7 @@ import {API_URL} from "../App";
 import {Redirect} from "react-router";
 import {BsFillTrashFill} from 'react-icons/bs';
 import store from "../redux/store";
-import {addError} from "../redux/actions";
+import {addError, clearError} from "../redux/actions";
 
 class ContactsPage extends React.Component {
     constructor(props) {
@@ -76,7 +76,10 @@ class ContactsPage extends React.Component {
                 <div>
                     <button className="btn btn-secondary mr-2" onClick={() => this.setState({goBack: true})}>Back
                     </button>
-                    <button className="btn btn-primary ml-2" onClick={() => this.setState({goNext: true})}>Next</button>
+                    <button className="btn btn-primary ml-2" onClick={() => {
+                        store.dispatch(clearError());
+                        this.setState({goNext: true});
+                    }}>Next</button>
                 </div>
             </>
         );

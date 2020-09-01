@@ -1,7 +1,7 @@
 import React from 'react';
 import store from "../redux/store";
 import {Redirect} from "react-router";
-import {addCsvHeaders} from "../redux/actions";
+import {addCsvHeaders, clearError} from "../redux/actions";
 import {addCsvData} from "../redux/actions";
 
 class CsvUploadPage extends React.Component {
@@ -100,7 +100,10 @@ class CsvUploadPage extends React.Component {
 
                 <div>
                     <input className="btn btn-secondary mr-2" type="file" onChange={this.onFileChange}/>
-                    <button className="btn btn-primary ml-2" onClick={this.onFileUpload}>
+                    <button className="btn btn-primary ml-2" onClick={() => {
+                        store.dispatch(clearError());
+                        this.onFileUpload()
+                    }}>
                         Upload
                     </button>
                 </div>

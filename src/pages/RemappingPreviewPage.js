@@ -1,6 +1,7 @@
 import React from 'react';
 import store from "../redux/store";
 import {Redirect} from "react-router";
+import {clearError} from "../redux/actions";
 
 class RemappingPreviewPage extends React.Component {
     constructor(props) {
@@ -9,12 +10,13 @@ class RemappingPreviewPage extends React.Component {
             goNext: false,
             goBack: false
         };
+
     }
 
     render() {
         const {goNext, goBack} = this.state;
 
-        const columns = store.getState().csv.namedColumns;
+        const db_named_headers = store.getState().csv.db_named_headers;
         const data = store.getState().csv.remapped_csv_data;
 
         if (goNext) {
@@ -29,7 +31,11 @@ class RemappingPreviewPage extends React.Component {
                 <div>
                     <button className="btn btn-secondary mr-2" onClick={() => this.setState({goBack: true})}>Back
                     </button>
-                    <button className="btn btn-primary ml-2" onClick={() => this.setState({goNext: true})}>Next</button>
+                    <button className="btn btn-primary ml-2" onClick={() => {
+                        store.dispatch(clearError());
+                        this.setState({goNext: true})
+                    }}>Next
+                    </button>
                 </div>
             </>
         );
@@ -41,7 +47,7 @@ class RemappingPreviewPage extends React.Component {
                 <table className="table table-striped">
                     <thead>
                     <tr>
-                        {columns.map((column, index) => (
+                        {db_named_headers.map((column, index) => (
                             <th key={index}>{column}</th>
                         ))}
                     </tr>

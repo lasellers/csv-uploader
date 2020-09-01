@@ -2,7 +2,7 @@ import React from 'react';
 import {API_URL} from "../App";
 import store from "../redux/store";
 import {Redirect} from "react-router";
-import {addError} from "../redux/actions";
+import {addError, clearError} from "../redux/actions";
 
 class ProcessPage extends React.Component {
     constructor(props) {
@@ -43,7 +43,13 @@ class ProcessPage extends React.Component {
                     isLoaded: true,
                     data
                 });
-                store.dispatch(addError(data.errors));
+                // get the formrequest validation errors from the api
+                if (data.hasOwnProperty('errors')) {
+                    console.warn('errs prop', data.errors);
+                    store.dispatch(addError(data.errors));
+                } else {
+                    store.dispatch(addError(data));
+                }
             })
             .catch((error) => {
                 console.error(error);
@@ -71,7 +77,10 @@ class ProcessPage extends React.Component {
                 <div>
                     <button className="btn btn-secondary mr-2" onClick={() => this.setState({goBack: true})}>Back
                     </button>
-                    <button className="btn btn-primary ml-2" onClick={() => this.setState({goNext: true})}>Next
+                    <button className="btn btn-primary ml-2" onClick={() => {
+                        store.dispatch(clearError());
+                        this.setState({goNext: true});
+                    }}>Next
                     </button>
                 </div>
             </>

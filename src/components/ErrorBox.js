@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import store from "../redux/store";
-import {addError} from "../redux/actions";
+import {clearError} from "../redux/actions";
 import './ErrorBox.css';
 
 function ErrorBox() {
@@ -12,51 +12,75 @@ function ErrorBox() {
     });
 
     if (error === null)
-        return (<>
-        </>);
+        return (<><p></p></>);
 
     if (typeof error === 'string') {
         return (
             <>
-                <p className="alert-error">{error.toLocaleString()}</p>
-                <button className="btn btn-primary btn-sm" onClick={() => {
-                    store.dispatch(addError(null));
-                }}>Clear Error
-                </button>
+                <div className="col-md-12 text-center error">
+                    <p>Error: {error.toLocaleString()}</p>
+                    <button className="btn btn-primary btn-sm" onClick={() => {
+                        store.dispatch(clearError());
+                    }}>Clear Error
+                    </button>
+                </div>
             </>
         );
     }
 
+    // formrequest validation errors
     if (typeof error === "object") {
+
         let messages = [];
         for (const [key, value] of Object.entries(error)) {
-            for (const [key2, value2] of Object.entries(value)) {
-                messages.push({field: key2, message: value2});
+            for (const [field, message] of Object.entries(value)) {
+                messages.push({field, message});
             }
         }
 
-        return (
-            <>
-                {messages.map((message, index) => (
-                    <p key={index} className="alert-error errors"><b>{message.field}</b> : {message.message}</p>
-                ))};
-                <button className="btn btn-primary btn-sm" onClick={() => {
-                    store.dispatch(addError(null));
-                }}>Clear Error
-                </button>
-            </>
-        );
+        if (messages.length > 0) {
+            return (
+                <>
+                    <div className="col-md-12 text-center error">
+                        <h3>Validation Errors</h3>
+                        <table className="table table-striped table-sm">
+                            <thead>
+                            <tr>
+                                <th>Field</th>
+                                <th>Message</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {messages.map((message, index) => (
+                                <tr key={index}>
+                                    <td>{message.field}</td>
+                                    <td>{message.message}</td>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </table>
+                        <div className="col-md-12 text-center">
+                            <button className="btn btn-primary btn-sm" onClick={() => {
+                                store.dispatch(clearError());
+                            }}>Clear Errors
+                            </button>
+                        </div>
+                    </div>
+                </>
+            )
+        }
     }
 
     return (<>
-        <>
-            <p className="alert-error">Unknown Error</p>
-            <button className="btn btn-primary btn-sm" onClick={() => {
-                store.dispatch(addError(null));
-            }}>Clear Error
-            </button>
+            <div className="col-md-12 text-center error">
+                <p>API Error: {error.toString()}</p>
+                <button className="btn btn-primary btn-sm" onClick={() => {
+                    store.dispatch(clearError());
+                }}>Clear Error
+                </button>
+            </div>
         </>
-    </>);
+    );
 
 }
 
