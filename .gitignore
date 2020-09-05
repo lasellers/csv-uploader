@@ -7,7 +7,7 @@
 /storage/*.key
 /storage/framework
 /vendor
-.env
+#.env
 .env.local
 .env.backup
 .phpunit.result.cache
