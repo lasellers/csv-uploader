@@ -66,7 +66,7 @@ class ProcessPage extends React.Component {
             return <Redirect to='/contacts'/>;
         }
         if (goBack) {
-            return <Redirect to='/mapping'/>;
+            return <Redirect to='/preview'/>;
         }
 
         const nav = (

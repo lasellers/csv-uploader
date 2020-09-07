@@ -1,6 +1,6 @@
 ## docker
 # sudo docker build -t csvuploader_spa -f spa.Dockerfile .
-# sudo docker run -it --rm -v ${PWD}:/app -v /app/node_modules -p 3000:3000 -p 3001:80 --name csvuploader_spa csvuploader_spa
+# sudo docker run -it --rm -v ${PWD}:/app -v /app/node_modules -p 80:80 -p 443:443 -name csvuploader_spa csvuploader_spa
 
 ## docker-compose
 # sudo docker exec -it csvuploader_spa /bin/bash
@@ -8,16 +8,16 @@
 # npm -v
 # nginx -v
 # nginx -t
-# lsb_release -a
-# systemctl nginx status
-# cat /var/log/nginx/error.log
 
-# systemctl nginx reload nginx
-# systemctl nginx stop nginx
-# systemctl nginx start nginx
+# cat /var/log/nginx/spa.error.log
 
 # /etc/init.d/nginx status
 # /etc/init.d/nginx start
+
+# systemctl nginx status
+# systemctl nginx reload nginx
+# systemctl nginx stop nginx
+# systemctl nginx start nginx
 
 FROM node:12-buster
 
@@ -33,10 +33,9 @@ ADD spa.nginx.conf /etc/nginx/nginx.conf
 
 WORKDIR /app
 COPY ./spa/package.* .
-#RUN npm clean-install && npm run build
+RUN npm clean-install && npm run build
 
-EXPOSE 80 3000 81
+EXPOSE 80 443
 
-# RUN /etc/init.d/nginx start
 #CMD ["nginx", "-g", "daemon off;"]
 CMD ["nginx"]

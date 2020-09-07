@@ -13,7 +13,7 @@ class SaveCSVRequest extends FormRequest
     protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json(
-            [errors => $validator->errors()],
+            ['errors' => $validator->errors()],
             Response::HTTP_UNPROCESSABLE_ENTITY
         ));
     }

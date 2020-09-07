@@ -35,39 +35,39 @@ services:
 #      - db
 #      - api
 
-#  # React SPA
-#  spa:
-#    #hostname: spa.csvuploader.localhost.com
-#    container_name: csvuploader_spa
-#    build:
-#      context: .
-#      dockerfile: ./spa.Dockerfile
-#    restart: unless-stopped
-#    tty: true
-#    volumes:
-#      - './spa:/app' # mirror ./SPA to container app folder
-#      - '/app/node_modules'
-#    ports:
-#      - 80:80
-#      - 443:443
-#    expose:
-#      - 80
-#      - 443
-#    environment:
-#      - CHOKIDAR_USEPOLLING=true # for hot reload
-#      - REACT_APP_API_URL=${REACT_APP_API_URL} # pass to React so it knows the API endpoints
-#      - PUBLIC_URL=${PUBLIC_URL} # for React index
-#    depends_on:
-#      - db
-#      - api
-#      - apiweb
-#    networks:
-#      - csvuploader-network
+  # React SPA
+  spa:
+    #hostname: spa.csvuploader.localhost.com
+    container_name: csvuploader_spa
+    build:
+      context: .
+      dockerfile: ./spa.Dockerfile
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - './spa:/app' # mirror ./spa to container app folder
+      - '/app/node_modules'
+    ports:
+      - 80:80
+      - 443:443
+    expose:
+      - 80
+      - 443
+    environment:
+      - CHOKIDAR_USEPOLLING=true # for hot reload
+      - REACT_APP_API_URL=${REACT_APP_API_URL} # pass to React so it knows the API endpoints
+      - PUBLIC_URL=${PUBLIC_URL} # for React index
+    depends_on:
+      - db
+      - api
+      - apiweb
+    networks:
+      - csvuploader-network
 
   # Nginx Service - This is just the webserver interface to php
-  # sudo docker exec -it csvuploader_app sh
+  # sudo docker exec -it csvuploader_apiweb sh
   apiweb:
-    #hostname: api.csvuploader.localhost.com
+    #hostname: apiweb.csvuploader.localhost.com
     container_name: csvuploader_apiweb
     build:
       context: .
@@ -76,9 +76,12 @@ services:
     restart: unless-stopped
     tty: true
     working_dir: /var/www
+    volumes:
+      - './api:/var/www' # mirror ./api to container var www folder
+      - '/var/www/vendor'
     ports:
+      - "8000:80"
       - "8080:80"
-      - "8001:80"
       - "8443:443"
     networks:
       - csvuploader-network
@@ -103,12 +106,15 @@ services:
     volumes:
     - './api:/var/www' # mirror ./api to container var www folder
     - '/var/www/vendor'
-    - './php.ini:/usr/local/etc/php/conf.d/local.ini'
+    #- './php.ini:/usr/local/etc/php/conf.d/local.ini'
     environment:
-      SERVICE_NAME: apiweb
-      SERVICE_TAGS: dev
+      - SERVICE_NAME=apiweb
+      - SERVICE_TAGS=dev
+      - DB_HOST=db
     expose:
       - 9000
+    links:
+      - db:mysql
     depends_on:
       - db
     networks:
@@ -151,4 +157,4 @@ services:
 
 networks:
   csvuploader-network:
-    driver: bridge
+    #driver: bridge
