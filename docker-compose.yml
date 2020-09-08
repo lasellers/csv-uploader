@@ -4,36 +4,62 @@
 
 # sudo docker network inspect csvuploader_default
 
-# sudo docker-compose -f Dockerfile up --builld --remove-orphans
+# sudo docker-compose -f Dockerfile up --build --remove-orphans
 
 version: '3'
 services:
-#  # VueJS SPA
-#  vuespa:
-#    #hostname: vuespa.csvuploader.localhost.com
-#    container_name: csvuploader_vuespa
-#    build:
-#      context: .
-#      dockerfile: ./vuespa.Dockerfile
-#    restart: unless-stopped
-#    tty: true
-#    volumes:
-#      - './vuespa:/app' # mirror ./vuespa to container app folder
-#      - '/app/node_modules'
-#    ports:
-#      - 81:80
-#      - 444:443
-#      #- 8080:8080 # poke a hole for npm run start
-#    expose:
-#      - 81
-#      - 444
-#    environment:
-#      - CHOKIDAR_USEPOLLING=true # for hot reload
-#      - REACT_APP_API_URL=${REACT_APP_API_URL} # pass to React so it knows the API endpoints
-#      - PUBLIC_URL=${PUBLIC_URL} # for React index
-#    depends_on:
-#      - db
-#      - api
+  #  # VueJS SPA
+  #  vuespa:
+  #    #hostname: vuespa.csvuploader.localhost.com
+  #    container_name: csvuploader_vuespa
+  #    build:
+  #      context: .
+  #      dockerfile: ./vuespa.Dockerfile
+  #    restart: unless-stopped
+  #    tty: true
+  #    volumes:
+  #      - './vuespa:/app' # mirror ./vuespa to container app folder
+  #      - '/app/node_modules'
+  #    ports:
+  #      - 81:80
+  #      - 444:443
+  #      #- 8080:8080 # poke a hole for npm run start
+  #    expose:
+  #      - 81
+  #      - 444
+  #    environment:
+  #      - CHOKIDAR_USEPOLLING=true # for hot reload
+  #      - REACT_APP_API_URL=${REACT_APP_API_URL} # pass to React so it knows the API endpoints
+  #      - PUBLIC_URL=${PUBLIC_URL} # for React index
+  #    depends_on:
+  #      - db
+  #      - api
+
+  # sudo docker exec -it csvuploader_standup sh
+  standup:
+    container_name: csvuploader_standup
+    build:
+      context: .
+      dockerfile: ./standup.Dockerfile
+    #restart: unless-stopped
+    tty: true
+    working_dir: /var/www
+    volumes:
+      #- './api:/var/www' # mirror ./api to container var www folder
+      - apicode:/var/www
+      - '/var/www/vendor'
+    links:
+      - db:mysql
+    environment:
+      - SERVICE_NAME=apiweb
+      - SERVICE_TAGS=dev
+      - DB_HOST=db
+    networks:
+      - csvuploader-network
+    depends_on:
+      - apiweb
+      - api
+      - db
 
   # React SPA
   spa:
@@ -72,24 +98,25 @@ services:
     build:
       context: .
       dockerfile: ./apiweb.Dockerfile
-#    image: nginx:stable
     restart: unless-stopped
     tty: true
     working_dir: /var/www
     volumes:
-      - './api:/var/www' # mirror ./api to container var www folder
+      #- './api:/var/www' # mirror ./api to container var www folder
+      - apicode:/var/www
       - '/var/www/vendor'
     ports:
       - "8000:80"
-      - "8080:80"
       - "8443:443"
+      - "8080:80"
     networks:
       - csvuploader-network
     depends_on:
       - api
-#    environment:
-#      - NGINX_HOST=localhost
-#      - NGINX_PORT=80
+      - db
+  #    environment:
+  #      - NGINX_HOST=localhost
+  #      - NGINX_PORT=80
 
   # Laravel API
   # sudo docker exec -it csvuploader_api /bin/bash
@@ -99,14 +126,14 @@ services:
     build:
       context: .
       dockerfile: ./api.Dockerfile
-    image: digitalocean.com/php
+    #image: digitalocean.com/php
     restart: unless-stopped
     tty: true
     working_dir: /var/www
     volumes:
-    - './api:/var/www' # mirror ./api to container var www folder
-    - '/var/www/vendor'
-    #- './php.ini:/usr/local/etc/php/conf.d/local.ini'
+      #- './api:/var/www' # mirror ./api to container var www folder
+      - apicode:/var/www
+      - '/var/www/vendor'
     environment:
       - SERVICE_NAME=apiweb
       - SERVICE_TAGS=dev
@@ -133,7 +160,6 @@ services:
     build:
       context: .
       dockerfile: ./db.Dockerfile
-    #image: mariadb
     restart: always
     ports:
       - 3306:3306
@@ -149,12 +175,15 @@ services:
       - MARIADB_USER=${DB_USERNAME}
       - MARIADB_PASSWORD=${DB_PASSWORD}
     volumes:
-      # - csvuploader_db:/var/lib/mysql
-      # - ./db:/var/lib/mysql
+      # - csvuploader_db:/var/lib/mysql #map to docker volume
+      # - ./db:/var/lib/mysql #map to local folder
       - ./db/sql:/docker-entrypoint-initdb.d
     networks:
       - csvuploader-network
 
+volumes:
+  apicode:
+
 networks:
   csvuploader-network:
-    #driver: bridge
+  #driver: bridge

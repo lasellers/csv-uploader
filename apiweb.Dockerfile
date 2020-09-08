@@ -2,7 +2,7 @@ FROM nginx:stable
 
 ## docker
 # sudo docker build -t csvuploader_spa -f apiweb.Dockerfile .
-# sudo docker run -it --rm -v ${PWD}:/app -v /app/node_modules -p 8080:80 -p 8443:443 --name csvuploader_apiweb csvuploader_apiweb
+# sudo docker run -it --rm -v ${PWD}:/app -v /app/node_modules -p 80:80 -p 443:443 --name csvuploader_apiweb csvuploader_apiweb
 
 ## docker-compose
 # sudo docker exec -it csvuploader_apiweb /bin/bash
@@ -26,9 +26,12 @@ FROM nginx:stable
 WORKDIR /var/www
 
 COPY apiweb.nginx.conf /etc/nginx/nginx.conf
+
+COPY ./api/composer*.json ./
+
 COPY ./api/ ./
 
-#EXPOSE 8000 8080 8443
+#EXPOSE 80 443
 
 #CMD ["nginx", "-g", "daemon off;"]
 #CMD ["nginx"]

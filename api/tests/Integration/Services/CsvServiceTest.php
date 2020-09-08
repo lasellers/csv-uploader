@@ -3,15 +3,12 @@
 ./vendor/bin/phpunit tests/Integration/Services/CsvServiceTest.php
 */
 
-namespace Tests\Integration\Controllers;
+namespace Tests\Integration\Services;
 
 use App\Contact;
 use App\CustomAttribute;
-use App\Http\Controllers\CsvController;
-use App\Http\Requests\SaveCSVRequest;
 use App\Services\CsvService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Http\Response;
 use Tests\TestCase;
 
 class CsvServiceTest extends TestCase

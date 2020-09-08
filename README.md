@@ -5,11 +5,18 @@ A demo of a CSV file uploader.
 
 ## Startup
 
-`sudo docker-compose up` to start docker db. Then `composer run reseed` to run db migrations and seeds.
+### 1. Startup with dev tools
+
+`sudo docker-compose up -f db.docker-compose.yml` to start docker db. Then `composer run reseed` to run db migrations and seeds.
 
 `php artisan serve` to start Laravel API server.
 
 `npm run start` to start React frontend.
+
+### 2. Startup with Docker
+
+`sudo docker-compose up` to start docker db. Laravel API will be stood up at localhost:8000 with
+ migrations/seeds run. React will be stood up localhost:80 as a production build.
 
 
 ## Frontend
@@ -61,4 +68,4 @@ for the project.
 ## Versions
 
 v1 Initial
-v2
+v2 Refactored folder structure and dockerfiles.

@@ -4,3 +4,6 @@ build
 Dockerfile
 Dockerfile.prod
 *.Dockerfile
+*.log
+logs/
+npm-debug.log

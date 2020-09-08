@@ -36,8 +36,8 @@ class SaveCSVRequest extends FormRequest
     public function rules()
     {
         return [
-            'contacts' => 'array', //not required so as not to cause spurious errors
-            'custom_attributes' => 'array', // not required because we don't usually have this data
+            'contacts' => '', //not required so as not to cause spurious errors
+            'custom_attributes' => '', // not required because we don't usually have this data
         ];
     }
 }

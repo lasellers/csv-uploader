@@ -1,6 +1,6 @@
-# sudo docker build -t csvuploader_api -f api.Dockerfile .
+# sudo docker build -t csvuploader_api -f standup.Dockerfile .
 
-# sudo docker exec -it csvuploader_api /bin/bash
+# sudo docker exec -it csvuploader_standup /bin/bash
 # php -v
 # php artisan env
 # php artisan --version
@@ -15,7 +15,7 @@
 # composer run lint
 # composer run lint-fix
 
-FROM php:7.4-fpm
+FROM php:7.4
 
 # set working directory
 WORKDIR /var/www
@@ -64,22 +64,21 @@ RUN groupadd -g 1000 www
 RUN useradd -u 1000 -ms /bin/bash -g www www
 
 # copy composer.lock and composer.json
-COPY ./api/composer.lock ./api/composer.json ./
+#COPY ./api/composer.lock ./api/composer.json ./
 
 # change user for content folder to www
-COPY --chown=www:www ./api/ .
+#COPY --chown=www:www ./api/ .
 
 # change default user to www/1000, not root
 USER www
 
 # initial modules and db setup
-RUN php artisan config:clear
-RUN php composer.phar dump-autoload
+#RUN php artisan config:clear
+#RUN php composer.phar dump-autoload
 # install but without dev tools, and no interactive questions
 #RUN yes yes | composer install --no-dev --no-interaction -o
-RUN yes yes | composer install --no-interaction -o
-#RUN php artisan migrate:refresh --seed
+#RUN yes yes | composer install --no-interaction -o
+RUN php artisan migrate:refresh --seed
 
 # expose port 9000 and start php-fpm server
-EXPOSE 9000
-CMD ["php-fpm"]
+CMD ["bash"]
