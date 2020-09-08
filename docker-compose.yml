@@ -29,34 +29,29 @@ services:
   #      - 444
   #    environment:
   #      - CHOKIDAR_USEPOLLING=true # for hot reload
-  #      - REACT_APP_API_URL=${REACT_APP_API_URL} # pass to React so it knows the API endpoints
-  #      - PUBLIC_URL=${PUBLIC_URL} # for React index
+  #      - REACT_APP_API_URL=${REACT_APP_API_URL}
+  #      - PUBLIC_URL=${PUBLIC_URL}
   #    depends_on:
   #      - db
+  #      - apiweb
   #      - api
 
-  # sudo docker exec -it csvuploader_standup sh
-  standup:
-    container_name: csvuploader_standup
+  # sudo docker exec -it csvuploader_first sh
+  firstboot:
+    container_name: csvuploader_firstboot
     build:
       context: .
-      dockerfile: ./standup.Dockerfile
-    #restart: unless-stopped
+      dockerfile: ./firstboot.Dockerfile
     tty: true
     working_dir: /var/www
-    volumes:
-      #- './api:/var/www' # mirror ./api to container var www folder
-      - apicode:/var/www
-      - '/var/www/vendor'
     links:
       - db:mysql
     environment:
-      - SERVICE_NAME=apiweb
-      - SERVICE_TAGS=dev
       - DB_HOST=db
     networks:
       - csvuploader-network
     depends_on:
+      - spa
       - apiweb
       - api
       - db
@@ -104,7 +99,7 @@ services:
     volumes:
       #- './api:/var/www' # mirror ./api to container var www folder
       - apicode:/var/www
-      - '/var/www/vendor'
+      #- '/var/www/vendor'
     ports:
       - "8000:80"
       - "8443:443"
@@ -133,7 +128,7 @@ services:
     volumes:
       #- './api:/var/www' # mirror ./api to container var www folder
       - apicode:/var/www
-      - '/var/www/vendor'
+      #- '/var/www/vendor'
     environment:
       - SERVICE_NAME=apiweb
       - SERVICE_TAGS=dev

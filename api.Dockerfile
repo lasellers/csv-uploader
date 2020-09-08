@@ -15,6 +15,8 @@
 # composer run lint
 # composer run lint-fix
 
+# sudo docker exec -it csvuploader_api bash -c "composer run reseed"
+
 FROM php:7.4-fpm
 
 # set working directory

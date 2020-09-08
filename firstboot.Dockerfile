@@ -1,6 +1,7 @@
-# sudo docker build -t csvuploader_api -f standup.Dockerfile .
+# sudo docker build -t csvuploader_firstboot -f firstboot.Dockerfile .
+# sudo docker run -it --rm -v /var/wwww --name csvuploader_firstboot csvuploader_firstboot
 
-# sudo docker exec -it csvuploader_standup /bin/bash
+# sudo docker exec -it csvuploader_firstboot /bin/bash
 # php -v
 # php artisan env
 # php artisan --version
@@ -9,11 +10,7 @@
 # node -v
 # npm -v
 
-# composer install
-# composer run reseed
-
-# composer run lint
-# composer run lint-fix
+# source ./firstboot.sh
 
 FROM php:7.4
 
@@ -37,8 +34,7 @@ RUN apt-get update && apt-get install -y \
 # clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# for 7.3-fpm added libzip-dev for bug fix for docker-php-ext-install zip
-# for 7.4-fpm added libonig-dev
+# bug fixes for 7.x php fpm
 RUN apt-get update && \
     apt-get install -y \
         zlib1g-dev \
@@ -51,8 +47,6 @@ RUN docker-php-ext-install mbstring
 RUN docker-php-ext-install zip
 RUN docker-php-ext-install exif
 RUN docker-php-ext-install pcntl
-#RUN docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/
-#RUN docker-php-ext-install gd
 RUN docker-php-ext-install -j$(nproc) gd
 
 # install composer
@@ -64,21 +58,15 @@ RUN groupadd -g 1000 www
 RUN useradd -u 1000 -ms /bin/bash -g www www
 
 # copy composer.lock and composer.json
-#COPY ./api/composer.lock ./api/composer.json ./
-
-# change user for content folder to www
-#COPY --chown=www:www ./api/ .
+COPY ./firstboot.sh ./
 
 # change default user to www/1000, not root
 USER www
 
-# initial modules and db setup
-#RUN php artisan config:clear
-#RUN php composer.phar dump-autoload
-# install but without dev tools, and no interactive questions
-#RUN yes yes | composer install --no-dev --no-interaction -o
-#RUN yes yes | composer install --no-interaction -o
-RUN php artisan migrate:refresh --seed
+# change user for content folder to www
+COPY --chown=www:www ./api/ .
 
-# expose port 9000 and start php-fpm server
-CMD ["bash"]
+RUN echo "Migration starting..."
+
+CMD ["./firstboot.sh"]
+ENTRYPOINT sleep 5 && /bin/bash /var/www/firstboot.sh

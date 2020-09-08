@@ -1,0 +1,50 @@
+# See https://hub.docker.com/_/mariadb
+
+# See README.md
+
+# sudo docker network inspect csvuploader_default
+
+# sudo docker-compose -f Dockerfile up --build --remove-orphans
+
+version: '3'
+services:
+  # MariaDB DB
+  # sudo docker exec -it csvuploader_db /bin/bash
+  # mysql -uroot -ppassword
+  # show databases;
+  # use csvuploader;
+  # show tables;
+  db:
+    #hostname: db.csvuploader.localhost.com
+    hostname: localhost
+    container_name: csvuploader_db
+    build:
+      context: .
+      dockerfile: ./db.Dockerfile
+    restart: always
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+    environment:
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MARIADB_DATABASE=${DB_DATABASE} # CREATE DATABASE csvuploader;
+      - MARIADB_ROOT_PASSWORD=${DB_ROOT_PASSWORD} # CREATE USER 'csvuploader' IDENTIFIED BY 'password'; GRANT ALL ON *.* TO 'csvuploader'@'%';
+      - MARIADB_USER=${DB_USERNAME}
+      - MARIADB_PASSWORD=${DB_PASSWORD}
+    volumes:
+      # - csvuploader_db:/var/lib/mysql #map to docker volume
+      # - ./db:/var/lib/mysql #map to local folder
+      - ./db/sql:/docker-entrypoint-initdb.d
+    networks:
+      - csvuploader-network
+
+volumes:
+  apicode:
+
+networks:
+  csvuploader-network:
+  #driver: bridge
