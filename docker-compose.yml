@@ -66,8 +66,9 @@ services:
     restart: unless-stopped
     tty: true
     volumes:
+      #- spa_code:/app
       - './spa:/app' # mirror ./spa to container app folder
-      - '/app/node_modules'
+      #- '/app/node_modules'
     ports:
       - 80:80
       - 443:443
@@ -98,7 +99,7 @@ services:
     working_dir: /var/www
     volumes:
       #- './api:/var/www' # mirror ./api to container var www folder
-      - apicode:/var/www
+      - api_code:/var/www
       #- '/var/www/vendor'
     ports:
       - "8000:80"
@@ -113,7 +114,8 @@ services:
   #      - NGINX_HOST=localhost
   #      - NGINX_PORT=80
 
-  # Laravel API
+  # Laravel API -- Note that we share the same volume here also with the nginx webserver for fpm as well as the
+  # firstboot container when runs migrations. So we just use a named volume instead of using a container filesystem.
   # sudo docker exec -it csvuploader_api /bin/bash
   api:
     #hostname: api.csvuploader.localhost.com
@@ -127,7 +129,7 @@ services:
     working_dir: /var/www
     volumes:
       #- './api:/var/www' # mirror ./api to container var www folder
-      - apicode:/var/www
+      - api_code:/var/www
       #- '/var/www/vendor'
     environment:
       - SERVICE_NAME=apiweb
@@ -142,7 +144,7 @@ services:
     networks:
       - csvuploader-network
 
-  # MariaDB DB
+  # MariaDB DB -- We store the db in the container, as we prefer it gets wiped on docker down.
   # sudo docker exec -it csvuploader_db /bin/bash
   # mysql -uroot -ppassword
   # show databases;
@@ -177,7 +179,8 @@ services:
       - csvuploader-network
 
 volumes:
-  apicode:
+  api_code:
+#  spa_code:
 
 networks:
   csvuploader-network:

@@ -40,6 +40,7 @@ USER node
 RUN npm install
 COPY --chown=node:node ./spa/ ./
 
+RUN rm build/* -rf
 RUN npm run build
 
 EXPOSE 80 443

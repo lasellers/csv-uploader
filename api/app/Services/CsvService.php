@@ -15,11 +15,11 @@ class CsvService
     /**
      * Actually saves contact and custom attributes data to DB.
      * Note special handing of contact_id field.
-     * @param $contacts
-     * @param $customAttributes
+     * @param array $contacts
+     * @param array $customAttributes
      * @return array
      */
-    public function saveCSV($contacts, $customAttributes)
+    public function saveCSV(array $contacts, array $customAttributes)
     {
         $errors = [];
         $contactInserts = 0;
@@ -49,9 +49,10 @@ class CsvService
 
                         //
                         foreach ($customAttributes as $customAttributesIndex => $customAttributeData) {
-                            // The custom attributes (ie unmapped rows) we receive from the frontend have a contact id that
-                            // maps to the row index of the mapped rows (ie contacts). Now that we've saved a contact and
-                            // it's model id, we replace the temp contact id with the read DB ID before saving custom attributes.
+                            // The custom attributes (ie unmapped rows) we receive from the frontend have a contact id
+                            // that maps to the row index of the mapped rows (ie contacts). Now that we've saved a
+                            // contact and it's model id, we replace the temp contact id with the read DB ID before
+                            // saving custom attributes.
                             if ($customAttributeData['contact_id'] === $contactsIndex) {
                                 $customAttributeData['contact_id'] = $contact->id;
 
@@ -89,7 +90,7 @@ class CsvService
         return [$contactInserts, $customAttributeInserts, $newCustomAttributes, $errors];
     }
 
-    protected function validateContactData($contact)
+    protected function validateContactData(array $contact)
     {
         $validator = Validator::make($contact, ContactRequest::rules());
         if ($validator->fails()) {
@@ -101,7 +102,7 @@ class CsvService
         return [true, null];
     }
 
-    protected function validateCustomAttributeData($customAttribute)
+    protected function validateCustomAttributeData(array $customAttribute)
     {
         $validator = Validator::make($customAttribute, CustomAttributeRequest::rules());
         if ($validator->fails()) {
@@ -112,87 +113,4 @@ class CsvService
         }
         return [true, null];
     }
-
-    /*public function upload($filename, $content)
-    {
-        $path = storage_path('csv/' . $filename);
-        return file_put_contents($path, $content);
-    }*/
-
-    /*public function destroy($filename)
-    {
-        $file = storage_path('csv') . "/$filename";
-        return File::delete($file);
-    }*/
-
-    /*public function files()
-    {
-        $path = storage_path('csv');
-        $filesCollection = File::allFiles($path);
-        $files = [];
-        foreach ($filesCollection as $file) {
-            $files[] = $file->getFilename();
-        }
-        return $files;
-    }*/
-
-    /**
-     * Load CSV as an array of arrays
-     * @param $csvFilename
-     * @return array
-     */
-    /*public function loadCSV($csvFilename)
-    {
-        $path = storage_path('csv/' . $csvFilename);
-
-        $contents = trim(file_get_contents($path));
-        $lines = explode("\n", $contents);
-
-        $rows = [];
-        $headers = [];
-
-        foreach ($lines as $index => $line) {
-            if ($index === 0) {
-                $headers[] = explode(",", $line);
-            } else {
-                $rows[] = explode(",", $line);
-            }
-        }
-
-        return [$headers, $rows];
-    }*/
-
-    /**
-     * Take a csv array of arrays + a mapped columns array and generate a remapped array of array plus unmapped array.
-     *
-     * Unmapped {columnNumber => newColumnNumber}
-     * @param $csvRows
-     * @param $mappedColumns
-     */
-    /*public function remapCSV($csvRows, $mappedColumns): array
-    {
-        $mappedRows = [];
-        $unmappedRows = [];
-
-        foreach ($csvRows as $row) {
-            $mapped = [];
-            $unmapped = [];
-            foreach ($row as $key => $value) {
-                if ($mappedColumns[$key]) {
-                    $mapped[$mappedColumns[$key]] = $value;
-                } else {
-                    $unmapped[] = $value;
-                }
-            };
-
-            $mappedRows[] = $mapped;
-            $unmappedRows[] = $unmapped;
-        }
-
-        return [$mappedRows, $unmappedRows];
-    }*/
-
-    /*public function processCSV($mappedRows, $unmappedRows)
-    {
-    }*/
 }

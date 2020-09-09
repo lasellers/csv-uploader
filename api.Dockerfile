@@ -80,7 +80,6 @@ RUN php composer.phar dump-autoload
 # install but without dev tools, and no interactive questions
 #RUN yes yes | composer install --no-dev --no-interaction -o
 RUN yes yes | composer install --no-interaction -o
-#RUN php artisan migrate:refresh --seed
 
 # expose port 9000 and start php-fpm server
 EXPOSE 9000

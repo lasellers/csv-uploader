@@ -5,7 +5,7 @@ A demo of a CSV file uploader.
 
 ## Startup
 
-### 1. Startup with dev tools
+### 1. Startup with local dev servers
 
 `sudo docker-compose -f db.docker-compose.yml up` to start docker db. Then `composer run reseed` to run db migrations and seeds.
 
@@ -20,6 +20,7 @@ React will be stood up localhost:80 as a production build.
 
 Then run:
 `sudo docker exec -it csvuploader_api bash -c "composer run reseed"`
+
 
 ## Frontend
 
@@ -64,10 +65,18 @@ for the project.
 
 `npm run test`
 
-`npm run test:coverage`
+`npm run test:coverage` (todo)
 
 
 ## Versions
 
 * v1 Initial
 * v2 Refactored folder structure and dockerfiles.
+
+
+
+## Todo
+* Update React tests
+* Add VueJs frontend (optional) and tests
+
+

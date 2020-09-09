@@ -27,9 +27,8 @@ WORKDIR /var/www
 
 COPY apiweb.nginx.conf /etc/nginx/nginx.conf
 
-COPY ./api/composer*.json ./
-
-COPY ./api/ ./
+#COPY ./api/composer*.json ./
+#COPY ./api/ ./
 
 #EXPOSE 80 443
 

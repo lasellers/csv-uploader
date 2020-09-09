@@ -44,8 +44,10 @@ class CsvControllerTest extends TestCase
         $request = new SaveCSVRequest(
             [
                 'contacts' => [
-                    [1, "John C. Smith TEST", "555-555-5555", "john@smithTEST.com", "12345", "2000-01-01", "2000-01-02"],
-                    [1, "Jane C. Smith TEST", "555-555-5555", "jane@smithTEST.com", "12346", "2000-01-01", "2010-03-04"]
+                    [1, "John C. Smith TEST", "555-555-5555", "john@smithTEST.com",
+                        "12345", "2000-01-01", "2000-01-02"],
+                    [1, "Jane C. Smith TEST", "555-555-5555", "jane@smithTEST.com",
+                        "12346", "2000-01-01", "2010-03-04"]
                 ],
                 'custom_attributes' => [
                     [0, "blah", "foo"],

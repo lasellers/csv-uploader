@@ -1,15 +1,12 @@
+#For firstboot we basically just want to run migrations etc against the db. Basically run a:
+# > sudo docker exec -it csvuploader_api bash -c "composer run reseed"
+# right after all the containers are stood up. Since there isn't an easy equivilent, we restand up a php container
+# after other depends with a sleep and try to run migrations then.
+
 # sudo docker build -t csvuploader_firstboot -f firstboot.Dockerfile .
 # sudo docker run -it --rm -v /var/wwww --name csvuploader_firstboot csvuploader_firstboot
 
 # sudo docker exec -it csvuploader_firstboot /bin/bash
-# php -v
-# php artisan env
-# php artisan --version
-# php composer.phar --version
-# composer --version
-# node -v
-# npm -v
-
 # source ./firstboot.sh
 
 FROM php:7.4
@@ -66,7 +63,5 @@ USER www
 # change user for content folder to www
 COPY --chown=www:www ./api/ .
 
-RUN echo "Migration starting..."
-
 CMD ["./firstboot.sh"]
-ENTRYPOINT sleep 5 && /bin/bash /var/www/firstboot.sh
+#ENTRYPOINT /bin/bash /var/www/firstboot.sh

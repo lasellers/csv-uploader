@@ -18,7 +18,8 @@ import ErrorBox from "./components/ErrorBox";
 export const API_URL = process.env.REACT_APP_API_URL;
 
 function App(props) {
-    console.info('API_URL:' + API_URL);
+    console.info('env API_URL:' + API_URL);
+    console.info('env:', process.env);
     return (
         <BrowserRouter>
             <NavHeader/>

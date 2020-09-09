@@ -1,10 +1,7 @@
 #!/bin/bash
-#sudo docker-compose up
-#sudo docker exec -it csvuploader_api bash -c "composer run reseed"
 php artisan config:clear
 php composer.phar dump-autoload
-# yes yes | composer install --no-dev --no-interaction -o
-# yes yes | composer install --no-interaction -o
+# Wait a few seconds for the db to actually settle
 sleep 5s
-#composer run reseed
+# then run migrations...
 php artisan migrate:refresh --seed

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SaveCSVRequest;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Schema;
 use App\Services\CsvService;
 
@@ -26,7 +27,7 @@ class CsvController extends Controller
      * @param $customAttributesData
      * @return array
      */
-    public function convertSimpleArrayToAssociateArray($contactsData, $customAttributesData)
+    public function convertSimpleArrayToAssociateArray($contactsData, $customAttributesData): array
     {
         // pull tables field names
         $contactColumns = Schema::getColumnListing('contacts');
@@ -75,7 +76,7 @@ class CsvController extends Controller
      * @param SaveCSVRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function save(SaveCSVRequest $request)
+    public function save(SaveCSVRequest $request): JsonResponse
     {
         $contacts = $request->get('contacts');
         $customAttributes = $request->get('custom_attributes');
