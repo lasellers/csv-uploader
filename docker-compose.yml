@@ -23,7 +23,6 @@ services:
   #    ports:
   #      - 81:80
   #      - 444:443
-  #      #- 8080:8080 # poke a hole for npm run start
   #    expose:
   #      - 81
   #      - 444
@@ -36,7 +35,10 @@ services:
   #      - apiweb
   #      - api
 
-  # sudo docker exec -it csvuploader_first sh
+  # A container just so we can effectively do:
+  # sudo docker exec -it csvuploader_api bash -c "composer run reseed"
+  # Note we're sharing the same code volume which the api container already setup.
+  # sudo docker exec -it csvuploader_firstboot sh
   firstboot:
     container_name: csvuploader_firstboot
     build:
@@ -86,7 +88,8 @@ services:
     networks:
       - csvuploader-network
 
-  # Nginx Service - This is just the webserver interface to php
+  # Nginx Service - This is just the webserver interface to the php container.
+  # Note we're sharing the same code volume which the api container already setup.
   # sudo docker exec -it csvuploader_apiweb sh
   apiweb:
     #hostname: apiweb.csvuploader.localhost.com
@@ -104,7 +107,6 @@ services:
     ports:
       - "8000:80"
       - "8443:443"
-      - "8080:80"
     networks:
       - csvuploader-network
     depends_on:
@@ -123,7 +125,6 @@ services:
     build:
       context: .
       dockerfile: ./api.Dockerfile
-    #image: digitalocean.com/php
     restart: unless-stopped
     tty: true
     working_dir: /var/www

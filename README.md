@@ -13,6 +13,8 @@ A demo of a CSV file uploader.
 
 `npm run start` to start React frontend.
 
+`npm run serve` to start VueJs frontend.
+
 ### 2. Startup with Docker
 
 `sudo docker-compose up` to start docker db. Laravel API will be stood up at localhost:8000.
@@ -42,6 +44,7 @@ See examples folder. There are csv files to test various use and error cases.
 See the file `CSVUploader.postman_collection.json`. This is an export of a postman collection
 for the project.
 
+
 ## Testing 
 
 ### Backend
@@ -61,11 +64,16 @@ for the project.
 `composer run test-feature` to run phpunit feature tests.
 
 
-### Frontend
+### Frontend (React)
 
 `npm run test`
 
 `npm run test:coverage` (todo)
+
+
+### Frontend (VueJs)
+
+`npm run test`
 
 
 ## Versions

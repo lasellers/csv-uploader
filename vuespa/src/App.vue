@@ -1,28 +1,51 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+    <div id="app">
+        <NavHeader/>
+        <ErrorBox msg="this is an error"/>
+        <main id="App-Container">
+            <div id="App-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <router-view/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
 </template>
 
-<script>
-import HelloWorld from './components/HelloWorld.vue'
-
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
-</script>
-
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+    #App-Container {
+        text-align: center;
+    }
+
+    #App-body h1 {
+        color: green;
+    }
+
+    #App-body p {
+        text-align: justify;
+        padding: .1em .1em .1em 1em;
+        margin: 0;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: rgba(93, 173, 27, 0.15) !important;
+    }
+
 </style>
+
+<script>
+    import NavHeader from './components/NavHeader.vue'
+    import ErrorBox from './components/ErrorBox.vue'
+
+    export default {
+        name: 'App',
+        components: {
+            NavHeader,
+            ErrorBox
+        }
+    }
+</script>
