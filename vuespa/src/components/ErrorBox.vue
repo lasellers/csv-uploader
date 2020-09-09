@@ -2,7 +2,7 @@
     <div class="container-fluid" id="errorbox">
         <div class="row error">
             <p class="">
-                errorbox: {{ msg}}
+                errorbox: {{ errors}}
             </p>
         </div>
     </div>
@@ -12,7 +12,7 @@
     export default {
         name: 'ErrorBox',
         props: {
-            msg: String
+            errors: String
         }
     }
 </script>

@@ -22,7 +22,6 @@
     export default {
         name: 'NavHeader',
         props: {
-            msg: String
         }
     }
 </script>

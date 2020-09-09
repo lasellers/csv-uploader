@@ -14,7 +14,6 @@ Vue.use(VueRouter);
 const routes = [
     {
         path: '/about',
-        //name: 'Upload',
         component: About
     },
     {
@@ -23,44 +22,37 @@ const routes = [
     },
     {
         path: '/upload',
-        //name: 'Upload',
         component: Upload
     },
     {
         path: '/mapping',
-        ////name: 'Mapping',
         component: Mapping
     },
     {
         path: '/preview',
-        // name: 'Preview',
         component: Preview
     },
     {
         path: '/process',
-        //name: 'Process',
         component: Process
     },
     {
         path: '/contacts',
-        // name: 'Contacts',
         component: Contacts
     },
     {
         path: '/custom-attributes',
-        //    name: 'Custom Attributes',
         component: CustomAttributes
     },
     {
         path: '/*',
-        //  name: 'Not Found',
         component: NotFound
     },
 ];
 
 const router = new VueRouter({
-    //mode: 'history',
-    //base: process.env.BASE_URL,
+    mode: 'history',
+    base: process.env.BASE_URL,
     routes
 });
 
