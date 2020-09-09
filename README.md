@@ -74,9 +74,6 @@ for the project.
 * v2 Refactored folder structure and dockerfiles.
 
 
-
 ## Todo
 * Update React tests
 * Add VueJs frontend (optional) and tests
-
-

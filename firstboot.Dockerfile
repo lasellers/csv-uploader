@@ -55,7 +55,7 @@ RUN groupadd -g 1000 www
 RUN useradd -u 1000 -ms /bin/bash -g www www
 
 # copy composer.lock and composer.json
-COPY ./firstboot.sh ./
+COPY --chown=www:www ./firstboot.sh ./
 
 # change default user to www/1000, not root
 USER www
@@ -64,4 +64,4 @@ USER www
 COPY --chown=www:www ./api/ .
 
 CMD ["./firstboot.sh"]
-#ENTRYPOINT /bin/bash /var/www/firstboot.sh
+ENTRYPOINT /bin/bash /var/www/firstboot.sh

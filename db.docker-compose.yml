@@ -42,9 +42,6 @@ services:
     networks:
       - csvuploader-network
 
-volumes:
-  apicode:
-
 networks:
   csvuploader-network:
   #driver: bridge
