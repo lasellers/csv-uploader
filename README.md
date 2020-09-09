@@ -3,6 +3,10 @@
 A demo of a CSV file uploader.
 
 
+For a video demonstration see:
+https://www.youtube.com/watch?v=5emGcn0Cxgc&feature=youtu.be
+
+
 ## Startup
 
 ### 1. Startup with local dev servers
