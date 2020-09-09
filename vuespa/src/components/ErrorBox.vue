@@ -1,7 +1,9 @@
 <template>
-    <div class="errorbox">
-        <div class="container-fluid error">
-errorbox: {{ msg}}
+    <div class="container-fluid" id="errorbox">
+        <div class="row error">
+            <p class="">
+                errorbox: {{ msg}}
+            </p>
         </div>
     </div>
 </template>

@@ -1,17 +1,19 @@
 <template>
     <header class="container-fluid" id="navheader">
-        <div class="ml-auto">
-            <h1>CSV Uploader</h1>
-        </div>
-        <div class="mr-auto">
-            <ul class="steps-inline">
-                <router-link to="/" class="btn btn-step">1</router-link>
-                <router-link to="/mapping" class="btn btn-step">2</router-link>
-                <router-link to="/preview" class="btn btn-step">3</router-link>
-                <router-link to="/process" class="btn btn-step">4</router-link>
-                <router-link to="/contacts" class="btn btn-step">5</router-link>
-                <router-link to="/custom-attributes" class="btn btn-step">6</router-link>
-            </ul>
+        <div class="row">
+            <div class="ml-auto">
+                <h1>CSV Uploader</h1>
+            </div>
+            <div class="mr-auto">
+                <ul class="steps-inline">
+                    <router-link to="/" class="btn btn-step">1</router-link>
+                    <router-link to="/mapping" class="btn btn-step">2</router-link>
+                    <router-link to="/preview" class="btn btn-step">3</router-link>
+                    <router-link to="/process" class="btn btn-step">4</router-link>
+                    <router-link to="/contacts" class="btn btn-step">5</router-link>
+                    <router-link to="/custom-attributes" class="btn btn-step">6</router-link>
+                </ul>
+            </div>
         </div>
     </header>
 </template>
@@ -37,17 +39,11 @@
         justify-content: center;
         font-size: calc(10px + 2vmin);
         color: white;
-        position: absolute;
-        top: 0;
-        left: 0;
     }
 
     #navheader h1 {
         font-size: 5vh;
         line-height: 6vh;
-        position: absolute;
-        top: 0;
-        left: 0;
     }
 
     #navheader link {
