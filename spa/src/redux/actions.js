@@ -29,7 +29,7 @@ export const addRemappedCsvData = data => ({
 export const addRemappedColumnOrder = data => ({
     type: 'ADD_REMAPPED_COLUMN_ORDER',
     payload: {
-        remapped_order: data
+        remapped_column_order: data
     }
 });
 

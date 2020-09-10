@@ -4,7 +4,7 @@ const initialState = {
     csv_data: [],
     unmapped_data: [],
     remapped_csv_data: [],
-    remapped_order: [],
+    remapped_column_order: [],
     // read only SSOA
     db_headers: ['team_id', 'name', 'phone', 'email', 'sticky_phone_number_id', 'created_at', 'updated_at'],
     db_named_headers: ['Team Id', 'Name', 'Phone', 'Email', 'Sticky Phone Number Id', 'Created', 'Updated'],
@@ -41,10 +41,10 @@ export default function (state = initialState, action) {
             };
         }
         case 'ADD_REMAPPED_COLUMN_ORDER': {
-            const {remapped_order} = action.payload;
+            const {remapped_column_order} = action.payload;
             return {
                 ...state,
-                remapped_order
+                remapped_column_order
             };
         }
         case 'ADD_ERROR': {

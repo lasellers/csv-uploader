@@ -3,7 +3,7 @@
         <h1>CSV File Upload</h1>
 
         <div>
-            <input class="btn btn-secondary mr-2" type="file" onChange={this.onFileChange}/>
+            <input class="btn btn-secondary mr-2" type="file" v-on:change="onFileChange">
             <button class="btn btn-primary ml-2" v-on:click="onFileUpload">
                 Upload
             </button>
@@ -71,6 +71,7 @@
             // @see https://developer.mozilla.org/en-US/docs/Web/API/FileList
             // @see https://developer.mozilla.org/en-US/docs/Web/API/File
             onFileChange: async function (event) {
+                console.log(event);
                 event.preventDefault();
 
                 const files = event.target.files;
@@ -80,6 +81,9 @@
 
                     console.log(header);
                     console.log(data);
+
+                    this.header = header;
+                    this.data = data;
                     //store.dispatch(addCsvHeaders(header));
                     //store.dispatch(addCsvData(data));
 
@@ -111,6 +115,7 @@
 //  this.setState({goNext: true});
                 // store.dispatch(clearError());
                 console.log(event);
+                this.goNext = true;
             }
 
         }
