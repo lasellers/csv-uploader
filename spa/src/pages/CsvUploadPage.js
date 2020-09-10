@@ -61,8 +61,7 @@ class CsvUploadPage extends React.Component {
         this.setState({goNext: true});
     };
 
-    // File content to be displayed after
-    // file upload is complete
+    // File content to be displayed after file upload is complete
     uploadedFileData = () => {
         if (this.state.selectedFile) {
             const headers = store.getState().csv.csv_headers.join(', ');

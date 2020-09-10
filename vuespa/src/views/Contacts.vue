@@ -27,38 +27,58 @@
                 <td>{{contact.created_at}}</td>
                 <td>{{contact.updated_at}}</td>
                 <td>
-                    <button class="btn" onClick=""></button>
+                    <button class="btn" v-on:click="onContactDelete(contact.id)">
+                        <font-awesome-icon icon="trash-alt"/>
+                    </button>
                 </td>
             </tr>
             ))}
             </tbody>
         </table>
 
+        <div class="row">
+            <button class="btn btn-secondary mr-2" v-on:click="goBack=true">Back
+            </button>
+            <button class="btn btn-primary ml-2" v-on:click="goNext=true">Next</button>
+        </div>
+
     </div>
 </template>
 
 <script>
-    // @ is an alias to /src
-    //import Contacts from '@/components/Contacts.vue'
-
     export default {
         //el: '#contacts-list',
         name: 'Contacts',
         data() {
             return {
-                contacts: []
+                contacts: [],
+                API_URL: "http://localhost:8000/api" //temp
             }
         },
         components: {},
         created() {
-            // GET request using fetch with set headers
-            const headers = {"Content-Type": "application/json"};
-            fetch("http://localhost:8000/api/contacts", {headers})
-                .then(response => response.json())
-                .then(data => {
-                    this.contacts = data;
-                    console.log(data);
-                });
+            this.getContacts();
+        },
+        methods: {
+            getContacts: function () {
+                const headers = {"Content-Type": "application/json"};
+                fetch(this.API_URL + "/contacts", {headers})
+                    .then(response => response.json())
+                    .then(data => {
+                        this.contacts = data;
+                    });
+            },
+            onContactDelete: function (id) {
+                fetch(this.API_URL + "/contacts/" + id, {method: "DELETE"})
+                    .then(res => res.json())
+                    .then(() => {
+                        this.getContacts();
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                        this.contacts = []; // if error, set this to empty array
+                    });
+            }
         }
     }
 </script>

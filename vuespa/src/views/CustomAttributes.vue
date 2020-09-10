@@ -1,7 +1,6 @@
 <template>
     <div class="custom-attributes">
         <h1>Custom Attributes</h1>
-        <p>None.</p>
 
         <p v-if="customAttributes.length===0">None.</p>
 
@@ -21,49 +20,71 @@
                 <td>{{customAttribute.key}}</td>
                 <td>{{customAttribute.value}}</td>
                 <td>
-                    <button class="btn" onClick=""></button>
+                    <button class="btn" v-on:click="onCustomAttributeDelete(customAttribute.id)">
+                        <font-awesome-icon icon="trash-alt"/>
+                    </button>
                 </td>
             </tr>
             </tbody>
         </table>
+
+        <div class="row">
+            <button class="btn btn-secondary mr-2" v-on:click="goBack=true">Back
+            </button>
+            <button class="btn btn-primary ml-2" v-on:click="goNext=true">Home</button>
+        </div>
 
     </div>
 
 </template>
 
 <script>
-    // @ is an alias to /src
-    //import CustomAttributes from '@/components/CustomAttributes.vue'
-
     export default {
         name: 'CustomAttributes',
         components: {
-            // CustomAttributes
         },
         data() {
             return {
-                // contacts: [],
-                customAttributes: []
+                customAttributes: [],
+                API_URL: "http://localhost:8000/api" //temp
             }
         },
         beforeCreate() {
-            //  this.contacts = [];
-            this.customAttributes = [];
         },
         created() {
-            // GET request using fetch with set headers
             const headers = {"Content-Type": "application/json"};
-            fetch("http://localhost:8000/api/contacts", {headers})
+            fetch(this.API_URL + "/contacts", {headers})
                 .then(response => response.json())
                 .then(data => {
-                    //this.contacts = data;
-
                     this.customAttributes = data.flatMap(row => {
                         return row.custom_attributes;
                     });
-
-                    console.log(data);
                 });
+        },
+        methods: {
+            getContacts: function () {
+                const headers = {"Content-Type": "application/json"};
+                fetch(this.API_URL + "/contacts", {headers})
+                    .then(response => response.json())
+                    .then(data => {
+                        this.customAttributes = data.flatMap(row => {
+                            return row.custom_attributes;
+                        });
+
+                        console.log(data);
+                    });
+            },
+            onCustomAttributeDelete: function (id) {
+                fetch(this.API_URL + "/custom-attributes/" + id, {method: "DELETE"})
+                    .then(res => res.json())
+                    .then(() => {
+                        this.getContacts();
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                        this.customAttributes = []; // if error, set this to empty array
+                    });
+            }
         }
 
     }
