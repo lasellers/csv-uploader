@@ -78,6 +78,9 @@ class CustomAttributesPage extends React.Component {
             return <Redirect to='/upload'/>;
         }
 
+        const title = (
+            <h1>Custom Attributes</h1>
+        );
         const nav = (
             <>
                 <div>
@@ -86,7 +89,8 @@ class CustomAttributesPage extends React.Component {
                     <button className="btn btn-primary ml-2" onClick={() => {
                         store.dispatch(clearError());
                         this.setState({goHome: true});
-                    }}>Home</button>
+                    }}>Home
+                    </button>
                 </div>
             </>
         );
@@ -94,14 +98,17 @@ class CustomAttributesPage extends React.Component {
         if (!isLoaded)
             return (
                 <>
-                    <h1>Custom Attributes</h1>
+                    {title}
+
                     <p>None.</p>
+
+                    {nav}
                 </>
             );
 
         return (
             <>
-                <h1>Custom Attributes</h1>
+                {title}
 
                 <table className="table table-striped">
                     <thead>

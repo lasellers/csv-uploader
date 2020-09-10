@@ -71,6 +71,9 @@ class ContactsPage extends React.Component {
             return <Redirect to='/custom-attributes'/>;
         }
 
+        const title = (
+            <h1>Contacts</h1>
+        );
         const nav = (
             <>
                 <div>
@@ -87,14 +90,17 @@ class ContactsPage extends React.Component {
         if (!isLoaded)
             return (
                 <>
-                    <h1>Contacts</h1>
+                    {title}
+
                     <p>None.</p>
+
+                    {nav}
                 </>
             );
 
         return (
             <>
-                <h1>Contacts</h1>
+                {title}
 
                 <table className="table table-striped">
                     <thead>
