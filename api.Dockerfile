@@ -74,6 +74,13 @@ COPY --chown=www:www ./api/ .
 # change default user to www/1000, not root
 USER www
 
+# Setup required folders that might be gitignored as they can be empty
+RUN mkdir -p storage && \
+    mkdir -p storage/framework && \
+    mkdir -p storage/framework/cache && \
+    mkdir -p storage/framework/sessions && \
+    mkdir -p storage/framework/views
+
 # initial modules and db setup
 RUN php artisan config:clear
 RUN php composer.phar dump-autoload
