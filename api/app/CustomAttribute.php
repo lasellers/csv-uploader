@@ -4,7 +4,6 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Contact;
 
 class CustomAttribute extends Model
 {
@@ -13,10 +12,6 @@ class CustomAttribute extends Model
     protected $fillable = [
         'contact_id', 'key', 'value'
     ];
-
-//    protected $casts = [
-//        'contact_id' => 'integer',
-//    ];
 
     //
     public function contact(): BelongsTo

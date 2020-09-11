@@ -95,7 +95,7 @@ class CsvService
         $validator = Validator::make($contact, ContactRequest::rules());
         if ($validator->fails()) {
             Log::error('Validator:Contact');
-            Log::error($contact);
+            Log::error(json_encode($contact));
             Log::error($validator->errors());
             return [false, $validator->errors()];
         }
@@ -107,7 +107,7 @@ class CsvService
         $validator = Validator::make($customAttribute, CustomAttributeRequest::rules());
         if ($validator->fails()) {
             Log::error('Validator:CustomAttribute');
-            Log::error($customAttribute);
+            Log::error(json_encode($customAttribute));
             Log::error($validator->errors());
             return [false, $validator->errors()];
         }
