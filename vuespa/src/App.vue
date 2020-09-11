@@ -36,14 +36,14 @@
 </style>
 
 <script>
-    import NavHeader from './components/NavHeader.vue'
-    import ErrorBox from './components/ErrorBox.vue'
+import NavHeader from './components/NavHeader.vue'
+import ErrorBox from './components/ErrorBox.vue'
 
-    export default {
-        name: 'App',
-        components: {
-            NavHeader,
-            ErrorBox
-        }
-    }
+export default {
+  name: 'App',
+  components: {
+    NavHeader,
+    ErrorBox
+  }
+}
 </script>

@@ -16,7 +16,7 @@ library.add(faTrashAlt)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
-//import store from 'store'
+// import store from 'store'
 
 // Install BootstrapVue
 Vue.use(BootstrapVue)

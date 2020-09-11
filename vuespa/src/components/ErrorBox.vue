@@ -9,12 +9,12 @@
 </template>
 
 <script>
-    export default {
-        name: 'ErrorBox',
-        props: {
-            errors: String
-        }
-    }
+export default {
+  name: 'ErrorBox',
+  props: {
+    errors: String
+  }
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

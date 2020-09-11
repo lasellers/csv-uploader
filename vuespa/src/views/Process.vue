@@ -13,7 +13,6 @@
     <p>Custom Attribute inserts: {data.custom_attribute_inserts}</p>
     <p>Custom Attributes data rows: {data.custom_attributes?.length}</p>
 
-
     <div class="row">
       <button class="btn btn-secondary mr-2" v-on:click="goBack=true">Back
       </button>
@@ -25,12 +24,12 @@
 
 <script>
 // @ is an alias to /src
-//import Process from '@/components/Process.vue'
+// import Process from '@/components/Process.vue'
 
 export default {
   name: 'Process',
   components: {
- //   Process
+    //   Process
   }
 }
 </script>

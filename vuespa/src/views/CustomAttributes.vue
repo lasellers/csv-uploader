@@ -39,53 +39,53 @@
 </template>
 
 <script>
-    export default {
-        name: 'CustomAttributes',
-        components: {
-        },
-        data() {
-            return {
-                customAttributes: [],
-                API_URL: "http://localhost:8000/api" //temp
-            }
-        },
-        beforeCreate() {
-        },
-        created() {
-            const headers = {"Content-Type": "application/json"};
-            fetch(this.API_URL + "/contacts", {headers})
-                .then(response => response.json())
-                .then(data => {
-                    this.customAttributes = data.flatMap(row => {
-                        return row.custom_attributes;
-                    });
-                });
-        },
-        methods: {
-            getContacts: function () {
-                const headers = {"Content-Type": "application/json"};
-                fetch(this.API_URL + "/contacts", {headers})
-                    .then(response => response.json())
-                    .then(data => {
-                        this.customAttributes = data.flatMap(row => {
-                            return row.custom_attributes;
-                        });
-
-                        console.log(data);
-                    });
-            },
-            onCustomAttributeDelete: function (id) {
-                fetch(this.API_URL + "/custom-attributes/" + id, {method: "DELETE"})
-                    .then(res => res.json())
-                    .then(() => {
-                        this.getContacts();
-                    })
-                    .catch((error) => {
-                        console.error(error);
-                        this.customAttributes = []; // if error, set this to empty array
-                    });
-            }
-        }
-
+export default {
+  name: 'CustomAttributes',
+  components: {
+  },
+  data () {
+    return {
+      customAttributes: [],
+      API_URL: 'http://localhost:8000/api' // temp
     }
+  },
+  beforeCreate () {
+  },
+  created () {
+    const headers = { 'Content-Type': 'application/json' }
+    fetch(this.API_URL + '/contacts', { headers })
+      .then(response => response.json())
+      .then(data => {
+        this.customAttributes = data.flatMap(row => {
+          return row.custom_attributes
+        })
+      })
+  },
+  methods: {
+    getContacts: function () {
+      const headers = { 'Content-Type': 'application/json' }
+      fetch(this.API_URL + '/contacts', { headers })
+        .then(response => response.json())
+        .then(data => {
+          this.customAttributes = data.flatMap(row => {
+            return row.custom_attributes
+          })
+
+          console.log(data)
+        })
+    },
+    onCustomAttributeDelete: function (id) {
+      fetch(this.API_URL + '/custom-attributes/' + id, { method: 'DELETE' })
+        .then(res => res.json())
+        .then(() => {
+          this.getContacts()
+        })
+        .catch((error) => {
+          console.error(error)
+          this.customAttributes = [] // if error, set this to empty array
+        })
+    }
+  }
+
+}
 </script>

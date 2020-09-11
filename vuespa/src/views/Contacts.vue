@@ -46,39 +46,39 @@
 </template>
 
 <script>
-    export default {
-        //el: '#contacts-list',
-        name: 'Contacts',
-        data() {
-            return {
-                contacts: [],
-                API_URL: "http://localhost:8000/api" //temp
-            }
-        },
-        components: {},
-        created() {
-            this.getContacts();
-        },
-        methods: {
-            getContacts: function () {
-                const headers = {"Content-Type": "application/json"};
-                fetch(this.API_URL + "/contacts", {headers})
-                    .then(response => response.json())
-                    .then(data => {
-                        this.contacts = data;
-                    });
-            },
-            onContactDelete: function (id) {
-                fetch(this.API_URL + "/contacts/" + id, {method: "DELETE"})
-                    .then(res => res.json())
-                    .then(() => {
-                        this.getContacts();
-                    })
-                    .catch((error) => {
-                        console.error(error);
-                        this.contacts = []; // if error, set this to empty array
-                    });
-            }
-        }
+export default {
+  // el: '#contacts-list',
+  name: 'Contacts',
+  data () {
+    return {
+      contacts: [],
+      API_URL: 'http://localhost:8000/api' // temp
     }
+  },
+  components: {},
+  created () {
+    this.getContacts()
+  },
+  methods: {
+    getContacts: function () {
+      const headers = { 'Content-Type': 'application/json' }
+      fetch(this.API_URL + '/contacts', { headers })
+        .then(response => response.json())
+        .then(data => {
+          this.contacts = data
+        })
+    },
+    onContactDelete: function (id) {
+      fetch(this.API_URL + '/contacts/' + id, { method: 'DELETE' })
+        .then(res => res.json())
+        .then(() => {
+          this.getContacts()
+        })
+        .catch((error) => {
+          console.error(error)
+          this.contacts = [] // if error, set this to empty array
+        })
+    }
+  }
+}
 </script>

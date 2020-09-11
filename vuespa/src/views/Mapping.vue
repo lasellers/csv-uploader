@@ -16,13 +16,13 @@
 </template>
 
 <script>
-    // @ is an alias to /src
-    //import Mapping from '@/components/Mapping.vue'
+// @ is an alias to /src
+// import Mapping from '@/components/Mapping.vue'
 
-    export default {
-        name: 'Mapping',
-        components: {
-            // Mapping
-        }
-    }
+export default {
+  name: 'Mapping',
+  components: {
+    // Mapping
+  }
+}
 </script>

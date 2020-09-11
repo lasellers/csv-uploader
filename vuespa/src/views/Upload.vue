@@ -27,25 +27,25 @@
 </template>
 
 <script>
-    export default {
-        name: 'Upload',
-        components: {
-//    Upload
-        },
-        data() {
-            return {
-                selectedFile: null,
-                header: null,
-                data: null,
-                goNext: false,
-                API_URL: "http://localhost:8000/api" //temp
-            }
-        },
-        created() {
-            // this.getContacts();
-        },
-        methods: {
-            /*            getContacts: function () {
+export default {
+  name: 'Upload',
+  components: {
+    //    Upload
+  },
+  data () {
+    return {
+      selectedFile: null,
+      header: null,
+      data: null,
+      goNext: false,
+      API_URL: 'http://localhost:8000/api' // temp
+    }
+  },
+  created () {
+    // this.getContacts();
+  },
+  methods: {
+    /*            getContacts: function () {
                             const headers = {"Content-Type": "application/json"};
                             fetch(this.API_URL + "/contacts", {headers})
                                 .then(response => response.json())
@@ -66,59 +66,59 @@
                         },
             */
 
-            // Input type="file" onChange, returns FileList on event target
-            // with .files with File object
-            // @see https://developer.mozilla.org/en-US/docs/Web/API/FileList
-            // @see https://developer.mozilla.org/en-US/docs/Web/API/File
-            onFileChange: async function (event) {
-                console.log(event);
-                event.preventDefault();
+    // Input type="file" onChange, returns FileList on event target
+    // with .files with File object
+    // @see https://developer.mozilla.org/en-US/docs/Web/API/FileList
+    // @see https://developer.mozilla.org/en-US/docs/Web/API/File
+    onFileChange: async function (event) {
+      console.log(event)
+      event.preventDefault()
 
-                const files = event.target.files;
-                if (files.length > 0) {
-                    const csv = (await files[0].text());
-                    const [header, data] = this.csvToArray(csv);
+      const files = event.target.files
+      if (files.length > 0) {
+        const csv = (await files[0].text())
+        const [header, data] = this.csvToArray(csv)
 
-                    console.log(header);
-                    console.log(data);
+        console.log(header)
+        console.log(data)
 
-                    this.header = header;
-                    this.data = data;
-                    //store.dispatch(addCsvHeaders(header));
-                    //store.dispatch(addCsvData(data));
+        this.header = header
+        this.data = data
+        // store.dispatch(addCsvHeaders(header));
+        // store.dispatch(addCsvData(data));
 
-                    // Update the state
-                    /*  this.setState({
+        // Update the state
+        /*  this.setState({
                           selectedFile: files[0],
                           header: header,
                           data: data
-                      });*/
-                }
-            },
+                      }); */
+      }
+    },
 
-            csvToArray: function (csv) {
-                const rows = csv.trim().split("\n");
-                const header = rows.shift().trim().split(",");
-                let newRows = [];
-                rows.forEach(row => {
-                    const line = row.trim();
-                    if (line.length > 0) newRows.push(line.split(","));
-                });
-                return [
-                    header,
-                    newRows
-                ];
-            },
+    csvToArray: function (csv) {
+      const rows = csv.trim().split('\n')
+      const header = rows.shift().trim().split(',')
+      const newRows = []
+      rows.forEach(row => {
+        const line = row.trim()
+        if (line.length > 0) newRows.push(line.split(','))
+      })
+      return [
+        header,
+        newRows
+      ]
+    },
 
-// On file upload (click the upload button)
-            onFileUpload: async function (event) {
-//  this.setState({goNext: true});
-                // store.dispatch(clearError());
-                console.log(event);
-                this.goNext = true;
-            }
-
-        }
-
+    // On file upload (click the upload button)
+    onFileUpload: async function (event) {
+      //  this.setState({goNext: true});
+      // store.dispatch(clearError());
+      console.log(event)
+      this.goNext = true
     }
+
+  }
+
+}
 </script>
