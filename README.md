@@ -15,7 +15,7 @@ https://www.youtube.com/watch?v=5emGcn0Cxgc&feature=youtu.be
 
 `php artisan serve` to start Laravel API server.
 
-`npm run start` to start React frontend.
+`npm run serve` to start React frontend.
 
 `npm run serve` to start VueJs frontend.
 

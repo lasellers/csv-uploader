@@ -69,6 +69,9 @@ class ProcessPage extends React.Component {
             return <Redirect to='/preview'/>;
         }
 
+        const title = (
+            <h1>Process</h1>
+        )
         const nav = (
             <>
                 <div>
@@ -86,14 +89,18 @@ class ProcessPage extends React.Component {
         if (!isLoaded)
             return (
                 <>
-                    <h1>Process</h1>
+                    {title}
+
                     <p>Processing....</p>
+
+                    {nav}
                 </>
             );
 
         return (
             <>
-                <h1>Process</h1>
+                {title}
+
                 <p>CSV records have been added to database.</p>
 
                 <hr/>

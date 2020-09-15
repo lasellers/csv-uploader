@@ -9,7 +9,7 @@ class CsvUploadPage extends React.Component {
         super(props);
         this.state = {
             selectedFile: null,
-            header: null,
+            headers: '',
             data: null,
             goNext: false
         };
@@ -28,30 +28,30 @@ class CsvUploadPage extends React.Component {
         const files = event.target.files;
         if (files.length > 0) {
             const csv = (await files[0].text());
-            const [header, data] = this.csvToArray(csv);
+            const [headers, data] = this.csvToArray(csv);
 
-            store.dispatch(addCsvHeaders(header));
+            store.dispatch(addCsvHeaders(headers));
             store.dispatch(addCsvData(data));
 
             // Update the state
             this.setState({
                 selectedFile: files[0],
-                header: header,
-                data: data
+                headers,
+                data
             });
         }
     };
 
     csvToArray = (csv) => {
         const rows = csv.trim().split("\n");
-        const header = rows.shift().trim().split(",");
+        const headers = rows.shift().trim().split(",");
         let newRows = [];
         rows.forEach(row => {
             const line = row.trim();
             if (line.length > 0) newRows.push(line.split(","));
         });
         return [
-            header,
+            headers,
             newRows
         ];
     };

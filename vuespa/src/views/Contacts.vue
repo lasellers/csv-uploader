@@ -1,7 +1,7 @@
 <template>
     <div class="contacts">
         <h1>Contacts</h1>
-        <p v-if="contacts.length===0">None.</p>
+        <p v-if="!(contacts.length>0)">None.</p>
 
         <table v-if="contacts.length>0" id="contacts-list" class="table table-striped">
             <thead>
@@ -32,14 +32,16 @@
                     </button>
                 </td>
             </tr>
-            ))}
             </tbody>
         </table>
 
         <div class="row">
-            <button class="btn btn-secondary mr-2" v-on:click="goBack=true">Back
+            <button class="btn btn-secondary mr-2" v-on:click="goBack">
+                Back
             </button>
-            <button class="btn btn-primary ml-2" v-on:click="goNext=true">Next</button>
+            <button class="btn btn-primary ml-2" v-on:click="goNext">
+                Next
+            </button>
         </div>
 
     </div>
@@ -52,7 +54,7 @@ export default {
   data () {
     return {
       contacts: [],
-      API_URL: 'http://localhost:8000/api' // temp
+      API_URL: process.env.VUE_APP_API_URL
     }
   },
   components: {},
@@ -60,6 +62,13 @@ export default {
     this.getContacts()
   },
   methods: {
+    goBack: async function (event) {
+      this.$router.push('process')
+    },
+    goNext: async function (event) {
+      this.$store.dispatch('clearError')
+      this.$router.push('custom-attributes')
+    },
     getContacts: function () {
       const headers = { 'Content-Type': 'application/json' }
       fetch(this.API_URL + '/contacts', { headers })

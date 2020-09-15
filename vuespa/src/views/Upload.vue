@@ -16,11 +16,11 @@
         <div v-if="selectedFile">
             <p><b>CSV File Details</b></p>
             <hr/>
-            <p>File Name: {this.state.selectedFile.name}</p>
-            <p>File Type: {this.state.selectedFile.type}</p>
-            <p>Last Modified: {this.state.selectedFile.lastModifiedDate.toDateString()}</p>
-            <p>Rows: {this.state.data.length}</p>
-            <p>Headers: {{store.getState().csv.csv_headers.join(', ')}}</p>
+            <p>File Name: {{selectedFile.name}}</p>
+            <p>File Type: {{selectedFile.type}}</p>
+            <p>Last Modified: {{selectedFile.lastModifiedDate.toDateString()}}</p>
+            <p>Rows: {{data.length}}</p>
+            <p>Headers: {{headers.join(', ')}}</p>
         </div>
 
     </div>
@@ -30,42 +30,18 @@
 export default {
   name: 'Upload',
   components: {
-    //    Upload
   },
   data () {
     return {
       selectedFile: null,
-      header: null,
+      headers: '',
       data: null,
-      goNext: false,
-      API_URL: 'http://localhost:8000/api' // temp
+      API_URL: process.env.VUE_APP_API_URL
     }
   },
   created () {
-    // this.getContacts();
   },
   methods: {
-    /*            getContacts: function () {
-                            const headers = {"Content-Type": "application/json"};
-                            fetch(this.API_URL + "/contacts", {headers})
-                                .then(response => response.json())
-                                .then(data => {
-                                    this.contacts = data;
-                                });
-                        },
-                        onContactDelete: function (id) {
-                            fetch(this.API_URL + "/contacts/" + id, {method: "DELETE"})
-                                .then(res => res.json())
-                                .then(() => {
-                                    this.getContacts();
-                                })
-                                .catch((error) => {
-                                    console.error(error);
-                                    this.contacts = []; // if error, set this to empty array
-                                });
-                        },
-            */
-
     // Input type="file" onChange, returns FileList on event target
     // with .files with File object
     // @see https://developer.mozilla.org/en-US/docs/Web/API/FileList
@@ -77,48 +53,39 @@ export default {
       const files = event.target.files
       if (files.length > 0) {
         const csv = (await files[0].text())
-        const [header, data] = this.csvToArray(csv)
+        const [headers, data] = this.csvToArray(csv)
 
-        console.log(header)
+        console.log(headers)
         console.log(data)
-
-        this.header = header
-        this.data = data
-        // store.dispatch(addCsvHeaders(header));
-        // store.dispatch(addCsvData(data));
+        this.$store.dispatch('addCsvHeaders', headers)
+        this.$store.dispatch('addCsvData', data)
 
         // Update the state
-        /*  this.setState({
-                          selectedFile: files[0],
-                          header: header,
-                          data: data
-                      }); */
+        this.selectedFile = files[0]
+        this.headers = headers
+        this.data = data
       }
     },
 
     csvToArray: function (csv) {
       const rows = csv.trim().split('\n')
-      const header = rows.shift().trim().split(',')
+      const headers = rows.shift().trim().split(',')
       const newRows = []
       rows.forEach(row => {
         const line = row.trim()
         if (line.length > 0) newRows.push(line.split(','))
       })
       return [
-        header,
+        headers,
         newRows
       ]
     },
 
     // On file upload (click the upload button)
     onFileUpload: async function (event) {
-      //  this.setState({goNext: true});
-      // store.dispatch(clearError());
-      console.log(event)
-      this.goNext = true
+      this.$store.dispatch('clearError')
+      this.$router.push('mapping')
     }
-
   }
-
 }
 </script>
