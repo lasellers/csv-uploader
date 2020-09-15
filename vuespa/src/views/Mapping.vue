@@ -61,6 +61,8 @@
         created () {
             this.dropdownOrder = [...(this.dbHeaders.keys())]
             this.remappedColumnOrder = this.defaultRemappedOrder(this.dbHeaders, this.csvHeaders)
+            console.log('dropdownOrder', this.dropdownOrder)
+            console.log('remappedColumnOrder', this.remappedColumnOrder)
         },
         data () {
             // Normally the default order is 0,1,2,3,4,5,6,7 and the like as far the the dropdown goes.
@@ -152,10 +154,13 @@
 
                 dbHeaders.forEach((header, index) => {
                     const headerIndex = csvHeaders.indexOf(header)
+                    console.log('defaultRemappedOrder ' + index + ' ' + headerIndex)
+
                     if (headerIndex >= 0) {
                         remappedColumnOrder[index] = headerIndex
                     }
                 })
+
                 return remappedColumnOrder
             }
 
