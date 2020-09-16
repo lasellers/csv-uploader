@@ -42,60 +42,58 @@
 </template>
 
 <script>
-export default {
-  name: 'CustomAttributes',
-  components: {
-  },
-  data () {
-    return {
-      API_URL: process.env.VUE_APP_API_URL,
-      customAttributes: []
-    }
-  },
-  beforeCreate () {
-  },
-  created () {
-    const headers = { 'Content-Type': 'application/json' }
-    fetch(this.API_URL + '/contacts', { headers })
-      .then(response => response.json())
-      .then(data => {
-        this.customAttributes = data.flatMap(row => {
-          return row.custom_attributes
-        })
-      })
-  },
-  methods: {
-    goBack: async function (event) {
-      this.$router.push('contacts')
-    },
-    goHome: async function (event) {
-      this.$store.dispatch('clearError')
-      this.$router.push('upload')
-    },
-    getContacts: function () {
-      const headers = { 'Content-Type': 'application/json' }
-      fetch(this.API_URL + '/contacts', { headers })
-        .then(response => response.json())
-        .then(data => {
-          this.customAttributes = data.flatMap(row => {
-            return row.custom_attributes
-          })
+    export default {
+        name: 'CustomAttributes',
+        components: {},
+        data () {
+            return {
+                API_URL: process.env.VUE_APP_API_URL,
+                customAttributes: []
+            }
+        },
+        beforeCreate () {
+        },
+        created () {
+            const headers = { 'Content-Type': 'application/json' }
+            fetch(this.API_URL + '/contacts', { headers })
+                .then(response => response.json())
+                .then(data => {
+                    this.customAttributes = data.flatMap(row => {
+                        return row.custom_attributes
+                    })
+                })
+        },
+        methods: {
+            goBack: async function (event) {
+                this.$router.push('contacts')
+            },
+            goHome: async function (event) {
+                this.$store.dispatch('clearErrors')
+                this.$router.push('upload')
+            },
+            getContacts: function () {
+                const headers = { 'Content-Type': 'application/json' }
+                fetch(this.API_URL + '/contacts', { headers })
+                    .then(response => response.json())
+                    .then(data => {
+                        this.customAttributes = data.flatMap(row => {
+                            return row.custom_attributes
+                        })
+                    })
+            },
+            onCustomAttributeDelete: function (id) {
+                fetch(this.API_URL + '/custom-attributes/' + id, { method: 'DELETE' })
+                    .then(res => res.json())
+                    .then(() => {
+                        this.getContacts()
+                    })
+                    .catch((error) => {
+                        console.error(error)
+                        this.$store.dispatch('addErrors', error)
+                        this.customAttributes = [] // if error, set this to empty array
+                    })
+            }
+        }
 
-          console.log(data)
-        })
-    },
-    onCustomAttributeDelete: function (id) {
-      fetch(this.API_URL + '/custom-attributes/' + id, { method: 'DELETE' })
-        .then(res => res.json())
-        .then(() => {
-          this.getContacts()
-        })
-        .catch((error) => {
-          console.error(error)
-          this.customAttributes = [] // if error, set this to empty array
-        })
     }
-  }
-
-}
 </script>

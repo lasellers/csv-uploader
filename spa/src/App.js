@@ -24,23 +24,21 @@ function App(props) {
         <BrowserRouter>
             <NavHeader/>
             <ErrorBox/>
-            <main className="App">
-                <div id="App-body">
-                    <div className="container-fluid">
-                        <div className="row">
-                            <div className="col-12">
-                                <Switch>
-                                    <Route path="/" component={CsvUploadPage} exact/>
-                                    <Route path="/upload" component={CsvUploadPage}/>
-                                    <Route path="/mapping" component={CsvColumnMappingPage} exact/>
-                                    <Route path="/preview" component={RemappingPreviewPage} exact/>
-                                    <Route path="/process" component={ProcessPage} exact/>
-                                    <Route path="/contacts" component={ContactsPage} exact/>
-                                    <Route path="/custom-attributes" component={CustomAttributesPage} exact/>
-                                    <Route path="/not-found" component={NotFoundPage} exact/>
-                                    <Route component={NotFoundPage}/>
-                                </Switch>
-                            </div>
+            <main id="App-body">
+                <div className="container-fluid">
+                    <div className="row">
+                        <div className="col-12">
+                            <Switch>
+                                <Route path="/" component={CsvUploadPage} exact/>
+                                <Route path="/upload" component={CsvUploadPage}/>
+                                <Route path="/mapping" component={CsvColumnMappingPage} exact/>
+                                <Route path="/preview" component={RemappingPreviewPage} exact/>
+                                <Route path="/process" component={ProcessPage} exact/>
+                                <Route path="/contacts" component={ContactsPage} exact/>
+                                <Route path="/custom-attributes" component={CustomAttributesPage} exact/>
+                                <Route path="/not-found" component={NotFoundPage} exact/>
+                                <Route component={NotFoundPage}/>
+                            </Switch>
                         </div>
                     </div>
                 </div>

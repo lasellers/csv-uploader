@@ -66,7 +66,7 @@ export default {
       this.$router.push('process')
     },
     goNext: async function (event) {
-      this.$store.dispatch('clearError')
+      this.$store.dispatch('clearErrors')
       this.$router.push('custom-attributes')
     },
     getContacts: function () {
@@ -85,6 +85,7 @@ export default {
         })
         .catch((error) => {
           console.error(error)
+          this.$store.dispatch('addErrors', error)
           this.contacts = [] // if error, set this to empty array
         })
     }

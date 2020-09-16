@@ -1,42 +1,38 @@
 <template>
     <div class="container-fluid" id="errorbox">
-        <div class="row error">
-            <p v-if="errors === null">
-                errorbox: None
-            </p>
-            <p v-if="typeof errors === 'string'">
-                errorbox: {{ errors}}
-            </p>
-            <p v-if="typeof errors === 'array'">
-                errorbox: {{ errors.join(',')}}
-            </p>
+
+        <div v-if="errors === null" class="row">
+            <p></p>
         </div>
+
+        <div v-if="!(errors === null) && Array.isArray(errors)" class="col-md-12 text-center error">
+            <div class="row">
+                <p v-for="(error, index) in errors" v-bind:key="index">
+                    {{error.field}}: {{error.message.join(',')}}
+                </p>
+            </div>
+            <div class="row">
+                <button class="btn btn-secondary mr-2" v-on:click="clearErrors">
+                    Clear Errors
+                </button>
+            </div>
+        </div>
+
     </div>
 </template>
 
 <script>
     export default {
         name: 'ErrorBox',
-        props: {
-          //  errors: String
-        },
-        components: {},
-        created () {
-        },
-        data () {
-            return {
-                API_URL: process.env.VUE_APP_API_URL,
-                // errors: this.$store.getters.errors,
-                data: {
-                }
-            }
-        },
         computed: {
             errors () {
                 return this.$store.getters.errors
             }
         },
         methods: {
+            clearErrors: async function (event) {
+                this.$store.dispatch('clearErrors')
+            }
         }
     }
 </script>

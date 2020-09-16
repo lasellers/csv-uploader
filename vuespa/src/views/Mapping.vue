@@ -57,14 +57,10 @@
         created () {
             this.dropdownOrder = [...(this.dbHeaders.keys())]
             this.remappedColumnOrder = this.defaultRemappedOrder(this.dbHeaders, this.csvHeaders)
-            console.log('dropdownOrder', this.dropdownOrder)
-            console.log('remappedColumnOrder', this.remappedColumnOrder)
         },
         data () {
             // Normally the default order is 0,1,2,3,4,5,6,7 and the like as far the the dropdown goes.
             const order = [0, 1, 2, 3, 4, 5, 6]
-            // const order = [...(this.$store.getters.dbHeaders().keys())]
-            // const remappedColumnOrder = [] // this.defaultRemappedOrder(this.dbHeaders, this.csvHeaders)
             return {
                 API_URL: process.env.VUE_APP_API_URL,
                 dbHeaders: this.$store.getters.dbHeaders,
@@ -78,35 +74,26 @@
                 this.$router.push('upload')
             },
             goNext: async function (event) {
-                this.$store.dispatch('clearError')
+                this.$store.dispatch('clearErrors')
                 this.onMappingAccept()
                 this.$router.push('preview')
             },
             onMappingChange: async function (event) {
-                console.info('onMappingChange', event.target)
-
                 const id = (event.target.id.split('-'))[1] // event.target.selectedIndex;
                 const value = event.target.value
-
-                console.info('onMappingChange id=', id, 'value=', value)
 
                 const remappedColumnOrder = this.remappedColumnOrder
                 remappedColumnOrder[id] = value
                 this.remappedColumnOrder = remappedColumnOrder
-                console.info('onMappingChange remappedColumnOrder=', remappedColumnOrder)
             },
 
             onMappingAccept: async function () {
-                console.info('onMappingAccept')
                 this.$store.dispatch('addRemappedColumnOrder', this.remappedColumnOrder)
 
                 const [contacts, customAttributes] = this.remapCsvToContactsAndCustomAttributes()
 
                 this.$store.dispatch('addContacts', contacts)
                 this.$store.dispatch('addCustomAttributes', customAttributes)
-
-                console.info('onMappingAccept contacts', contacts)
-                console.info('onMappingAccept customAttributes', customAttributes)
             },
 
             /**
@@ -150,8 +137,6 @@
 
                 dbHeaders.forEach((header, index) => {
                     const headerIndex = csvHeaders.indexOf(header)
-                    console.log('defaultRemappedOrder ' + index + ' ' + headerIndex)
-
                     if (headerIndex >= 0) {
                         remappedColumnOrder[index] = headerIndex
                     }

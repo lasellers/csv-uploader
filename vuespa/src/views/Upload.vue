@@ -35,8 +35,7 @@ export default {
     return {
       selectedFile: null,
       headers: '',
-      data: null,
-      API_URL: process.env.VUE_APP_API_URL
+      data: null
     }
   },
   created () {
@@ -47,7 +46,6 @@ export default {
     // @see https://developer.mozilla.org/en-US/docs/Web/API/FileList
     // @see https://developer.mozilla.org/en-US/docs/Web/API/File
     onFileChange: async function (event) {
-      console.log(event)
       event.preventDefault()
 
       const files = event.target.files
@@ -55,8 +53,6 @@ export default {
         const csv = (await files[0].text())
         const [headers, data] = this.csvToArray(csv)
 
-        console.log(headers)
-        console.log(data)
         this.$store.dispatch('addCsvHeaders', headers)
         this.$store.dispatch('addCsvData', data)
 
@@ -83,7 +79,7 @@ export default {
 
     // On file upload (click the upload button)
     onFileUpload: async function (event) {
-      this.$store.dispatch('clearError')
+      this.$store.dispatch('clearErrors')
       this.$router.push('mapping')
     }
   }

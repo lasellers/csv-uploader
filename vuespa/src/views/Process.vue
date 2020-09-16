@@ -11,13 +11,13 @@
 
             <hr/>
 
-            <p>Contact inserts: {{data.contactInserts}}</p>
-            <p>Contacts rows: {{data.contacts.length}}</p>
+            <p>Contact inserts: {{contactInserts}}</p>
+            <p>Contacts rows: {{contacts.length}}</p>
 
             <br/>
 
-            <p>Custom Attribute inserts: {{data.customAttributeInserts}}</p>
-            <p>Custom Attributes data rows: {{data.customAttributes.length}}</p>
+            <p>Custom Attribute inserts: {{customAttributeInserts}}</p>
+            <p>Custom Attributes data rows: {{customAttributes.length}}</p>
 
             <div class="row">
                 <button class="btn btn-secondary mr-2" v-on:click="goBack">
@@ -45,12 +45,10 @@
                 API_URL: process.env.VUE_APP_API_URL,
                 dbHeaders: this.$store.getters.dbHeaders,
                 dbNamedHeaders: this.$store.getters.dbNamedHeaders,
-                data: {
-                    contactInserts: 0,
-                    customAttributeInserts: 0,
-                    contacts: [],
-                    customAttributes: []
-                },
+                contactInserts: 0,
+                customAttributeInserts: 0,
+                contacts: [],
+                customAttributes: [],
                 isSaved: false
             }
         },
@@ -67,51 +65,50 @@
                 this.$router.push('preview')
             },
             goNext: async function (event) {
-                this.$store.dispatch('clearError')
+                this.$store.dispatch('clearErrors')
                 this.$router.push('contacts')
             },
-            saveCsv () {
+            async saveCsv () {
                 const contacts = this.$store.getters.contacts
                 const customAttributes = this.$store.getters.customAttributes
 
-                fetch(this.API_URL + '/csv/save', {
+                const headers = { Accept: 'application/json', 'Content-Type': 'application/json' }
+                await fetch(this.API_URL + '/csv/save', {
                     method: 'POST',
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json'
-                    },
+                    headers,
                     body: JSON.stringify({ contacts, customAttributes })
                 })
                     .then(response => {
                         if (!response.ok) {
                             throw Error(response.statusText)
                         }
+                        console.info('*** response', response)
+
                         return response.json()
                     })
                     .then((data) => {
-                        this.data.contacts = data.contacts
-                        this.data.customAttributes = data.custom_attributes
-                        this.data.contactInserts = data.contact_inserts
-                        this.data.customAttributeInserts = data.custom_attribute_inserts
+                        console.info('*** data', data)
+                        this.contacts = JSON.parse(JSON.stringify(data.contacts))
+                        this.customAttributes = JSON.parse(JSON.stringify(data.custom_attributes))
+                        this.contactInserts = JSON.parse(JSON.stringify(data.contact_inserts))
+                        this.customAttributeInserts = JSON.parse(JSON.stringify(data.custom_attribute_inserts))
+                        console.info('*** this contacts', this.contacts)
+                        console.info('*** this customAttributes', this.customAttributes)
+                        console.info('*** this contactInserts', this.contactInserts)
+                        console.info('*** this customAttributeInserts', this.customAttributeInserts)
 
-                        console.info('process then ', data)
+                        console.log('data errors', data.errors)
                         // get the formrequest validation errors from the api
-                        if (Object.prototype.hasOwnProperty.call(data, 'errors') &&
-                            data.errors.length > 0) {
-                            this.$store.dispatch('addError', data.errors)
-                        }
+                        // if (Object.prototype.hasOwnProperty.call(data, 'errors') && data.errors.length > 0) {
+                        this.$store.dispatch('addErrors', data.errors)
                         this.isSaved = true
                     })
                     .catch((error) => {
-                        console.info('process catch ', error)
-                        console.error(error)
-                        this.$store.dispatch('addError', error)
-                        this.data = {
-                            contacts: [],
-                            custom_attributes: [],
-                            contact_inserts: 0,
-                            custom_attribute_inserts: 0
-                        }
+                        this.$store.dispatch('addErrors', error)
+                        this.contactInserts = 0
+                        this.customAttributeInserts = 0
+                        this.contacts = []
+                        this.customAttributes = []
                     })
             }
         }

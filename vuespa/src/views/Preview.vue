@@ -18,7 +18,8 @@
     <div class="row">
       <button class="btn btn-secondary mr-2" v-on:click="goBack">Back
       </button>
-      <button class="btn btn-primary ml-2" v-on:click="goNext">Next</button>
+      <button class="btn btn-primary ml-2" v-on:click="goNext">Next
+      </button>
     </div>
 
   </div>
@@ -34,7 +35,7 @@ export default {
       this.$router.push('mapping')
     },
     goNext: async function (event) {
-      this.$store.dispatch('clearError')
+      this.$store.dispatch('clearErrors')
       this.$router.push('process')
     }
   },
