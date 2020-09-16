@@ -5,16 +5,33 @@
             <p></p>
         </div>
 
-        <div v-if="!(errors === null) && Array.isArray(errors)" class="col-md-12 text-center error">
+        <div v-if="!(errors === null) && Array.isArray(errors)">
             <div class="row">
-                <p v-for="(error, index) in errors" v-bind:key="index">
-                    {{error.field}}: {{error.message.join(',')}}
-                </p>
+                <div class="col-md-12 text-center error">
+                    <h3>Validation Errors</h3>
+                    <table class="table table-striped table-sm">
+                        <thead>
+                        <tr>
+                            <th>Field</th>
+                            <th>Message</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(error, index) in errors" v-bind:key="index">
+                                <td>{{error.field}}</td>
+                                <td>{{error.message.join(', ')}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
             </div>
             <div class="row">
-                <button class="btn btn-secondary mr-2" v-on:click="clearErrors">
+                <div class="col-md-12 text-left">
+                <button class="btn btn-primary btn-sm" v-on:click="clearErrors">
                     Clear Errors
                 </button>
+            </div>
             </div>
         </div>
 

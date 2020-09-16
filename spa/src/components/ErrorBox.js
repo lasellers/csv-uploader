@@ -58,7 +58,7 @@ function ErrorBox() {
                             {messages.map((message, index) => (
                                 <tr key={index}>
                                     <td>{message.field}</td>
-                                    <td>{message.message}</td>
+                                    <td>{message.message.join(', ')}</td>
                                 </tr>
                             ))}
                             </tbody>
