@@ -167,9 +167,7 @@ class CsvColumnMappingPage extends React.Component {
                     <tbody>
                     {db_named_headers.map((column, index) => (
                         <tr key={index}>
-                            <td>
-                                {column}
-                            </td>
+                            <td>{column}</td>
                             <td>
                                 <select id={"select-" + index} value={this.state.remapped_column_order[index]}
                                         onChange={this.onMappingChange}>

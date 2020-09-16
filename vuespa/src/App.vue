@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <NavHeader/>
-        <ErrorBox errors="this is an error"/>
+        <ErrorBox/>
         <main id="App-body">
             <div class="container-fluid">
                 <div class="row">

@@ -4,10 +4,7 @@
 
         <p><b>CSV File Details</b></p>
         <hr/>
-        <p>csvHeaders: {{csvHeaders.join(',')}}</p>
-
-        <p>dbHeaders: {{dbHeaders.join(',')}}</p>
-        <p>dbNamedHeaders: {{dbNamedHeaders.join(',')}}</p>
+        <p>Headers: {{csvHeaders.join(',')}}</p>
 
         <table class="table table-striped">
             <thead>
@@ -25,8 +22,8 @@
                             v-on:change="onMappingChange">
                         <option key=-1 value=""> (None)</option>
                         <option v-for="(csvHeader, index2) in csvHeaders"
-                                v-bind:key="index2"
-                                v-bind:value="csvHeader">
+                                :key="index + '.' + index2"
+                                v-bind:value="index2">
                             {{csvHeader}} (Ex: {{csvData[0][index2]}})
                         </option>
                     </select>
@@ -48,8 +45,7 @@
 <script>
     export default {
         name: 'Mapping',
-        components: {
-        },
+        components: {},
         computed: {
             csvHeaders () {
                 return this.$store.getters.csvHeaders
@@ -102,15 +98,15 @@
 
             onMappingAccept: async function () {
                 console.info('onMappingAccept')
-                this.$store.dispatch('remappedColumnOrder', this.remappedColumnOrder)
+                this.$store.dispatch('addRemappedColumnOrder', this.remappedColumnOrder)
 
-                const [remappedData, unmappedData] = this.remapCsvToContactsAndCustomAttributes()
+                const [contacts, customAttributes] = this.remapCsvToContactsAndCustomAttributes()
 
-                this.$store.dispatch('addRemappedCsvData', remappedData)
-                this.$store.dispatch('addUnmappedData', unmappedData)
+                this.$store.dispatch('addContacts', contacts)
+                this.$store.dispatch('addCustomAttributes', customAttributes)
 
-                console.info('onMappingAccept remappedData', remappedData)
-                console.info('onMappingAccept unmappedData', unmappedData)
+                console.info('onMappingAccept contacts', contacts)
+                console.info('onMappingAccept customAttributes', customAttributes)
             },
 
             /**

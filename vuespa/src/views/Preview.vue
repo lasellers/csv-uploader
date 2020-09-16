@@ -9,7 +9,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr v-for="(row, index2) in remappedCsvData" v-bind:key="index2">
+      <tr v-for="(row, index2) in contacts" v-bind:key="index2">
         <td v-for="(col, index3) in row" v-bind:key="index3">{{col}}</td>
       </tr>
       </tbody>
@@ -42,8 +42,8 @@ export default {
     csvHeaders () {
       return this.$store.getters.csvHeaders
     },
-    remappedCsvData () {
-      return this.$store.getters.remappedCsvData
+    contacts () {
+      return this.$store.getters.contacts
     }
   },
   data () {

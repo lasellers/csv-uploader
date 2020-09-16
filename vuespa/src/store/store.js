@@ -7,11 +7,11 @@ export default new Vuex.Store({
   state: {
     debug: true,
     state: {
-      error: null,
+      errors: null,
       csvHeaders: [],
       csvData: [],
-      unmappedData: [],
-      remappedCsvData: [],
+      customAttributes: [],
+      contacts: [],
       remappedColumnOrder: [0, 1, 2, 3, 4, 5, 6],
       // read only SSOA
       dbHeaders: ['team_id', 'name', 'phone', 'email', 'sticky_phone_number_id', 'created_at', 'updated_at'],
@@ -32,18 +32,18 @@ export default new Vuex.Store({
     csvData: store => {
       return store.state.csvData
     },
-    unmappedData: store => {
-      return store.state.unmappedData
+    customAttributes: store => {
+      return store.state.customAttributes
     },
-    remappedCsvData: store => {
-      return store.state.remappedCsvData
+    contacts: store => {
+      return store.state.contacts
     },
     remappedColumnOrder: store => {
       return store.state.remappedColumnOrder
     },
-    getError: store => {
-      console.info('getError', store.state.error)
-      return store.state.error
+    errors: store => {
+      console.info('errors', store.state.errors)
+      return store.state.errors
     }
   },
 
@@ -54,22 +54,21 @@ export default new Vuex.Store({
     addCsvData (store, value) {
       store.state.csvData = value
     },
-    addUnmappedData (store, value) {
-      store.state.unmappedData = value
+    addCustomAttributes (store, value) {
+      store.state.customAttributes = value
     },
-    addRemappedCsvData (store, value) {
-      store.state.remappedCsvData = value
+    addContacts (store, value) {
+      store.state.contacts = value
     },
     addRemappedColumnOrder (store, value) {
       store.state.remappedColumnOrder = value
     },
-    addError (store, error) {
-      console.error('mutations addError', store.state.error, error)
-      store.state.error = error
+    addError (store, errors) {
+      console.error('mutations addError', store.state.error, errors)
+      store.state.errors = errors
     },
     clearError (store) {
-      console.error('mutations clearError', store.state.error)
-      store.state.error = null
+      store.state.errors = null
     }
   },
 
@@ -80,11 +79,11 @@ export default new Vuex.Store({
     addCsvData (context, value) {
       context.commit('addCsvData', value)
     },
-    addUnmappedData (context, value) {
-      context.commit('addUnmappedData', value)
+    addCustomAttributes (context, value) {
+      context.commit('addCustomAttributes', value)
     },
-    addRemappedCsvData (context, value) {
-      context.commit('addRemappedCsvData', value)
+    addContacts (context, value) {
+      context.commit('addContacts', value)
     },
     addRemappedColumnOrder (context, value) {
       context.commit('addRemappedColumnOrder', value)
@@ -94,7 +93,6 @@ export default new Vuex.Store({
       context.commit('addError', value)
     },
     clearError (context) {
-      console.error('action clearError')
       context.commit('clearError')
     }
   }

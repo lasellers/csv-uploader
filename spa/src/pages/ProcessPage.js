@@ -10,7 +10,7 @@ class ProcessPage extends React.Component {
         this.state = {
             goBack: false,
             goNext: false,
-            isLoaded: false,
+            isSaved: false,
             data: {
                 contact_inserts: 0,
                 custom_attribute_inserts: 0,
@@ -40,11 +40,17 @@ class ProcessPage extends React.Component {
             })
             .then((data) => {
                 this.setState({
-                    isLoaded: true,
-                    data
+                    isSaved: true,
+                    data: {
+                        contacts: data.contacts,
+                        custom_attributes: data.custom_attributes,
+                        contact_inserts: data.contact_inserts,
+                        custom_attribute_inserts: data.custom_attribute_inserts
+                    }
                 });
                 // get the formrequest validation errors from the api
-                if (data.hasOwnProperty('errors')) {
+                if (Object.prototype.hasOwnProperty.call(data, 'errors') &&
+                    data.errors.length > 0) {
                     store.dispatch(addError(data.errors));
                 }
             })
@@ -52,14 +58,14 @@ class ProcessPage extends React.Component {
                 console.error(error);
                 store.dispatch(addError(error));
                 this.setState({
-                    isLoaded: true,
+                    isSaved: true,
                     data: []
                 });
             });
     }
 
     render() {
-        const {goNext, goBack, isLoaded} = this.state;
+        const {goNext, goBack, isSaved} = this.state;
         const data = this.state.data;
 
         if (goNext) {
@@ -86,7 +92,7 @@ class ProcessPage extends React.Component {
             </>
         );
 
-        if (!isLoaded)
+        if (!isSaved)
             return (
                 <>
                     {title}

@@ -80,6 +80,11 @@ for the project.
 `npm run test`
 
 
+## Debugging
+
+Use telescope (http://localhost:8000/telescope/requests), Vue DevTools and React DevTools.
+
+
 ## Versions
 
 * v1 Initial

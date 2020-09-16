@@ -2,22 +2,22 @@
     <div class="process">
         <h1>Process</h1>
 
-        <p v-if="!(data.length>0)">
-          Processing....
+        <p v-if="!isSaved">
+            Processing....
         </p>
 
-        <div v-if="data.length>0">
-          <p>CSV records have been added to database.</p>
+        <div v-if="isSaved">
+            <p>CSV records have been added to database.</p>
 
-          <hr/>
+            <hr/>
 
-            <p>Contact inserts: {data.contactInserts}</p>
-            <p>Contacts rows: {data.contacts?.length}</p>
+            <p>Contact inserts: {{data.contactInserts}}</p>
+            <p>Contacts rows: {{data.contacts.length}}</p>
 
             <br/>
 
-            <p>Custom Attribute inserts: {data.customAttributeInserts}</p>
-            <p>Custom Attributes data rows: {data.customAttributes?.length}</p>
+            <p>Custom Attribute inserts: {{data.customAttributeInserts}}</p>
+            <p>Custom Attributes data rows: {{data.customAttributes.length}}</p>
 
             <div class="row">
                 <button class="btn btn-secondary mr-2" v-on:click="goBack">
@@ -45,7 +45,13 @@
                 API_URL: process.env.VUE_APP_API_URL,
                 dbHeaders: this.$store.getters.dbHeaders,
                 dbNamedHeaders: this.$store.getters.dbNamedHeaders,
-                data: []
+                data: {
+                    contactInserts: 0,
+                    customAttributeInserts: 0,
+                    contacts: [],
+                    customAttributes: []
+                },
+                isSaved: false
             }
         },
         computed: {
@@ -65,8 +71,8 @@
                 this.$router.push('contacts')
             },
             saveCsv () {
-                const contacts = this.$store.getters.remappedCsvData
-                const customAttributes = this.$store.getters.unmappedData
+                const contacts = this.$store.getters.contacts
+                const customAttributes = this.$store.getters.customAttributes
 
                 fetch(this.API_URL + '/csv/save', {
                     method: 'POST',
@@ -83,12 +89,18 @@
                         return response.json()
                     })
                     .then((data) => {
-                        this.data = data
+                        this.data.contacts = data.contacts
+                        this.data.customAttributes = data.custom_attributes
+                        this.data.contactInserts = data.contact_inserts
+                        this.data.customAttributeInserts = data.custom_attribute_inserts
+
                         console.info('process then ', data)
                         // get the formrequest validation errors from the api
-                        // if (data.hasOwnProperty('errors')) {
+                        if (Object.prototype.hasOwnProperty.call(data, 'errors') &&
+                            data.errors.length > 0) {
                             this.$store.dispatch('addError', data.errors)
-                       // }
+                        }
+                        this.isSaved = true
                     })
                     .catch((error) => {
                         console.info('process catch ', error)

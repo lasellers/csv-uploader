@@ -14,8 +14,8 @@ function ErrorBox() {
     if (error === null)
         return (
             <>
-                <p>
-                </p></>
+                <p> </p>
+            </>
         );
 
     if (typeof error === 'string') {
