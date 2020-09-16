@@ -106,7 +106,12 @@
                         console.info('process catch ', error)
                         console.error(error)
                         this.$store.dispatch('addError', error)
-                        this.data = []
+                        this.data = {
+                            contacts: [],
+                            custom_attributes: [],
+                            contact_inserts: 0,
+                            custom_attribute_inserts: 0
+                        }
                     })
             }
         }

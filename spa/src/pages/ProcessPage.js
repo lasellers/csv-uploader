@@ -59,7 +59,12 @@ class ProcessPage extends React.Component {
                 store.dispatch(addError(error));
                 this.setState({
                     isSaved: true,
-                    data: []
+                    data: {
+                        contacts: [],
+                        custom_attributes: [],
+                        contact_inserts: 0,
+                        custom_attribute_inserts: 0
+                    }
                 });
             });
     }
