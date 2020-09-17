@@ -73,7 +73,7 @@
                 await fetch(this.API_URL + '/csv/save', {
                     method: 'POST',
                     headers,
-                    body: JSON.stringify({ contacts, customAttributes })
+                    body: JSON.stringify({ contacts, custom_attributes: customAttributes })
                 })
                     .then(response => {
                         if (!response.ok) {

@@ -1,4 +1,4 @@
-team_id,name,phone,email,sticky_phone_number_id,created_at,updated_at,DUP
+team_id,name,phone,email,sticky_phone_number_id,created_at,updated_at,DUP_HEADER
 1,John DUP,555-555-5555,johnDUP@smith.com,12345,2000-01-01,2000-01-03,DUP
 1,John DUP,555-555-5555,johnDUP@smith.com,12345,2000-01-01,2000-01-03,DUP
 1,John DUP,555-555-5555,johnDUP@smith.com,12345,2000-01-01,2000-01-03,DUP

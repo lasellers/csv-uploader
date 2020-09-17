@@ -30,7 +30,7 @@ class ProcessPage extends React.Component {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({contacts, custom_attributes})
+            body: JSON.stringify({contacts, custom_attributes: custom_attributes})
         })
             .then(response => {
                 if (!response.ok) {
