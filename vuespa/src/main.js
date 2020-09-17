@@ -20,10 +20,7 @@ library.add(faTrashAlt)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.use(Vuex)
-
-// Install BootstrapVue
 Vue.use(BootstrapVue)
-// Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin)
 
 Vue.config.productionTip = false

@@ -15,7 +15,7 @@
       </tbody>
     </table>
 
-    <div class="row">
+    <div>
       <button class="btn btn-secondary mr-2" v-on:click="goBack">Back
       </button>
       <button class="btn btn-primary ml-2" v-on:click="goNext">Next

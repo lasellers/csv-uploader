@@ -1,6 +1,7 @@
 <template>
     <div class="contacts">
         <h1>Contacts</h1>
+
         <p v-if="!(contacts.length>0)">None.</p>
 
         <table v-if="contacts.length>0" id="contacts-list" class="table table-striped">
@@ -35,7 +36,7 @@
             </tbody>
         </table>
 
-        <div class="row">
+        <div>
             <button class="btn btn-secondary mr-2" v-on:click="goBack">
                 Back
             </button>
@@ -49,7 +50,6 @@
 
 <script>
 export default {
-  // el: '#contacts-list',
   name: 'Contacts',
   data () {
     return {

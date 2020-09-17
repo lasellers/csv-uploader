@@ -10,7 +10,7 @@ function NavHeader(props) {
     let location = useLocation();
     return (
         <>
-            <header id="App-header">
+            <header id="navheader">
                 <Navbar expand="lg">
                     <Nav className="ml-auto">
                         <h1>CSV Uploader</h1>

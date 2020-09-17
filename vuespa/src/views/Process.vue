@@ -18,17 +18,14 @@
 
             <p>Custom Attribute inserts: {{customAttributeInserts}}</p>
             <p>Custom Attributes data rows: {{customAttributes.length}}</p>
-
-            <div class="row">
-                <button class="btn btn-secondary mr-2" v-on:click="goBack">
-                    Back
-                </button>
-                <button class="btn btn-primary ml-2" v-on:click="goNext">
-                    Next
-                </button>
-            </div>
-
         </div>
+
+        <button class="btn btn-secondary mr-2" v-on:click="goBack">
+            Back
+        </button>
+        <button class="btn btn-primary ml-2" v-on:click="goNext">
+            Next
+        </button>
 
     </div>
 </template>

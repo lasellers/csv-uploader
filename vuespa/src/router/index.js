@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import About from '../views/About.vue'
 import Upload from '../views/Upload.vue'
 import Mapping from '../views/Mapping.vue'
 import Preview from '../views/Preview.vue'
@@ -12,10 +11,6 @@ import NotFound from '../views/NotFound.vue'
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path: '/about',
-    component: About
-  },
   {
     path: '/',
     redirect: '/upload'

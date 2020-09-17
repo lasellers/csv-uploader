@@ -6,12 +6,12 @@
             </div>
             <div class="mr-auto">
                 <ul class="steps-inline">
-                    <router-link to="/" class="btn btn-step">1</router-link>
-                    <router-link to="/mapping" class="btn btn-step">2</router-link>
-                    <router-link to="/preview" class="btn btn-step">3</router-link>
-                    <router-link to="/process" class="btn btn-step">4</router-link>
-                    <router-link to="/contacts" class="btn btn-step">5</router-link>
-                    <router-link to="/custom-attributes" class="btn btn-step">6</router-link>
+                    <router-link to="/upload"><div class="btn btn-step">1</div></router-link>
+                    <router-link to="/mapping"><div class="btn btn-step">2</div></router-link>
+                    <router-link to="/preview"><div class="btn btn-step">3</div></router-link>
+                    <router-link to="/process"><div class="btn btn-step">4</div></router-link>
+                    <router-link to="/contacts"><div class="btn btn-step">5</div></router-link>
+                    <router-link to="/custom-attributes"><div class="btn btn-step">6</div></router-link>
                 </ul>
             </div>
         </div>
@@ -26,27 +26,34 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
     #navheader {
         background-color: darkslategrey;
         min-height: 8vh;
         max-height: 8vh;
+        font-size: calc(10px + 2vmin);
+        line-height: 8vh;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        font-size: calc(10px + 2vmin);
         color: white;
     }
 
     #navheader h1 {
         font-size: 5vh;
-        line-height: 6vh;
+        line-height: 8vh;
+        padding-right: 1em;
     }
 
     #navheader link {
         color: #61dafb;
+    }
+
+    ul.steps-inline {
+        display: inline-block;
+        padding: 0;
+        margin: 0;
     }
 
     ul.steps-inline > a {
@@ -65,17 +72,22 @@ export default {
     .btn.btn-step {
         background-color: darkgray;
         color: white;
-        width: 6vh;
-        height: 6vh;
         text-align: center;
         padding: 0;
-        margin: 3vh 0 1vh 0;
+        margin: 1vh 0 1vh 0;
         font-size: 3vh;
+        width: 6vh;
+        height: 6vh;
         line-height: 6vh;
         border-radius: 8vh;
     }
 
-    .btn.btn-step.active {
+    .btn.btn-step.router-link-active {
+        background-color: white;
+        color: black;
+    }
+
+    a.router-link-exact-active.router-link-active div.btn.btn-step {
         background-color: white;
         color: black;
     }

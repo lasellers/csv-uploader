@@ -28,7 +28,7 @@
             </tbody>
         </table>
 
-        <div class="row">
+        <div>
             <button class="btn btn-secondary mr-2" v-on:click="goBack">
                 Back
             </button>
@@ -51,17 +51,8 @@
                 customAttributes: []
             }
         },
-        beforeCreate () {
-        },
         created () {
-            const headers = { 'Content-Type': 'application/json' }
-            fetch(this.API_URL + '/contacts', { headers })
-                .then(response => response.json())
-                .then(data => {
-                    this.customAttributes = data.flatMap(row => {
-                        return row.custom_attributes
-                    })
-                })
+            this.getContacts()
         },
         methods: {
             goBack: async function (event) {

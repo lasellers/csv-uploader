@@ -1,4 +1,4 @@
-#App-header {
+#navheader {
     background-color: darkslategrey;
     min-height: 8vh;
     max-height: 8vh;
@@ -10,13 +10,16 @@
     color: white;
 }
 
-#App-header h1 {
+#navheader h1 {
     font-size: 5vh;
-    line-height: 6vh;
+    line-height: 8vh;
+    padding-right: 1em;
 }
 
-.App-link {
-    color: #61dafb;
+ul.steps-inline {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
 }
 
 ul.steps-inline > li, ol.steps-inline > li {
@@ -39,7 +42,7 @@ ul.steps-inline > li, ol.steps-inline > li {
     height: 6vh;
     text-align: center;
     padding: 0;
-    margin: 3vh 0 1vh 0;
+    margin: 1vh 0 1vh 0;
     font-size: 3vh;
     line-height: 6vh;
     border-radius: 8vh;
@@ -51,12 +54,12 @@ ul.steps-inline > li, ol.steps-inline > li {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-    #App-header h1 {
-        animation: App-header-spin infinite 10s linear;
+    #navheader h1 {
+        animation: navheader-spin infinite 10s linear;
     }
 }
 
-@keyframes App-header-spin {
+@keyframes navheader-spin {
     70% {
         transform: scale(1);
     }

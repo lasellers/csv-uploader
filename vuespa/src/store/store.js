@@ -91,7 +91,8 @@ export default new Vuex.Store({
         addErrors (context, values) {
             console.info('action addErrors', values)
 
-            if (values === null || values === '' || values === [] || values === {}) {
+            if (values === null || values === '' || values === [] || values === {} ||
+            (Array.isArray(values) && values.length === 0)) {
                 // do nothing
                 context.commit('addErrors', null)
             } else if (typeof values === 'string') {
@@ -99,19 +100,18 @@ export default new Vuex.Store({
                 context.commit('addErrors', values)
             } else {
                 values = [...values]
+
                 const errors = []
                 values.forEach((value, index) => {
                     errors.push(JSON.parse(JSON.stringify(value)))
                 })
 
-                console.log('errors', errors)
                 const messages = []
                 for (const [key, value] of Object.entries(errors)) {
                     for (const [field, message] of Object.entries(value)) {
                         messages.push({ field, message, key })
                     }
                 }
-                console.log('messages', messages)
 
                 context.commit('addErrors', messages)
             }
