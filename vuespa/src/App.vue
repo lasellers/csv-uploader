@@ -8,6 +8,7 @@
                     <div class="col-12">
                         <router-view/>
                     </div>
+                    <p><small>VueJs Version</small></p>
                 </div>
             </div>
         </main>

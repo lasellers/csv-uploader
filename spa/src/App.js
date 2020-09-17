@@ -40,6 +40,7 @@ function App(props) {
                                 <Route component={NotFoundPage}/>
                             </Switch>
                         </div>
+                        <p><small>React Version</small></p>
                     </div>
                 </div>
             </main>

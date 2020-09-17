@@ -8,33 +8,6 @@
 
 version: '3'
 services:
-  #  # VueJS SPA
-  #  vuespa:
-  #    #hostname: vuespa.csvuploader.localhost.com
-  #    container_name: csvuploader_vuespa
-  #    build:
-  #      context: .
-  #      dockerfile: ./vuespa.Dockerfile
-  #    restart: unless-stopped
-  #    tty: true
-  #    volumes:
-  #      - './vuespa:/app' # mirror ./vuespa to container app folder
-  #      - '/app/node_modules'
-  #    ports:
-  #      - 81:80
-  #      - 444:443
-  #    expose:
-  #      - 81
-  #      - 444
-  #    environment:
-  #      - CHOKIDAR_USEPOLLING=true # for hot reload
-  #      - REACT_APP_API_URL=${REACT_APP_API_URL}
-  #      - PUBLIC_URL=${PUBLIC_URL}
-  #    depends_on:
-  #      - db
-  #      - apiweb
-  #      - api
-
   # A container just so we can effectively do:
   # sudo docker exec -it csvuploader_api bash -c "composer run reseed"
   # Note we're sharing the same code volume which the api container already setup.
@@ -57,6 +30,34 @@ services:
       - apiweb
       - api
       - db
+
+  # VueJS SPA
+  vuespa:
+    #hostname: vuespa.csvuploader.localhost.com
+    container_name: csvuploader_vuespa
+    build:
+      context: .
+      dockerfile: ./vuespa.Dockerfile
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - './vuespa:/app' # mirror ./vuespa to container app folder
+    ports:
+      - 81:80
+      - 444:443
+    expose:
+      - 80
+      - 443
+    environment:
+      - CHOKIDAR_USEPOLLING=true # for hot reload
+      - VUE_APP_API_URL=${VUE_APP_API_URL} # pass to VueJs so it knows the API endpoints
+      - VUE_APP_URL=${VUE_APP_URL} # for index
+    depends_on:
+      - db
+      - api
+      - apiweb
+    networks:
+      - csvuploader-network
 
   # React SPA
   spa:

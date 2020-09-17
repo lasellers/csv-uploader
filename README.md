@@ -89,8 +89,10 @@ Use telescope (http://localhost:8000/telescope/requests), Vue DevTools and React
 
 * v1 Initial
 * v2 Refactored folder structure and dockerfiles.
+* v3 Added VueJs frontend version based off original React version
 
 
 ## Todo
 * Update React tests
-* Add VueJs frontend (optional) and tests
+* Update React to be a bit more optimal (see VueJs version)
+* Add VueJs tests
