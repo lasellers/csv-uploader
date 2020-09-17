@@ -49,46 +49,51 @@
 </template>
 
 <script>
-export default {
-  name: 'Contacts',
-  data () {
-    return {
-      contacts: [],
-      API_URL: process.env.VUE_APP_API_URL
+    export default {
+        name: 'Contacts',
+        data () {
+            return {
+                contacts: [],
+                API_URL: process.env.VUE_APP_API_URL
+            }
+        },
+        components: {},
+        created () {
+            this.getContacts()
+        },
+        methods: {
+            goBack: async function (event) {
+                this.$router.push('process')
+            },
+            goNext: async function (event) {
+                this.$store.dispatch('clearErrors')
+                this.$router.push('custom-attributes')
+            },
+            getContacts: function () {
+                const headers = { 'Content-Type': 'application/json' }
+                fetch(this.API_URL + '/contacts', { headers })
+                    .then(response => response.json())
+                    .then(data => {
+                        this.contacts = data
+                    })
+                    .catch((error) => {
+                        console.error(error)
+                        this.$store.dispatch('addErrors', error)
+                        this.contacts = [] // if error, set this to empty array
+                    })
+            },
+            onContactDelete: function (id) {
+                fetch(this.API_URL + '/contacts/' + id, { method: 'DELETE' })
+                    .then(res => res.json())
+                    .then(() => {
+                        this.getContacts()
+                    })
+                    .catch((error) => {
+                        console.error(error)
+                        this.$store.dispatch('addErrors', error)
+                        this.contacts = [] // if error, set this to empty array
+                    })
+            }
+        }
     }
-  },
-  components: {},
-  created () {
-    this.getContacts()
-  },
-  methods: {
-    goBack: async function (event) {
-      this.$router.push('process')
-    },
-    goNext: async function (event) {
-      this.$store.dispatch('clearErrors')
-      this.$router.push('custom-attributes')
-    },
-    getContacts: function () {
-      const headers = { 'Content-Type': 'application/json' }
-      fetch(this.API_URL + '/contacts', { headers })
-        .then(response => response.json())
-        .then(data => {
-          this.contacts = data
-        })
-    },
-    onContactDelete: function (id) {
-      fetch(this.API_URL + '/contacts/' + id, { method: 'DELETE' })
-        .then(res => res.json())
-        .then(() => {
-          this.getContacts()
-        })
-        .catch((error) => {
-          console.error(error)
-          this.$store.dispatch('addErrors', error)
-          this.contacts = [] // if error, set this to empty array
-        })
-    }
-  }
-}
 </script>

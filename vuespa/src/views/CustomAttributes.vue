@@ -71,6 +71,11 @@
                             return row.custom_attributes
                         })
                     })
+                    .catch((error) => {
+                        console.error(error)
+                        this.$store.dispatch('addErrors', error)
+                        this.customAttributes = [] // if error, set this to empty array
+                    })
             },
             onCustomAttributeDelete: function (id) {
                 fetch(this.API_URL + '/custom-attributes/' + id, { method: 'DELETE' })

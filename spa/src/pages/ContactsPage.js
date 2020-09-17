@@ -9,7 +9,6 @@ class ContactsPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            error: "",
             goBack: false,
             goNext: false,
             contacts: []
