@@ -91,10 +91,3 @@ RUN yes yes | composer install --no-interaction -o
 # expose port 9000 and start php-fpm server
 EXPOSE 9000
 CMD ["php-fpm"]
-
-
-lustering alloy
-sheen compound
-motley compound
-base metals
-heavy metals

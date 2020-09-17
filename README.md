@@ -31,6 +31,7 @@ Then run:
 ## Frontend
 
 React, Redux, Component state.
+Also VueJs, VueX.
 
 
 ## Backend
