@@ -79,22 +79,15 @@
                         if (!response.ok) {
                             throw Error(response.statusText)
                         }
-                        console.info('*** response', response)
-
                         return response.json()
                     })
                     .then((data) => {
-                        console.info('*** data', data)
                         this.contacts = JSON.parse(JSON.stringify(data.contacts))
                         this.customAttributes = JSON.parse(JSON.stringify(data.custom_attributes))
+
                         this.contactInserts = JSON.parse(JSON.stringify(data.contact_inserts))
                         this.customAttributeInserts = JSON.parse(JSON.stringify(data.custom_attribute_inserts))
-                        console.info('*** this contacts', this.contacts)
-                        console.info('*** this customAttributes', this.customAttributes)
-                        console.info('*** this contactInserts', this.contactInserts)
-                        console.info('*** this customAttributeInserts', this.customAttributeInserts)
 
-                        console.log('data errors', data.errors)
                         // get the formrequest validation errors from the api
                         // if (Object.prototype.hasOwnProperty.call(data, 'errors') && data.errors.length > 0) {
                         this.$store.dispatch('addErrors', data.errors)

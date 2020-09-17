@@ -90,7 +90,12 @@
             onMappingAccept: async function () {
                 this.$store.dispatch('addRemappedColumnOrder', this.remappedColumnOrder)
 
-                const [contacts, customAttributes] = this.remapCsvToContactsAndCustomAttributes()
+                const [contacts, customAttributes] = this.remapCsvToContactsAndCustomAttributes(
+                    this.csvData,
+                    this.remappedColumnOrder,
+                    this.csvHeaders,
+                    this.dbHeaders
+                )
 
                 this.$store.dispatch('addContacts', contacts)
                 this.$store.dispatch('addCustomAttributes', customAttributes)
@@ -99,26 +104,27 @@
             /**
              * @returns {[[], []]}
              */
-            remapCsvToContactsAndCustomAttributes: function () {
-                const contacts = this.csvData
-                const remappedColumnOrder = this.remappedColumnOrder
-                const csvHeaders = this.csvHeaders
-                const dbHeaders = this.dbHeaders
+            remapCsvToContactsAndCustomAttributes: function (contacts, remappedColumnOrder, csvHeaders, dbHeaders) {
                 const newContacts = []
                 const newCustomAttributes = []
 
                 contacts.forEach(function (contact, contactId) {
                     const newContact = new Array(dbHeaders.length).fill('')
 
+                    // create new contacts based on remapped columns list
                     remappedColumnOrder.forEach(function (order, index) {
                         if (remappedColumnOrder[index] >= 0) {
                             newContact[index] = contact[remappedColumnOrder[index]]
                         }
                     })
 
-                    csvHeaders.forEach(function (value, index) {
-                        if (!remappedColumnOrder.includes(index)) {
-                            newCustomAttributes.push([contactId, csvHeaders[index], value])
+                    // create new custom attributes from the columns that dont exist in remapped data
+                    csvHeaders.forEach(function (key, index) {
+                        if (!dbHeaders.includes(key)) {
+                            // contact_id, key, value
+                            const value = contact[index]
+                            const customAttribute = [contactId, key, value]
+                            newCustomAttributes.push(customAttribute)
                         }
                     })
 

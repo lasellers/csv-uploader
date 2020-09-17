@@ -64,7 +64,6 @@ export default new Vuex.Store({
             store.state.remappedColumnOrder = value
         },
         addErrors (store, errors) {
-            console.info('mutations addErrors', store.state.errors, errors)
             store.state.errors = errors
         },
         clearErrors (store) {
@@ -89,8 +88,6 @@ export default new Vuex.Store({
             context.commit('addRemappedColumnOrder', value)
         },
         addErrors (context, values) {
-            console.info('action addErrors', values)
-
             if (values === null || values === '' || values === [] || values === {} ||
             (Array.isArray(values) && values.length === 0)) {
                 // do nothing

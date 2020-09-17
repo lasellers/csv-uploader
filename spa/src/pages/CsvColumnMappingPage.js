@@ -71,17 +71,21 @@ class CsvColumnMappingPage extends React.Component {
         contacts.forEach(function (contact, contact_id) {
             let newContact = new Array(db_headers.length).fill("");
 
+            // create new contacts based on remapped columns list
             remapped_column_order.forEach(function (order, index) {
                 if (remapped_column_order[index] >= 0) {
                     newContact[index] = contact[remapped_column_order[index]];
                 }
             });
 
-            csv_headers.forEach(function (value, index) {
-                if (!remapped_column_order.includes(index)) {
-                    newCustomAttributes.push([contact_id, csv_headers[index], value]);
+            // create new custom attributes from the columns that dont exist in remapped data
+            csv_headers.forEach(function (key, index) {
+                if (!db_headers.includes(key)) {
+                    // contact_id, key, value
+                    const value = contact[index]
+                    newCustomAttributes.push([contact_id, key, value])
                 }
-            });
+            })
 
             newContacts.push(newContact);
         });
