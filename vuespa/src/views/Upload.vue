@@ -34,7 +34,7 @@
         data () {
             return {
                 selectedFile: null,
-                headers: '',
+                headers: [],
                 data: null
             }
         },

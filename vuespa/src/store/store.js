@@ -6,94 +6,92 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         debug: true,
-        state: {
-            errors: null,
-            csvHeaders: [],
-            csvData: [],
-            customAttributes: [],
-            contacts: [],
-            remappedColumnOrder: [0, 1, 2, 3, 4, 5, 6],
-            // read only SSOA
-            dbHeaders: ['team_id', 'name', 'phone', 'email', 'sticky_phone_number_id', 'created_at', 'updated_at'],
-            dbNamedHeaders: ['Team Id', 'Name', 'Phone', 'Email', 'Sticky Phone Number Id', 'Created', 'Updated']
-        }
+        errors: null,
+        csvHeaders: [],
+        csvData: [],
+        customAttributes: [],
+        contacts: [],
+        remappedColumnOrder: [0, 1, 2, 3, 4, 5, 6],
+        // read only SSOA
+        dbHeaders: ['team_id', 'name', 'phone', 'email', 'sticky_phone_number_id', 'created_at', 'updated_at'],
+        dbNamedHeaders: ['Team Id', 'Name', 'Phone', 'Email', 'Sticky Phone Number Id', 'Created', 'Updated']
     },
 
     getters: {
         dbHeaders: store => {
-            return store.state.dbHeaders
+            return store.dbHeaders
         },
         dbNamedHeaders: store => {
-            return store.state.dbNamedHeaders
+            return store.dbNamedHeaders
         },
         csvHeaders: store => {
-            return store.state.csvHeaders
+            return store.csvHeaders
         },
         csvData: store => {
-            return store.state.csvData
+            return store.csvData
         },
         customAttributes: store => {
-            return store.state.customAttributes
+            return store.customAttributes
         },
         contacts: store => {
-            return store.state.contacts
+            return store.contacts
         },
         remappedColumnOrder: store => {
-            return store.state.remappedColumnOrder
+            return store.remappedColumnOrder
         },
         errors: store => {
-            console.info('getters errors', store.state.errors)
-            return store.state.errors
+            console.info('getters errors', store.errors)
+            return store.errors
         }
     },
 
     mutations: {
-        addCsvHeaders (store, value) {
-            store.state.csvHeaders = value
+        addCsvHeaders(store, value) {
+            store.csvHeaders = value
         },
-        addCsvData (store, value) {
-            store.state.csvData = value
+        addCsvData(store, value) {
+            store.csvData = value
         },
-        addCustomAttributes (store, value) {
-            store.state.customAttributes = value
+        addCustomAttributes(store, value) {
+            store.customAttributes = value
         },
-        addContacts (store, value) {
-            store.state.contacts = value
+        addContacts(store, value) {
+            store.contacts = value
         },
-        addRemappedColumnOrder (store, value) {
-            store.state.remappedColumnOrder = value
+        addRemappedColumnOrder(store, value) {
+            store.remappedColumnOrder = value
         },
-        addErrors (store, errors) {
-            store.state.errors = errors
+        addErrors(store, errors) {
+            store.errors = errors
         },
-        clearErrors (store) {
-            store.state.errors = null
+        clearErrors(store) {
+            store.errors = null
         }
     },
 
     actions: {
-        addCsvHeaders (context, value) {
+        addCsvHeaders(context, value) {
             context.commit('addCsvHeaders', value)
         },
-        addCsvData (context, value) {
+        addCsvData(context, value) {
             context.commit('addCsvData', value)
         },
-        addCustomAttributes (context, value) {
+        addCustomAttributes(context, value) {
             context.commit('addCustomAttributes', value)
         },
-        addContacts (context, value) {
+        addContacts(context, value) {
             context.commit('addContacts', value)
         },
-        addRemappedColumnOrder (context, value) {
+        addRemappedColumnOrder(context, value) {
             context.commit('addRemappedColumnOrder', value)
         },
-        addErrors (context, values) {
+        addErrors(context, values) {
             if (values === null || values === '' || values === [] || values === {} ||
-            (Array.isArray(values) && values.length === 0)) {
+                (Array.isArray(values) && values.length === 0)) {
                 // do nothing
                 context.commit('addErrors', null)
             } else if (typeof values === 'string') {
-                values = [{ field: 'unknown', message: values, key: 0 }]
+                values = [{field: 'unknown', message: values, key: 0}]
                 context.commit('addErrors', values)
             } else {
                 values = [...values]
@@ -106,14 +104,14 @@ export default new Vuex.Store({
                 const messages = []
                 for (const [key, value] of Object.entries(errors)) {
                     for (const [field, message] of Object.entries(value)) {
-                        messages.push({ field, message, key })
+                        messages.push({field, message, key})
                     }
                 }
 
                 context.commit('addErrors', messages)
             }
         },
-        clearErrors (context) {
+        clearErrors(context) {
             context.commit('clearErrors')
         }
     }

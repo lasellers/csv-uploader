@@ -19,13 +19,31 @@ https://www.youtube.com/watch?v=5emGcn0Cxgc&feature=youtu.be
 
 `npm run serve` to start VueJs frontend.
 
+Then you can access the React frontend by going to:
+
+`http://localhost:3000`
+
+or the VueJs frontend at:
+
+`http://localhost:8080`
+
+
 ### 2. Startup with Docker
 
 `sudo docker-compose up` to start docker db. Laravel API will be stood up at localhost:8000.
 React will be stood up localhost:80 as a production build.
 
-Then run:
+Docker compose will automatically start up a container after a pause to run:
+
 `sudo docker exec -it csvuploader_api bash -c "composer run reseed"`
+
+Then you can access the React frontend by going to:
+
+`http://localhost`
+
+or the VueJs frontend at:
+
+`http://localhost:81`
 
 
 ## Frontend

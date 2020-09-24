@@ -83,7 +83,8 @@ class CsvColumnMappingPage extends React.Component {
                 if (!db_headers.includes(key)) {
                     // contact_id, key, value
                     const value = contact[index]
-                    newCustomAttributes.push([contact_id, key, value])
+                    const customAttribute = [contact_id, key, value]
+                    newCustomAttributes.push(customAttribute)
                 }
             })
 

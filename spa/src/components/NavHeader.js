@@ -29,22 +29,22 @@ function NavHeader(props) {
                             </Nav.Link>
                             <Nav.Link as={Link} to="/preview">
                                 <div
-                                    className={location.pathname === '/preview' ? 'btn btn-step active' : 'btn btn-step'}>4
+                                    className={location.pathname === '/preview' ? 'btn btn-step active' : 'btn btn-step'}>3
                                 </div>
                             </Nav.Link>
                             <Nav.Link as={Link} to="/process">
                                 <div
-                                    className={location.pathname === '/process' ? 'btn btn-step active' : 'btn btn-step'}>5
+                                    className={location.pathname === '/process' ? 'btn btn-step active' : 'btn btn-step'}>4
                                 </div>
                             </Nav.Link>
                             <Nav.Link as={Link} to="/contacts">
                                 <div
-                                    className={location.pathname === '/contacts' ? 'btn btn-step active' : 'btn btn-step'}>6
+                                    className={location.pathname === '/contacts' ? 'btn btn-step active' : 'btn btn-step'}>5
                                 </div>
                             </Nav.Link>
                             <Nav.Link as={Link} to="/custom-attributes">
                                 <div
-                                    className={location.pathname === '/custom-attributes' ? 'btn btn-step active' : 'btn btn-step'}>7
+                                    className={location.pathname === '/custom-attributes' ? 'btn btn-step active' : 'btn btn-step'}>6
                                 </div>
                             </Nav.Link>
                         </ul>
